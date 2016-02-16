@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>             <string>Anonymine</string>
+    <key>CFBundleDisplayName</key>      <string>Anonymine - minesweeper without guessing</string>
+    <key>CFBundleVersion</key>          <string>0.1.9</string>
+    <!-- -->
+    <key>CFBundleSignature</key>        <string>boom</string>
+    <key>CFBundlePackageType</key>      <string>APPL</string>
+    <key>CFBundleExecutable</key>       <string>wrapper</string>
+    <key>CFBundleIconFile</key>         <string>icon.png</string>
+    <key>LSApplicationCategoryType</key><string>public.app-category.puzzle-games</string>
+    <!-- -->
+    <key>NSHumanReadableCopyright</key>
+    <string>
+        Copyright (c) 2016, Oskar Skog
+        This software is released under the FreeBSD license (2-clause BSD).
+    </string>
+</dict>
+</plist>

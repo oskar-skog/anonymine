@@ -1,0 +1,328 @@
+
+##############################################################################
+
+# If you have a suggestion for a name, tell me about it:
+# <oskar.skog.finland@gmail.com>
+
+# No quotes for these four:
+# NAME = [technical] name
+# NAME_C = Capitalized name (human name)
+# DESCRIPTION = 
+# VERSION = x.y.z
+NAME := anonymine
+NAME_C := Anonymine
+DESCRIPTION = Minesweeper without guessing
+VERSION := 0.1.15
+
+# Three more variables are required: EXECUTABLES and MODULES
+# and MODULES_OTHERVER (= "non-existent").
+# They will be prepended to the actual Makefile by the "configure" script.
+
+# srcdir, builddir and DESTDIR may also be prepended by the "configure"
+# script.
+
+# freedesktop == "" if not freedesktop.org DE.
+# windows == "" if not on Windows.
+# macosx == "" if not on Mac OS X.
+
+# See "INSTALL".
+
+# Define these to prevent bugs on certain platforms.
+PRE_INSTALL = true
+NORMAL_INSTALL = true
+POST_INSTALL = true
+PRE_UNINSTALL = true
+NORMAL_UNINSTALL = true
+POST_UNINSTALL = true
+
+##############################################################################
+
+MAIN_SRC := '$(srcdir)$(NAME).py'
+MAIN_STAGE := '$(builddir)$(NAME)'
+MAIN_DEST := '$(DESTDIR)$(EXECUTABLES)/$(NAME)'
+
+# freedesktop.org, see desktop/README
+MK_DESKTOP := '$(srcdir)desktop/desktop.sh'
+DESKTOP_STAGE := '$(builddir)$(NAME).desktop'
+DESKTOP_DEST := '$(DESTDIR)$(prefix)/share/applications/$(NAME).desktop'
+
+# Mac OS X, see desktop/README
+OSX_WRAPPER := "$(builddir)$(NAME)-wrapper"
+INFO_PLIST := "$(builddir)Info.plist"
+MK_INFO_PLIST := "$(srcdir)desktop/Info.plist.py"
+OSX_ICON := "$(builddir)icon.icns"
+MK_OSX_ICON := "$(srcdir)desktop/icon.icns.py"
+
+# Windows/Cygwin, see desktop/README
+CYGWIN_ICO_SRC := "$(srcdir)desktop/$(NAME).ico"
+CYGWIN_ICO_DIR := "$(DESTDIR)$(prefix)/share/pixmaps"
+CYGWIN_ICO_DEST := $(CYGWIN_ICO_DIR)/$(NAME).ico
+
+# make clean
+ALL_STAGE := $(MAIN_STAGE) $(OSX_WRAPPER) $(OSX_INFO_PLIST) $(OSX_ICON) \
+	"$(builddir)check.py"
+
+all : FORCE
+	@: # Create the appropriate shebang line
+	@echo "#!`which python`" > $(MAIN_STAGE)
+	@cat $(MAIN_SRC) >> $(MAIN_STAGE)
+	@: # Refer to desktop/README for information about the following.
+	@if [ -n "$(freedesktop)" ]; then \
+		$(MK_DESKTOP) $(DESKTOP_STAGE) $(NAME) "$(NAME_C)" \
+			"$(DESCRIPTION) -- version $(VERSION)"; \
+	fi
+	@if [ -n "$(macosx)" ]; then \
+		echo '#!/bin/sh' > $(OSX_WRAPPER); \
+		echo 'open -b com.apple.terminal' $(MAIN_DEST) \
+			>> $(OSX_WRAPPER); \
+		python $(MK_INFO_PLIST) $(INFO_PLIST) "$(NAME_C)" \
+			"$(NAME_C) - $(DESCRIPTION)" $(VERSION) $(NAME); \
+		python $(MK_OSX_ICON) $(OSX_ICON) "$(srcdir)desktop/$(NAME)"; \
+	fi
+
+clean : FORCE
+	@rm $(ALL_STAGE) 2> /dev/null || true
+	@: # Remove the bytecode files.
+	@rm -- $(srcdir)*.pyc 2> /dev/null || true
+	@rm -r -- $(srcdir)__pycache__/ 2> /dev/null || true
+
+# configure.py will choose /usr/ucb/install on Solares.
+INSTALL_CMD ?= install
+
+CFG_DIR := "$(DESTDIR)/etc/$(NAME)"
+# Modules: FOO_SRC, FOO_DEST, FOO_DEST_OTHERVER
+ENGINE_SRC := "$(srcdir)$(NAME)_engine.py"
+ENGINE_DEST := "$(DESTDIR)$(MODULES)/$(NAME)_engine.py"
+ENGINE_DEST_OTHERVER := "$(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_engine.py"
+SOLVER_SRC := "$(srcdir)$(NAME)_solver.py"
+SOLVER_DEST := "$(DESTDIR)$(MODULES)/$(NAME)_solver.py"
+SOLVER_DEST_OTHERVER := "$(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_solver.py"
+FIELDS_SRC := "$(srcdir)$(NAME)_fields.py"
+FIELDS_DEST := "$(DESTDIR)$(MODULES)/$(NAME)_fields.py"
+FIELDS_DEST_OTHERVER := "$(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_fields.py"
+
+# Installation commands for modules:
+NO_OTHERVER := test "$(MODULES_OTHERVER)" "=" non-existent
+
+# See desktop/README
+ICON_SRC := "$(srcdir)desktop/$(NAME)-$$size.png"
+ICON_DESTDIR := "$(DESTDIR)$(prefix)/share/icons/hicolor/$$size/apps"
+ICON_SIZES := 16x16 32x32 64x64 256x256
+ICON_DEST := $(ICON_DESTDIR)/$(NAME).png
+
+# See desktop/README
+BUNDLE := "$(DESTDIR)/Applications/$(NAME_C).app"
+
+check-install-cfg : FORCE
+	@$(PRE_INSTALL)
+	@: # Cause installation to fail if the configuration is incompatible.
+	@"$(INSTALL_CMD)" -d "$(CFG_DIR)"
+	@python install-cfg "$(INSTALL_CMD)" \
+		"$(srcdir)enginecfg" "$(CFG_DIR)/enginecfg"
+	@python install-cfg "$(INSTALL_CMD)" \
+		"$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
+
+overwrite-cfg: FORCE
+	@"$(INSTALL_CMD)" -m 644 "$(srcdir)enginecfg" $(CFG_DIR)/enginecfg
+	@"$(INSTALL_CMD)" -m 644 "$(srcdir)cursescfg" $(CFG_DIR)/cursescfg
+	@echo "Configuration has been overwritten"
+	@echo "All (if any) system-wide modifications are lost"
+
+install-dirs : FORCE
+	@mkdir -p $(DESTDIR)$(EXECUTABLES) || true
+	@mkdir -p $(DESTDIR)$(MODULES) || true
+	@if [ "$(MODULES_OTHERVER)" != "non-existent" ]; then \
+		mkdir -p $(DESTDIR)$(MODULES_OTHERVER) || true; \
+	fi
+	@if [ -n "$(freedesktop)" ]; then \
+		mkdir -p $(DESTDIR)$(prefix)/share/applications || true; \
+		mkdir -p $(DESTDIR)$(prefix)/share/pixmaps || true; \
+	fi
+
+install : check-install-cfg install-dirs
+	@$(NORMAL_INSTALL)
+	@: # When the configuration has been installed, install the main
+	@: # program, and then the modules for both versions of Python.
+	@"$(INSTALL_CMD)" -m 755 $(MAIN_STAGE) $(MAIN_DEST)
+	@"$(INSTALL_CMD)" -m 644 $(ENGINE_SRC) $(ENGINE_DEST)
+	@"$(INSTALL_CMD)" -m 644 $(SOLVER_SRC) $(SOLVER_DEST)
+	@"$(INSTALL_CMD)" -m 644 $(FIELDS_SRC) $(FIELDS_DEST)
+	@if [ -n "$(freedesktop)" ]; then \
+		$(INSTALL_CMD) -m 644 $(DESKTOP_STAGE) $(DESKTOP_DEST); \
+		for size in $(ICON_SIZES); do \
+			$(INSTALL_CMD) -d $(ICON_DESTDIR); \
+			$(INSTALL_CMD) -m 644 $(ICON_SRC) $(ICON_DEST); \
+		done; \
+	fi
+	@if [ -n "$(macosx)" ]; then \
+		"$(INSTALL_CMD)" -d $(BUNDLE)/Contents; \
+		"$(INSTALL_CMD)" -m 644 $(INFO_PLIST) \
+			$(BUNDLE)/Contents/Info.plist; \
+		"$(INSTALL_CMD)" -d $(BUNDLE)/Contents/MacOS; \
+		"$(INSTALL_CMD)" -m 755 $(OSX_WRAPPER) \
+			$(BUNDLE)/Contents/MacOS/$(NAME)-wrapper; \
+		"$(INSTALL_CMD)" -d $(BUNDLE)/Contents/Resources; \
+		"$(INSTALL_CMD)" -m 644 $(OSX_ICON) \
+			$(BUNDLE)/Contents/Resources/icon.icns; \
+	fi
+	@$(NO_OTHERVER) || ln -sf $(ENGINE_DEST) $(ENGINE_DEST_OTHERVER)
+	@$(NO_OTHERVER) || ln -sf $(SOLVER_DEST) $(SOLVER_DEST_OTHERVER)
+	@$(NO_OTHERVER) || ln -sf $(FIELDS_DEST) $(FIELDS_DEST_OTHERVER)
+	@$(POST_INSTALL)
+	@if [ -n "$(freedesktop)" ]; then \
+		xdg-desktop-menu install --novendor --mode system \
+			$(DESKTOP_DEST) || true; \
+	fi
+	@if [ -n "$(windows)" ]; then \
+		"$(INSTALL_CMD)" $(CYGWIN_ICO_SRC) $(CYGWIN_ICO_DEST); \
+		mkshortcut -A -P -a '-lc $(NAME)' -n "$(NAME_C)" \
+			-i $(CYGWIN_ICO_DEST) /bin/bash.exe || \
+			mkshortcut -P -a '-lc $(NAME)' -n "$(NAME_C)" \
+			-i $(CYGWIN_ICO_DEST) /bin/bash.exe; \
+		mkshortcut -A -D -a '-lc $(NAME)' -n "$(NAME_C)" \
+			-i $(CYGWIN_ICO_DEST) /bin/bash.exe || \
+			mkshortcut -D -a '-lc $(NAME)' -n "$(NAME_C)" \
+			-i $(CYGWIN_ICO_DEST) /bin/bash.exe; \
+	fi
+
+# http://superuser.com/questions/86078/where-do-start-menu-all-programs-shortcuts-reside
+W_C := "$(DESTDIR)/cygdrive/c"
+W_U := "$(DESTDIR)`cygpath --unix '$(USERPROFILE)'`"
+W_F := "$(NAME_C).lnk"
+W_M := "/Start Menu/Programs/"
+# W_C is the C drive, W_U is the users real home directory,
+# W_F is the filename and W_M is a part of the path to the start menu
+# common for both NT 5 and 6.
+STARTMENU_NT5X_ALL := $(W_C)"/Documents and Settings/All Users"$(W_M)$(W_F)
+STARTMENU_NT5X_ME := $(W_U)$(W_M)$(W_F)
+STARTMENU_NT6X_ALL := $(W_C)"/ProgramData/Microsoft/Windows"$(W_M)$(W_F)
+STARTMENU_NT6X_ME := $(W_U)"/AppData/Roaming/Microsoft/Windows"$(W_M)$(W_F)
+DESKTOP_NT5X_ALL := $(W_C)"/Documents and Settings/All Users/Desktop"$(W_F)
+DESKTOP_NT6X_ALL := $(W_C)/Users/Public/Desktop/$(W_F)
+DESKTOP_ME := $(W_U)/Desktop/$(W_F)
+
+uninstall: FORCE
+	@$(PRE_UNINSTALL)
+	@if [ -n "$(freedesktop)" ]; then \
+		xdg-desktop-menu uninstall --novendor --mode system \
+			$(DESKTOP_DEST) || true; \
+	fi
+	@$(NORMAL_UNINSTALL)
+	@-rm -r $(CFG_DIR)
+	@-rm $(ENGINE_DEST) $(SOLVER_DEST) $(FIELDS_DEST) $(MAIN_DEST)
+	@$(NO_OTHERVER) || rm $(ENGINE_DEST_OTHERVER) $(SOLVER_DEST_OTHERVER) \
+		$(FIELDS_DEST_OTHERVER) || true
+	@if [ -n "$(freedesktop)" ]; then \
+		rm $(DESKTOP_DEST) || true; \
+		for size in $(ICON_SIZES); do \
+			rm $(ICON_DEST) || true; \
+		done; \
+	fi
+	@if [ -n "$(macosx)" ]; then \
+		rm -r $(BUNDLE) || true; \
+	fi
+	@if [ -n "$(windows)" ]; then \
+		rm $(STARTMENU_NT5X_ALL) || true; \
+		rm $(STARTMENU_NT5X_ME) || true; \
+		rm $(STARTMENU_NT6X_ALL) || true; \
+		rm $(STARTMENU_NT6X_ME) || true; \
+		rm $(DESKTOP_NT5X_ALL) || true; \
+		rm $(DESKTOP_NT6X_ALL) || true; \
+		rm $(DESKTOP_ME) || true; \
+	fi
+
+print-destinations: FORCE
+	@echo "> Main program:\t\t\t" $(MAIN_DEST)
+	@echo "> Engine module:\t\t" $(ENGINE_DEST)
+	@echo "> Solver module:\t\t" $(SOLVER_DEST)
+	@echo "> Fields module:\t\t" $(FIELDS_DEST)
+	@$(NO_OTHERVER) || \
+		echo "> Engine module symlink:\t" $(ENGINE_DEST_OTHERVER)
+	@$(NO_OTHERVER) || \
+		echo "> Solver module symlink:\t" $(SOLVER_DEST_OTHERVER)
+	@$(NO_OTHERVER) || \
+		echo "> Fields module symlink:\t" $(FIELDS_DEST_OTHERVER)
+	@echo "> Configuration files:\t\t" $(CFG_DIR)
+	@if [ -n "$(freedesktop)" ]; then \
+		echo "> [freedesktop.org] .desktop:\t" $(DESKTOP_DEST); \
+		for size in $(ICON_SIZES); do \
+			echo "> [freedesktop.org] Icon:\t" $(ICON_DEST); \
+		done; \
+	fi
+	@if [ -n "$(macosx)" ]; then \
+		echo "> [Mac OS X] Bundle (App):\t" $(BUNDLE); \
+	fi
+	@if [ -n "$(windows)" ]; then \
+		echo "> [Windows] Shortcut:\t\t" $(STARTMENU_NT5X_ALL); \
+		echo "> [Windows] Shortcut:\t\t" $(STARTMENU_NT5X_ME); \
+		echo "> [Windows] Shortcut:\t\t" $(STARTMENU_NT6X_ALL); \
+		echo "> [Windows] Shortcut:\t\t" $(STARTMENU_NT6X_ME); \
+		echo "> [Windows] Shortcut:\t\t" $(DESKTOP_NT5X_ALL); \
+		echo "> [Windows] Shortcut:\t\t" $(DESKTOP_NT6X_ALL); \
+		echo "> [Windows] Shortcut:\t\t" $(DESKTOP_ME); \
+		echo "> [Windows] Icon:\t\t" $(CYGWIN_ICO_DEST); \
+	fi
+
+PKG_INDIR := $(NAME)-$(VERSION)
+PKG := "$(builddir)$(PKG_INDIR)"
+# .txt in zips.
+PKG_TEXTFILES := BUGS ChangeLog FAQ FILES INSTALL NEWS README desktop/FILES \
+	desktop/README
+# Old crap
+PERKELE := perkele/Windows.ps1 perkele/desktop/anonymine.lnk.py
+# Already CRLF + old crap.
+PKG_NOCONV := Windows.txt Windows-admin.bat Windows-user.bat \
+	configure desktop/$(NAME).ico desktop/desktop.sh \
+	desktop/$(NAME)-*.png desktop/$(NAME)*.xcf $(PERKELE)
+PKG_FILES := $(NAME).py $(NAME)_engine.py $(NAME)_fields.py $(NAME)_solver.py \
+	configure.py Makefile.static install-cfg check.sh enginecfg cursescfg \
+	test.py desktop/Info.plist.py desktop/icon.icns.py
+PKG_SUBDIRS := desktop perkele perkele/desktop
+
+check: FORCE
+	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
+
+dist : tarballs zip
+	@echo Depends on '"'tarballs'"' and '"'zip'"'
+	@echo make check
+	@make check >/dev/null
+	@echo make release
+	@make release >/dev/null
+
+release : FORCE
+	@cp -t ~www-data/archive/$(NAME)/ $(PKG).tar.gz \
+		|| echo You are not me.
+	@cp -t ~www-data/archive/$(NAME)/ $(PKG).zip \
+		|| echo You are not me.
+
+tarballs : FORCE
+	@mkdir $(PKG)
+	@for subdir in $(PKG_SUBDIRS); do mkdir $(PKG)/$$subdir; done;
+	@: # Copy all files normally:
+	@for f in $(PKG_TEXTFILES); do cp $(srcdir)$$f $(PKG)/$$f; done
+	@for f in $(PKG_NOCONV); do cp $(srcdir)$$f $(PKG)/$$f; done
+	@for f in $(PKG_FILES); do cp $(srcdir)$$f $(PKG)/$$f; done
+	@: # Tar:
+	@cd $(builddir) && tar -cf $(PKG_INDIR).tar $(PKG_INDIR)
+	@: # Compress:
+	@gzip -f9k -- $(PKG).tar
+	@: # Clean-up:
+	@rm -- $(PKG).tar
+	@rm -r -- $(PKG)
+
+zip : FORCE
+	@mkdir $(PKG)
+	@for subdir in $(PKG_SUBDIRS); do mkdir $(PKG)/$$subdir; done;
+	@: # /(.*)$/ -> /\1.txt/
+	@for f in $(PKG_TEXTFILES); do \
+		unix2dos -q -n $(srcdir)$$f $(PKG)/$$f.txt; \
+	done
+	@: # Already with CRLF line ends + configure.
+	@for f in $(PKG_NOCONV); do cp $(srcdir)$$f $(PKG)/$$f; done
+	@: # Notepad is stupid.
+	@for f in $(PKG_FILES); do unix2dos -q -n $(srcdir)$$f $(PKG)/$$f; done
+	@cd $(builddir) && zip -rXq $(PKG_INDIR).zip $(PKG_INDIR)
+	@rm -r -- $(PKG)
+
+
+FORCE:

@@ -1,0 +1,231 @@
+WINDOWS USERS
+=============
+
+    Read "Windows.txt" instead.
+
+
+DEPENDENCIES
+============
+
+    * Python >= 2.6 (3.x allowed)
+    * The curses module. (Python bindings for curses.)
+    * A screen size of at least 10 columns by 8 rows.
+        (7 by 4 for non-hexagonal gametypes.)
+    * A unix-like operating system AND/OR the argparse module.
+    
+    Normal installation will only work on unix-like operating
+    systems.
+    
+    On unix-unlike systems you must specify the location of both
+    configuration files, which is why the argparse module would
+    be required on a non-nix platform.
+
+
+PROPER INSTALLATION
+===================
+
+Some progress has been made; the Makefile will be written by the configure
+script.
+
+If you want to use srcdir and builddir, you still have to configure the
+Makefile manually.
+
+In the directory extracted from the tarball, run:
+    ./configure
+    make
+    make install        # as root
+
+NOTICE:
+    The system-wide configuration files for the game will only be created if
+    they do not exist.  `make install` will fail if the format of the
+    configuration has changed and old configuration files exist.
+    
+    To force an overwrite of the system-wide configuration files, run
+    `make overwrite-cfg`.  If you do this because of a failed make install,
+    run make install again.
+
+Anonymine will be installed as 'anonymine'.
+
+You may want to make some changes to '/etc/anonymine/enginecfg'.
+
+
+RUN IN CURRENT DIRECTORY
+========================
+
+You can run Anonymine right here in this directory (the directory) of the
+package.
+
+python anonymine.py -c cursescfg -e enginecfg
+
+
+ADVANCED INSTALLATION
+=====================
+    
+    Important notes
+    ===============
+    
+        * Anonymine expects to be run by "python", not "python2.7" etc; Make
+        sure you have those symlinks.
+        * The other version of python is expected to by "python3" or
+        "python2"; make sure you have that symlink as well if you want the
+        modules to be installed for both versions.
+        
+        * You may want to make some changes to '/etc/anonymine/enginecfg'
+          after installation.
+    
+    
+    ./configure; make; make install
+    ===============================
+    
+        ./configure will accept variables with three different syntaxes:
+            ./configure --name value
+            ./configure --name=value
+            ./configure name=value
+        
+        All variables/options require exactly one value/argument.
+        All variables will also be stored in the Makefile.
+        
+        The value of a variable MAY be a Makefile variable/macro.
+        
+        The value entered on the command line will not be pre-expanded in the
+        Makefile, except for "builddir" and "srcdir".  The exception is there
+        to prevent issues when make is run from a different directory than
+        configure.
+            "srcdir" and "builddir" will automatically be converted to absolute
+            paths.
+        
+        configure will also accept these short options:
+            -f      Force; write the Makefile even if there were errors.
+            -v      verbose
+            -w      Use sys.prefix as prefix. (For quickly removing old
+                    versions.)
+        
+        The real "configure" script will handle these:
+            ./configure -h
+            ./configure -V
+            ./configure --help
+            ./configure --version
+    
+    
+    Recognised variables
+    ====================
+    
+        Variable                default and/or description
+        --------                --------------------------
+        
+        prefix                  sys.prefix
+        bindir                  $(prefix)/bin NOTICE: may not work as expected.
+        gamesdir                $(prefix)/games
+        libdir                  $(prefix)/lib
+        
+        EXECUTABLES             This program will be installed in $(gamesdir)
+        MODULES                 See its own subsection
+        MODULES_OTHERVER        See its own subsection
+        
+        DESTDIR                 Pretend the root is here
+        srcdir                  The directory extracted from the tarball.
+        builddir                (Current working directory)
+        
+        freedesktop             Empty=false, non-empty=true; "Linux" desktop
+        macosx                  Empty=false, non-empty=true; Mac OS X
+        windows                 Empty=false, non-empty=true; Windows (Cygwin)
+    
+        prefix, bindir and libdir:
+            http://www.gnu.org/prep/standards/html_node/Directory-Variables.html
+        
+        DESTDIR
+            https://www.gnu.org/prep/standards/html_node/DESTDIR.html
+        
+        srcdir and builddir
+        -------------------
+        
+            $(srcdir) is the directory that was extracted from the tarball.
+            
+            $(builddir) is the directory where make(1) is allowed to create
+            "temporary" files when building (`make [all]`) the program.
+            
+            Both of these default to the current working directory.
+        
+        
+        EXECUTABLES
+        ===========
+        
+            This is the directory to which this game will be installed.
+            
+            It will be assigned to the first variable of [gamesdir, bindir]
+            that expands into a path that exists in $PATH.
+            
+            As a consequence: The game will probably not be installed where
+            you want it to if you specify bindir=somewhere-else as it installs
+            to gamesdir rather than bindir (if possible).
+        
+        
+        MODULES and MODULES_OTHERVER
+        ============================
+        
+            As Python 3 is slightly backwards-incompatible with Python 2,
+            both version may be installed.
+            
+            This game works with both versions of Python, and installs three
+            modules that could be used by some other program.
+            
+            The modules will be copied to $(MODULES). And if there is another
+            Python, symlinks to the installed modules will be created in
+            $(MODULES_OTHERVER).
+            
+            The default value of MODULES and MODULES_OTHERVER is the first
+            of the following that exists in sys.path:
+                $(libdir)/python$(major)/site-packages
+                $(libdir)/python$(major).$(minor)/site-packages
+                $(libdir)/python$(major)/dist-packages
+                $(libdir)/python$(major).$(minor)/dist-packages
+            
+            $(major) and $(minor) are pre-expanded and do NOT exist in the
+            Makefile.
+    
+    
+    Targets in the Makefile
+    =======================
+    
+        all (default)
+            Fix the shebang line of the programs to be installed
+        
+        clean
+            Remove stage files and bytecode.
+        
+        print-destinations
+            Print where things will be installed.
+        
+        install
+            Configuration files will not be replaced by this target.
+            Installation will fails if the pre-existing configuration files
+            are incompatible with the new version of the software, and the
+            old version should be left untouched.
+        
+        overwrite-cfg
+            Overwrite the configuration files.
+            NOTICE: This does not ask for confirmation.
+        
+        uninstall
+            This will remove the system-wide configuration files as well.
+            To remove an installed version older than 0.0.31 you'll need
+            to run ./configure with the -w option.
+        
+        check
+            Check that everything seems to work.
+        
+        tarballs
+            make tarballs
+        
+        zip
+            Generate an archive suitable for Windrugs users.
+                - zip
+                - CRLF line endings
+                - .txt
+        
+        release
+            (You are me.)
+        
+        make dist
+            'check' that I am not making an embarrassing release,
+            make 'tarballs' and the 'zip' and 'release' them.

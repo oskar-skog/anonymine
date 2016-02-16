@@ -1,0 +1,17 @@
+0.1.0
+    Properly documented source.
+
+0.2.0
+    Performance improvements, no nasty calibration of enginecfg.
+
+0.3.0
+    High-scores.
+
+0.4.0
+    Maybe mouse support.
+
+0.5.0 (or 0.4.0)
+    Create a statistics collection module.
+
+0.6.0 (or 0.5.0)
+    Good documentation for the solver algorithm.

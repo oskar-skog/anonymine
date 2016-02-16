@@ -1,0 +1,14 @@
+__pycache__
+*.tar.gz
+*.zip
+*.pyc
+*~
+ignore
+Makefile
+anonymine
+anonymine.desktop
+icon.icns
+Info.plist
+check.py
+anonymine-wrapper
+

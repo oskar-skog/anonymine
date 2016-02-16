@@ -1,0 +1,36 @@
+What's new in 0.1.0 since 0.0.0?
+================================
+
+- The documentation should now be complete.
+- The solver is now ten times as fast and the initializer more efficient.
+- Various resizing bugs (crashes) have been fixed.
+- The installation method has matured.
+- Various changes to the textics.
+- The statistics methods in anonymine_solver have been deprecated.
+- Portability:
+    0.0.1:   FreeBSD (`make dist` works since 0.0.21)
+    0.0.8:   Python 3
+    0.0.15:  Python 2.6
+    0.0.27:  BUG#3 is fixed (at least Debian Jessie x86-64 was affected)
+    0.0.31:  Minix 3 and openindiana (illumos (OpenSolaris))
+    0.0.36:  NetBSD works properly
+    0.0.41+: Windows (auto-fetch Cygwin) (lack of testing)
+- **Backwards-incompatible changes**:
+    "anonymine.py", and files that will not be installed, are not included!
+    0.0.19: "initcfg" was renamed to "enginecfg"
+    0.0.19: `anonymine_engine.game_engine.__init__` will now take the
+                path to the configuration file as a positional argument.
+    0.0.36:  'doc-moore' and 'doc-neumann' was merged into 'doc-square' in
+                "cursescfg".
+- Misc
+    0.0.9:  Separated game engine from interface.
+    0.0.11: Don't mess up the terminal on error.
+    0.0.35: It is now possible to move diagonally in the von Neumann mode.
+    0.0.36: Removed the old initializer from the engine and 'wait' from
+                enginecfg.
+    0.0.37: Added the 'T' level of difficulty for the time it took.
+
+Broken releases:
+    Python 2 broke on 0.0.38
+    Python 3 broke on 0.0.33
+

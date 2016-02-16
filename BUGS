@@ -1,0 +1,181 @@
+BUG#0 2016-01-03
+    NO HYPOTHESIS
+    Version: Anonymine 0.0.15
+    Python: CPython 3.1.3
+    OS: (DEAD) Debian Squeeze (kFreeBSD 8)
+    curses.version: 2.2
+    Library: ncurses5.7
+    Description:
+        Things get fucked up when curses gets reinitialized.
+        Symptoms:
+            (1st game works fine)
+            2nd game: Crap is written on the terminal.
+                Requires complete redrawing.
+            Issues with aborting the game. Stuck in an infinite loop.
+                A new game starts immediately; no questions are asked while
+                not in curses mode.
+        Sending a ^Z during the first or second game and then bringing the
+        game back to foreground seems to disarm the issue with aborting.
+    NOTICE:
+        This VM "died" of some reason.
+        I can't do any further testing.
+
+BUG#1 long known, insignificant
+    Python: CPython 2.7.3 (3.2.3 doesn't seem to have this bug,
+        but further testing is needed.)
+    OS: Only one has been tested: Trisquel 6.0 (Linux 3.2)
+    curses.version: 2.2
+    Library: ncurses5.9
+    Description
+        If the screen has been resized while in curses mode,
+        the interpreter may write some warning when exiting:
+            close failed in file object destructor:
+            sys.excepthook is missing
+            lost sys.stderr
+
+BUG#2 2016-01-07, solved
+    Solved in 0.0.25, bug is available in 0.0.24 and below:
+        A bug in anonymine_solver.py (solver.rule9bf) has been fixed,
+        the symptoms of this bug haven't occured since the fix.
+        (At least 717708 fields (30x16 with 99 mines) have been tested.)
+    Traceback:
+        Traceback (most recent call last):
+          File "<stdin>", line 1, in <module>
+          File "/usr/lib/python2.7/cProfile.py", line 29, in run
+            prof = prof.run(statement)
+          File "/usr/lib/python2.7/cProfile.py", line 135, in run
+            return self.runctx(cmd, dict, dict)
+          File "/usr/lib/python2.7/cProfile.py", line 140, in runctx
+            exec cmd in globals, locals
+          File "<string>", line 1, in <module>
+          File "test.py", line 39, in run_prof
+            won, levels = solver.solve()
+          File "anonymine_solver.py", line 1105, in solve
+            success, update_difficulty = self.solver_loop()
+          File "anonymine_solver.py", line 957, in solver_loop
+            unsolved_cells.append((cell, rank_cell([cell], i)))
+          File "anonymine_solver.py", line 934, in rank_cell
+            more_cells = cells + self.number_neighbours(cells)
+          File "anonymine_solver.py", line 638, in number_neighbours
+            assert self.field.get(neighbour) != 'X'
+        AssertionError
+
+(SOLVED) BUG#3 2016-01-08, severe
+    More or less platform specific.
+    OS: Debian 8 (Linux 3.16) (x86-64)
+    Python: CPython 2.7.9, CPython 3.4.2
+    curses.version: 2.2
+    Library: ncurses5.9
+    Description:
+        After forking, it appears, when the field is being initialized, the
+        curses mode stops working.
+    Solution:
+        Define a program mode and temporarily reset to shell mode while
+        initializing the field.
+            The cursor can still not be hidden, so it will be moved to an
+        unimportant place.
+            The screen requires one complete redrawal of the screen, so that
+        will also be done.
+    NOTICE:
+        DO NOT REMOVE.
+        This is referenced from the source.
+
+BUG#4 is bogus
+
+BUG#5
+    The user's own configuration files have a higher priority than the system
+    wide, and will be loaded if available.  If they are out of date the game
+    will crash.
+
+BUG#6 2016-02-03
+    There was a small possibility that another slave would finish before
+    getting killed by the master, causing os.kill to fail.
+    Because of this, the slaves will from now on be killed with SIGCONT
+    rather than SIGTERM, as SIGCONT will be ignored by an innocent process
+    that might start after a second slave finishes but before the slave
+    gets killed by the master.
+
+BUG#7 2016-02-09
+    anonymine.py (curses_game.output)
+        window.bkgdset causes a nasty issue when the background character
+        is not space (0x20).
+    Workaround in place.
+
+Problematic platforms
+=====================
+
+    #0  Debian GNU/kFreeBSD (Debian Squeeze)
+    #1  Debian 7 with CPython 2.6.7
+    #2  openindiana
+    #3  PyPy
+    #4  Cygwin
+    
+    #0:
+        OS:             Debian Squeeze (6.x)
+        kernel:         kFreeBSD k8
+        arch:           x86-32 (VirtualBox)
+        Python:         CPython 3.1.3
+        curses.version: 2.2
+        curses library: ncurses 5.7
+        severity:       Potentially severe.
+        symptoms:       First round is symptom-free. The game can be quit
+                        after the first game.  The following rounds:
+                        ^C doesn't work; ^Z doesn't work; crap is printed on
+                        the screen whenever you do something; doesn't ask for
+                        the game parameters between the rounds.
+    #1
+        OS:             Debian 7
+        kernel:         Linux
+        arch:           x86-32 (VirtualBox)
+        Python:         CPython 2.6.8
+        curses.version  2.2
+        curses library: ncurses 5.9
+        severity:       minor/potentially medium
+        symptoms:       Terminal resizing doesn't work.
+    #2
+        OS:             openindiana
+        kernel:         illumos
+        arch:           x86-32 (VirtualBox)
+        Python:         CPython 2.6.4
+        curses.version: 2.2
+        curses library: unknown
+        terminal:       GNOME Terminal 2.30.2
+        severity:       bad
+        symptoms:       * Manual installation required:
+                            Incompatible install(1M)
+                        * Crashes the terminal window on the second game.
+                        * Crashes ALL terminal windows when the window is
+                            shrunk too much.
+    #3
+        OS:             Debian 8        (Also with Trisquel 6.0  )
+        kernel:         Linux 3.16      (          with Linux 3.2)
+        arch:           x86-64 (native)
+        Python:         PyPy (2.4.0) (language: 2.7.8)
+        curses:         irrelevant
+        severity:       severe
+        symptoms:       The solver function misbehaves.
+                        This probably causes the long/infinite initialization
+                        times.
+        Traceback (archived version 0.0.29):
+            Traceback (most recent call last):
+              File "<stdin>", line 1, in <module>
+              File "test.py", line 258, in runneumann
+                print(solver.solve())
+              File "anonymine_solver.py", line 1115, in solve
+                success, update_difficulty = self.solver_loop()
+              File "anonymine_solver.py", line 978, in solver_loop
+                status = self.cell_solver(cell, 4*i + j)
+              File "anonymine_solver.py", line 842, in cell_solver
+                """.format(possibilities)
+            AssertionError: 
+                            Cell already solved?? []
+    
+    #4
+        OS:             Cygwin (unknown)
+        Windows:        NT 6.0 (64 bit) or NT 6.1 (64 bit)
+        arch:           x86-64
+        Python:         2.7.10 (python package on Cygwin; probably CPython)
+        curses:         unknown
+        severity:       conditionally severe
+        symptoms:       Screen goes black on resizing.
+

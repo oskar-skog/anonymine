@@ -1,0 +1,86 @@
+#!/usr/bin/python
+# INTENDED TO BE EXECUTED WITH `python install-cfg src dest`
+
+import os
+import sys
+
+import curses           # Used by the std cfg.
+
+def scan_cfg(src_cfg, dest_cfg):
+    for key in src_cfg:
+        if key not in dest_cfg:
+            return True
+        if isinstance(src_cfg[key], dict):
+            if not isinstance(dest_cfg[key], dict):
+                return True
+            if scan_cfg(src_cfg[key], dest_cfg[key]):
+                return True
+        # Tuple check doesn't work.
+        if isinstance(src_cfg[key], tuple):
+            try:
+                if len(src_cfg[key]) != len(dest_cfg[key]):
+                    return True
+            except:
+                return True
+    return False
+
+def decide(src, dest):
+    try:
+        src_cfg = eval(open(src).read())
+    except:
+        sys.stderr.write(
+            "\nERROR:\n"
+            "Cannot load the source configuration files.\n"
+            "\n"
+        )
+        return False, False
+    
+    # Only install the file if it hasn't already been installed.
+    try:
+        dest_file = open(dest)
+    except IOError:
+        return True, True
+    
+    try:
+        dest_cfg = eval(dest_file.read())
+    except:
+        sys.stderr.write(
+            "\nERROR:\n"
+            "Cannot parse the pre-existing configuration.\n"
+            "\n"
+        )
+        return False, False
+    
+    dest_file.close()
+    
+    if scan_cfg(src_cfg, dest_cfg):
+        sys.stderr.write(
+            "\nNOTICE:\n"
+            "The format of the configuration file has been changed in in this\n"
+            "version.  Manual installation of the installation file required.\n"
+            "\n"
+        )
+        return False, False
+    else:
+        sys.stderr.write(
+            "\nINFORMATIONAL:\n"
+            "The configuration is already installed and should be usable\n"
+            "by the newly installed version of the program.\n"
+            "\n"
+        )
+        return False, True
+
+def main():
+    if len(sys.argv) != 4:
+        sys.stderr.write("Usage: python install-cfg install-cmd src dest\n")
+        sys.exit(1)
+    install_cmd, src, dest = sys.argv[1], sys.argv[2], sys.argv[3]
+    install, success = decide(src, dest)
+    if not success:
+        sys.stderr.write("Error: Cannot install automatically.\n")
+        sys.exit(1)
+    if install:
+        os.system('{0} -m 644 "{1}" "{2}"'.format(install_cmd, src, dest))
+
+if __name__ == '__main__':
+    main()

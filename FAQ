@@ -1,0 +1,31 @@
+How does the algorithm work with the different games?
+    The solver operates on a network of cells connected to all of their
+    neighbours.  It has no clue of the visual representation.
+
+Can it play a real game for the user?
+    No, but yes in theory.  There might be a few demo functions in 'test.py'.
+    (Notice: They are not curses based!)
+
+How can the game always be possible to win?
+    It contains an algorithm that will try to solve the game before you see
+    the field.  If the field can't be solved, a new will be randomized, and
+    if it can be solved, the algorithm will tell the game where to place the
+    mines.
+
+Can I change the colors?
+    Yes, the configuration file /etc/anonymine/cursescfg defines the key
+    bindings and colors.  If the in-file documentation is not sufficient,
+    you can ask me a follow up to the question.
+        On Windows, the file is "C:\Cygwin\etc\anonymine\cursescfg",
+    assuming you installed as administrator.
+
+Is Cygwin required for the Windows version?
+    Actually no, but it's convenient:
+        - Most of the installation procedure use the pre-existing
+            ./configure && make && make install
+        - Without fork(2), it will take a few times longer to initialize
+          a minefield.
+        - Without Cygwin, Python would require a separate curses module.
+    It should work on Python for Windows with a manually installed curses
+    module.
+
