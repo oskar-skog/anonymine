@@ -45,7 +45,7 @@ A minesweeper that can be solved without guessing
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 1, 15)
+GAME_VERSION = (0, 1, 16)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}

@@ -7,12 +7,12 @@
 # No quotes for these four:
 # NAME = [technical] name
 # NAME_C = Capitalized name (human name)
-# DESCRIPTION = 
+# DESCRIPTION =
 # VERSION = x.y.z
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.1.15
+VERSION := 0.1.16
 
 # Three more variables are required: EXECUTABLES and MODULES
 # and MODULES_OTHERVER (= "non-existent").
@@ -59,8 +59,8 @@ CYGWIN_ICO_DIR := "$(DESTDIR)$(prefix)/share/pixmaps"
 CYGWIN_ICO_DEST := $(CYGWIN_ICO_DIR)/$(NAME).ico
 
 # make clean
-ALL_STAGE := $(MAIN_STAGE) $(OSX_WRAPPER) $(OSX_INFO_PLIST) $(OSX_ICON) \
-	"$(builddir)check.py"
+ALL_STAGE := $(MAIN_STAGE) $(OSX_WRAPPER) $(INFO_PLIST) $(OSX_ICON) \
+	"$(builddir)check.py" $(DESKTOP_STAGE)
 
 all : FORCE
 	@: # Create the appropriate shebang line

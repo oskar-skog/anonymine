@@ -6,9 +6,8 @@ __pycache__
 ignore
 Makefile
 anonymine
-anonymine.desktop
 icon.icns
 Info.plist
 check.py
 anonymine-wrapper
-
+anonymine.desktop
