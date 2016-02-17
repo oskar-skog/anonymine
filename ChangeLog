@@ -2,6 +2,7 @@
     0.1.17
         * README: Various changes.
         * ., Makefile.static: Removed perkele/.
+        * Makefile.static: Lots of renamed variables.
     0.1.16
         * Makefile.static (clean): Added $(DESKTOP_STAGE) and corrected
             $(OSX_INFO_PLIST) to $(INFO_PLIST).
