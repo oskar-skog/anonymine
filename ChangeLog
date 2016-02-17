@@ -1,4 +1,6 @@
 2016-02-17      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.1.17
+        * README: Various changes.
     0.1.16
         * Makefile.static (clean): Added $(DESKTOP_STAGE) and corrected
             $(OSX_INFO_PLIST) to $(INFO_PLIST).

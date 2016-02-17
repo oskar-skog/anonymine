@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.1.16
+VERSION := 0.1.17
 
 # Three more variables are required: EXECUTABLES and MODULES
 # and MODULES_OTHERVER (= "non-existent").
