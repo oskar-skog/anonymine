@@ -268,16 +268,14 @@ PKG := "$(builddir)$(PKG_INDIR)"
 # .txt in zips.
 PKG_TEXTFILES := BUGS ChangeLog FAQ FILES INSTALL NEWS README desktop/FILES \
 	desktop/README
-# Old crap
-PERKELE := perkele/Windows.ps1 perkele/desktop/anonymine.lnk.py
 # Already CRLF + old crap.
 PKG_NOCONV := Windows.txt Windows-admin.bat Windows-user.bat \
 	configure desktop/$(NAME).ico desktop/desktop.sh \
-	desktop/$(NAME)-*.png desktop/$(NAME)*.xcf $(PERKELE)
+	desktop/$(NAME)-*.png desktop/$(NAME)*.xcf
 PKG_FILES := $(NAME).py $(NAME)_engine.py $(NAME)_fields.py $(NAME)_solver.py \
 	configure.py Makefile.static install-cfg check.sh enginecfg cursescfg \
 	test.py desktop/Info.plist.py desktop/icon.icns.py
-PKG_SUBDIRS := desktop perkele perkele/desktop
+PKG_SUBDIRS := desktop
 
 check: FORCE
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
