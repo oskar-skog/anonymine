@@ -29,7 +29,7 @@ module "argparse".
 CPython 2.6.6 is lowest version of Python that has been tested.
     
 |platform                            |Notes                         |
-|--------                            |-----                         |
+|------------------------------------|------------------------------|
 |Cygwin on NT 6.1 [Py 2]             |Don't resize the terminal!    |
 |Debian6/kFreeBSD8 [Py 2.6]          |*                             |
 |Debian 7                            |*                             |
