@@ -4,20 +4,20 @@ solvable without guessing and has a few other features.
 The game doesn't have a real name yet; suggestions are welcome.
 
 Apart from being solvable without guessing, anonymine:
-    - can use traditional Moore neighbourhoods (8 neighbours per cell),
-    - a hexagonal field (6 neighbours per cell)
-    - or von Neumann neighbourhoods (4 neighbours per cell).
+    * can use traditional Moore neighbourhoods (8 neighbours per cell),
+    * a hexagonal field (6 neighbours per cell)
+    * or von Neumann neighbourhoods (4 neighbours per cell).
     
-The anonymine_solver module can also be used to "measure the difficulty"
-of a field.
+    * The anonymine_solver module can also be used to "measure the difficulty"
+      of a field.
 
 
 See also
 ========
     
-    - Windows.txt for installation instructions for Windows.
-    - INSTALL for installation instructions. ./configure; make; make install
-    - FILES to get a hint of all files in the package.
+    * Windows.txt for installation instructions for Windows.
+    * INSTALL for installation instructions. ./configure; make; make install
+    * FILES to get a hint of all files in the package.
 
 
 Tested platforms
