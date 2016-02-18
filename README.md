@@ -12,15 +12,19 @@ Apart from being solvable without guessing, anonymine:
       of a field.
 
 
-#See also
-    
+
+See also
+========
+
 - Windows.txt for installation instructions for Windows.
 - INSTALL for installation instructions. ./configure; make; make install
 - FILES to get a hint of all files in the package.
 
 
-#Tested platforms
-    
+
+Tested platforms
+================
+
 TL;won't R:  Windows, Mac OS X, Linux/unix
     
 Note that Python 2.6, 3.0 and 3.1 are not expected to have the
@@ -44,7 +48,10 @@ CPython 2.6.6 is lowest version of Python that has been tested.
 |openindiana [Py 2.6]                |GNOME terminal is buggy.      |
 
 
-#Goals
+
+Goals
+=====
+
 |Version|Change                                                         |
 |-------|---------------------------------------------------------------|
 |0.2    |Performance improvements, no nasty calibration of enginecfg.   |
@@ -54,7 +61,9 @@ CPython 2.6.6 is lowest version of Python that has been tested.
 |0.6    |Good documentation for the solver algorithm.                   |
 
 
-#Copyright
+
+Copyright
+=========
 
 Copyright (c) Oskar Skog, 2016
 
