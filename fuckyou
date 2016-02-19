@@ -1,0 +1,31 @@
+#!/usr/local/bin/python
+
+import os
+import sys
+import time
+import random
+import signal
+
+signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+sys.stderr.write('''
+This incident will be reported.
+
+Have a bad day, you deserve it.
+
+''')
+
+filename = time.strftime('%Y-%m-%d_%H:%M:%S_') + str(random.random())
+os.system('who | grep {} | tee {} | wall'.format(os.getenv('USER'), filename))
+incident_log = open(filename, 'a')
+
+while True:
+    sys.stderr.write('Fuck you> ')
+    sys.stderr.flush()
+    line = sys.stdin.readline()
+    if not line:
+        break
+    incident_log.write(line)
+sys.stderr.write('\n')
+
+incident_log.close()
