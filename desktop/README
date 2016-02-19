@@ -9,13 +9,13 @@ desktop.sh will generate a .desktop file to be installed in
 https://specifications.freedesktop.org/desktop-entry-spec/latest/
 
 The PNGs (including the 256x256) will be installed in
-"$(prefix)/share/icons/hicolor/$(size)/apps/$(NAME).png".
+`$(prefix)/share/icons/hicolor/$(size)/apps/$(NAME).png`.
 Ex:
 ```
-    /usr/local/share/icons/hicolor/16x16/apps/anonymine.png
-    /usr/local/share/icons/hicolor/32x32/apps/anonymine.png
-    /usr/local/share/icons/hicolor/64x64/apps/anonymine.png
-    /usr/local/share/icons/hicolor/256x256/apps/anonymine.png
+/usr/local/share/icons/hicolor/16x16/apps/anonymine.png
+/usr/local/share/icons/hicolor/32x32/apps/anonymine.png
+/usr/local/share/icons/hicolor/64x64/apps/anonymine.png
+/usr/local/share/icons/hicolor/256x256/apps/anonymine.png
 ```
 https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html
 
@@ -24,17 +24,17 @@ https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.ht
 Mac OS X
 ========
 
-A bundle (app) will be created that simulates a .desktop file.
+A bundle (app) will be created that simulates a `.desktop` file.
 
-Info.plist.py will generate the Info.plist for the bundle.
+`Info.plist.py` will generate the `Info.plist` for the bundle.
 
 https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/BundleTypes/BundleTypes.html
 
 https://developer.apple.com/library/mac/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html
 
-(Example): http://developerfriendly.googlecode.com/svn/trunk/mozilla/xulrunner/WebRunner_app/Contents/Info.plist
+(Example)[http://developerfriendly.googlecode.com/svn/trunk/mozilla/xulrunner/WebRunner_app/Contents/Info.plist]
 
-icon.icns.py will put all the PNGs in an .icns icon.
+`icon.icns.py` will put all the PNGs in an .icns icon.
 The 256x256 PNG inside the .icns is supported since Mac OS X 10.5,
 while the PNGs of more reasonable sizes are only supported since 10.7.
 
@@ -59,14 +59,14 @@ changed.
 Editing the icons
 =================
 
--   *.xcf are the GIMP images of all the icons.
+-   `*.xcf` are the GIMP images of all the icons.
 -   The large (256x256) is required for supporting older versions of Mac OS X.
 -   PNG is the preferred format for freedesktop.org.
 -   The set of icons is rather static.
 -   `anonymine.*` can be changed from the Makefile.
 
-1.  Edit all of 'anonymine-16x16.xcf', 'anonymine-32x32.xcf',
-    'anonymine-64x64.xcf' and 'anonymine-256x256.xcf' and export them
+1.  Edit all of `anonymine-16x16.xcf`, `anonymine-32x32.xcf`,
+    `anonymine-64x64.xcf` and `anonymine-256x256.xcf` and export them
     as PNGs.
 
 2.  Recreate 'anonymine.ico.xcf' by importing all the PNGs as layers,
