@@ -10,7 +10,8 @@ https://specifications.freedesktop.org/desktop-entry-spec/latest/
 
 The PNGs (including the 256x256) will be installed in
 "$(prefix)/share/icons/hicolor/$(size)/apps/$(NAME).png".
-Ex: ```
+Ex:
+```
     /usr/local/share/icons/hicolor/16x16/apps/anonymine.png
     /usr/local/share/icons/hicolor/32x32/apps/anonymine.png
     /usr/local/share/icons/hicolor/64x64/apps/anonymine.png
