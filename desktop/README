@@ -4,16 +4,18 @@ Freedesktop.org
 A .desktop launcher will be created to start Anonymine in a terminal.
 
 desktop.sh will generate a .desktop file to be installed in
-"$(prefix)/share/applications/".
+`$(prefix)/share/applications/`.
+
 https://specifications.freedesktop.org/desktop-entry-spec/latest/
 
 The PNGs (including the 256x256) will be installed in
 "$(prefix)/share/icons/hicolor/$(size)/apps/$(NAME).png".
-Ex:
+Ex: ```
     /usr/local/share/icons/hicolor/16x16/apps/anonymine.png
     /usr/local/share/icons/hicolor/32x32/apps/anonymine.png
     /usr/local/share/icons/hicolor/64x64/apps/anonymine.png
     /usr/local/share/icons/hicolor/256x256/apps/anonymine.png
+```
 https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html
 
 
@@ -24,13 +26,17 @@ Mac OS X
 A bundle (app) will be created that simulates a .desktop file.
 
 Info.plist.py will generate the Info.plist for the bundle.
+
 https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/CFBundles/BundleTypes/BundleTypes.html
+
 https://developer.apple.com/library/mac/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html
+
 (Example): http://developerfriendly.googlecode.com/svn/trunk/mozilla/xulrunner/WebRunner_app/Contents/Info.plist
 
 icon.icns.py will put all the PNGs in an .icns icon.
 The 256x256 PNG inside the .icns is supported since Mac OS X 10.5,
 while the PNGs of more reasonable sizes are only supported since 10.7.
+
 https://en.wikipedia.org/wiki/Apple_Icon_Image_format
 
 The Makefile will create the Bundle structure on installation.
