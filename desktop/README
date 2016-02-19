@@ -32,7 +32,7 @@ https://developer.apple.com/library/mac/documentation/CoreFoundation/Conceptual/
 
 https://developer.apple.com/library/mac/documentation/General/Reference/InfoPlistKeyReference/Introduction/Introduction.html
 
-(Example)[http://developerfriendly.googlecode.com/svn/trunk/mozilla/xulrunner/WebRunner_app/Contents/Info.plist]
+[Example](http://developerfriendly.googlecode.com/svn/trunk/mozilla/xulrunner/WebRunner_app/Contents/Info.plist)
 
 `icon.icns.py` will put all the PNGs in an .icns icon.
 The 256x256 PNG inside the .icns is supported since Mac OS X 10.5,
