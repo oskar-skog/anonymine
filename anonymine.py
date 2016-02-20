@@ -43,16 +43,6 @@ A minesweeper that can be solved without guessing
         Von Neumann neighbourhoods: each cell has four neighbours.
 '''
 
-GAME_NAME = 'Anonymine'
-GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 1, 17)
-# GAME_VERSION MAY lag behind the version of the package when no change has
-# been made to this file.
-GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
-Copyright (c) Oskar Skog, 2016
-Released under the Simplified BSD license (2 clause).
-\n""".format(GAME_NAME, GAME_VERSION[0], GAME_VERSION[1], GAME_VERSION[2])
-
 import curses
 import os
 import sys
@@ -70,6 +60,17 @@ try:
     import argparse
 except:
     pass
+
+GAME_NAME = 'Anonymine'
+GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
+GAME_VERSION = (0, 1, 18)
+# GAME_VERSION MAY lag behind the version of the package when no change has
+# been made to this file.
+GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
+Copyright (c) Oskar Skog, 2016
+Released under the Simplified BSD license (2 clause).
+\n""".format(GAME_NAME, GAME_VERSION[0], GAME_VERSION[1], GAME_VERSION[2])
+
 
 class curses_game():
     '''Class for interface object for `engine.play_game(interface)`.
@@ -234,30 +235,30 @@ class curses_game():
         # Constants
         self.travel_diffs = {
             'square': {
-                'up':           ( 0, -1),
-                'right':        ( 1,  0),
-                'down':         ( 0,  1),
-                'left':         (-1,  0),
-                'NE':           ( 1, -1),
-                'SE':           ( 1,  1),
-                'SW':           (-1,  1),
-                'NW':           (-1, -1),
+                'up':           (0, -1),
+                'right':        (1,  0),
+                'down':         (0,  1),
+                'left':        (-1,  0),
+                'NE':           (1, -1),
+                'SE':           (1,  1),
+                'SW':          (-1,  1),
+                'NW':          (-1, -1),
             },
             'hex-even': {
-                'hex0':         ( 0, -1),       #  5 0
-                'hex1':         ( 1,  0),       # 4   1
-                'hex2':         ( 0,  1),       #  3 2
-                'hex3':         (-1,  1),
-                'hex4':         (-1,  0),       # x - 1 and x on even
-                'hex5':         (-1, -1),       # rows.
+                'hex0':         (0, -1),         # 5 0
+                'hex1':         (1,  0),        # 4   1
+                'hex2':         (0,  1),         # 3 2
+                'hex3':        (-1,  1),
+                'hex4':        (-1,  0),        # x - 1 and x on even
+                'hex5':        (-1, -1),        # rows.
             },
             'hex-odd': {
-                'hex0':         ( 1, -1),
-                'hex1':         ( 1,  0),       # x and x + 1 on odd
-                'hex2':         ( 1,  1),       # rows.
-                'hex3':         ( 0,  1),
-                'hex4':         (-1,  0),
-                'hex5':         ( 0, -1),
+                'hex0':         (1, -1),
+                'hex1':         (1,  0),        # x and x + 1 on odd
+                'hex2':         (1,  1),        # rows.
+                'hex3':         (0,  1),
+                'hex4':        (-1,  0),
+                'hex5':         (0, -1),
             }
         }
         self.direction_keys = {
@@ -286,13 +287,19 @@ class curses_game():
         curses.def_prog_mode()  # BUG #3 (See the file "BUGS".)
         # Check that we have a reasonable size on the window.
         height, width = self.window.getmaxyx()
-        if ((self.gametype == 'hex' and (width < 10 or height < 8)) or
-            (self.gametype != 'hex' and (width <  7 or height < 4))):
+        
+        def toosmall():
             self.leave()
             sys.stdout.flush()
             sys.stderr.write('\nSCREEN TOO SMALL\n')
             sys.stderr.flush()
             sys.exit(1)
+        
+        if self.gametype == 'hex' and (width < 10 or height < 8):
+            toosmall()
+        if self.gametype != 'hex' and (width < 7 or height < 4):
+            toosmall()
+        
         # Read the configuration.
         self.cfg = eval(open(cfgfile).read())
         # Apply ord() automatically to the keys in 'curses-input'.
@@ -348,7 +355,7 @@ class curses_game():
         #       SIGTSTP:        Default is STOP, seems to be at default.
         #       Any other signal will probably not be caught and
         #       IOError with errno=EINTR will therefore never be returned.
-        # APPARENTLY IMMUNE PLATFORMS: 
+        # APPARENTLY IMMUNE PLATFORMS:
         #       CPython 3.2.3 with curses.version='2.2' and ncurses 5.9
         try:
             signal.signal(signal.SIGWINCH, signal.SIG_IGN)
@@ -436,7 +443,6 @@ class curses_game():
         '''
         self.message('Press the "any" key to continue...')
         self.window.getch()
-    
 
     def output(self, engine):
         '''This method is called by `engine.play_game`.
@@ -449,8 +455,7 @@ class curses_game():
         # TODO: The background gets set ridiculously often.
         # Set the appropriate background.
         char, attributes = self.curses_output_cfg('background')
-        #self.window.bkgdset(char, attributes)
-        self.window.bkgdset(32, attributes)
+        self.window.bkgdset(32, attributes)     # 32 instead of `char`.
         # BUG #7: window.bkgdset causes a nasty issue when the background
         # character is not ' ' and color is unavailable.
         
@@ -465,16 +470,16 @@ class curses_game():
         
         if engine.game_status == 'play-game':
             if engine.field.flags_left is not None:
-                chunks.append("Flags left: {0}".format(engine.field.flags_left))
+                chunks.append("Flags left: {0}".format(
+                    engine.field.flags_left
+                ))
         
         msg = '  '.join(chunks)
         if len(msg) + 4 <= self.width:
             ign, attributes = self.curses_output_cfg('text')
             self.window.addstr(self.height - 1, 3, msg, attributes)
-            ## Lie to the field printer functions to preserve the text.
-            #self.height -= 1
-        # ((Keeping it outside the loop magically solves a resizing bug
-        # that traces back to an `addch` in `self.print_char`.))
+        # (Keeping the following outside the loop magically solves a resizing
+        # bug that traces back to an `addch` in `self.print_char`.)
         # Lie to the field printer functions to preserve the text.
         self.height -= 1
         
@@ -625,7 +630,7 @@ class curses_game():
         # Move the visible area.
         # Compute the virtual locations on the screen and real locations.
         # Adjust the virtual coordinate of the visible area.
-        # 
+        #
         # Border = 1 cell.
         x, y = self.cursor
         self.move_visible_area(2*x+1, y, 3, 1)
@@ -674,10 +679,12 @@ class curses_game():
         '''
         # Define functions that translates field coordinates into
         # virtual screen coordinates.
-        fx = lambda x, y: 2 * (2*x + 1 + y%2)
-        fy = lambda x, y: 2*y + 1
+        def fx(x, y): return 2 * (2*x + 1 + (y % 2))
         
-        ## Move the visible area.
+        def fy(x, y): return 2*y + 1
+        
+        # Move the visible area.
+        #
         # Compute the virtual locations on the screen and real locations.
         # Adjust the virtual coordinate of the visible area.
         # Border = 1 cell.
@@ -686,21 +693,21 @@ class curses_game():
         
         # Print all cells in a field.
         for cell in field.all_cells():
-            x = 2*(2*cell[0] + 1 + cell[1]%2)
+            x = 2 * (2*cell[0] + 1 + (cell[1] % 2))
             y = 2*cell[1] + 1
             
             # Print blank grid.
-            #       Roof.
+            # Roof:
             self.print_char(x - 1, y - 1, 'grid', '/')
             self.print_char(x, y - 1, 'grid', ' ')
             self.print_char(x + 1, y - 1, 'grid', '\\')
-            #       Left wall.
+            # Left wall:
             self.print_char(x - 2, y, 'grid', '|')
             self.print_char(x - 1, y, 'grid', ' ')
-            #       Right wall.
+            # Right wall:
             self.print_char(x + 2, y, 'grid', '|')
             self.print_char(x + 1, y, 'grid', ' ')
-            #       Floor.
+            # Floor:
             self.print_char(x - 1, y + 1, 'grid', '\\')
             self.print_char(x, y + 1, 'grid', ' ')
             self.print_char(x + 1, y + 1, 'grid', '/')
@@ -717,7 +724,6 @@ class curses_game():
         self.print_char(fx(x, y) - 1, fy(x, y), 'cursor-l')
         self.print_char(fx(x, y) + 1, fy(x, y), 'cursor-r')
 
-###
 
 def convert_param(paramtype, s):
     '''Convert user input (potentially incorrect text) to the proper type.
@@ -759,16 +765,16 @@ def convert_param(paramtype, s):
             value = int(s)
         except ValueError:
             # Easter egg.
-            # 
+            #
             # ~85.6% of English words contain 'a', 'c', 'm' or 'p'.
             # All numbers under one thousand belongs to the ~14.4%.
-            # 
+            #
             # 194 of the numbers between 0 and 200 contain one or more of
             # the letters 'n', 'f' and 'h'.
-            # 
+            #
             # But zero, two, six and twelve aren't included.
             # So check for X and startswith('TW').
-            # 
+            #
             # Only ~10.2% of the words in my word list could be mistaken
             # for numbers.
             S = s.upper()
@@ -839,6 +845,7 @@ def convert_param(paramtype, s):
         while True:
             invalid_paramtype = True
 
+
 def ask(question, paramtype, default):
     '''Ask the user a question in line mode. (Not curses mode.)
     
@@ -871,6 +878,7 @@ def ask(question, paramtype, default):
             sys.stdout.write('\n')
             sys.exit(0)
         return value
+
 
 def arg_input(default):
     '''Get configuration filepaths and game parameters from `sys.argv`.
@@ -921,84 +929,148 @@ without guessing and supports three different game types:
     Hexagonal; 6 neighbours {2}
     von Neumann neighbourhoods; 4 neighbours {3}
 {4}
-    '''.format(
-        GAME_NAME,
-        default_s[default['gametype'] == 'moore'],
-        default_s[default['gametype'] == 'hex'],
-        default_s[default['gametype'] == 'neumann'],
-        {
+        '''.format(
+          GAME_NAME,
+          default_s[default['gametype'] == 'moore'],
+          default_s[default['gametype'] == 'hex'],
+          default_s[default['gametype'] == 'neumann'],
+          {
             True:   'By default, it will insult you for both winning and\n'
                     'losing a game that has been proven to be 100% winnable.',
             False:  'By default, it will not insult you for either winning '
                     'or losing.',
-        }[default['insult']],
-    ))
-    # Configuration files.
-    parser.add_argument('-c', '--cursescfg', dest='cursescfg',
-        help='The path to the configuration file for the key bindings '
-        'and textics directives.\n'
-        'Default is "~/.{0}/cursescfg" or "/etc/{0}/cursescfg".'.format(
-            GAME_FILENAME
+          }[default['insult']],
         )
     )
-    parser.add_argument('-e', '--enginecfg', dest='enginecfg',
-        help='The path to the configuration file for field initialization '
-        'and misc. game engine functions.\n'
-        'Default is "~/.{0}/enginecfg" or "/etc/{0}/enginecfg".'.format(
-            GAME_FILENAME
+    # Configuration files.
+    parser.add_argument(
+        '-c', '--cursescfg', dest='cursescfg',
+        help=(
+            'The path to the configuration file for the key bindings '
+            'and textics directives.\n'
+            'Default is "~/.{0}/cursescfg" or "/etc/{0}/cursescfg".'.format(
+                GAME_FILENAME
+            )
+        )
+    )
+    parser.add_argument(
+        '-e', '--enginecfg', dest='enginecfg',
+        help=(
+            'The path to the configuration file for field '
+            'initialization and misc. game engine functions.\n'
+            'Default is "~/.{0}/enginecfg" or "/etc/{0}/enginecfg".'.format(
+                GAME_FILENAME
+            )
         )
     )
     # Dimensions and minecount.
-    parser.add_argument('-s', '--size', dest='size',
-        help="The size of the field width+'x'+height.  Ex. 30x16\n"
-        "Default is {0}x{1}.".format(default['width'], default['height']))
-    parser.add_argument('-m', '--mines', dest='mines',
-        help="The number of mines. OR the percentage.\n"
-        "Default is {0}.".format(
-            convert_param(
-                'reverse-minecount',
-                default['mines']
-            ).replace('%','%%')
+    parser.add_argument(
+        '-s', '--size', dest='size',
+        help=(
+            "The size of the field width+'x'+height.  Ex. 30x16\n"
+            "Default is {0}x{1}.".format(
+                default['width'], default['height']
+            )
+        )
+    )
+    parser.add_argument(
+        '-m', '--mines', dest='mines',
+        help=(
+            "The number of mines. OR the percentage.\n"
+            "Default is {0}.".format(
+                convert_param(
+                    'reverse-minecount',
+                    default['mines']
+                ).replace('%', '%%')
+            )
         )
     )
     # Gametype
     gametype = parser.add_mutually_exclusive_group()
-    gametype.add_argument('-4', '--neumann',
+    gametype.add_argument(
+        '-4', '--neumann',
         action='store_const', dest='gametype', const='neumann',
-        help="Use von Neumann neighbourhoods. (4 neighbours.)" +
-        default_s[default['gametype'] == 'neumann'])
-    gametype.add_argument('-6', '--hex', '--hexagonal',
+        help=(
+            "Use von Neumann neighbourhoods. (4 neighbours.)" +
+            default_s[
+                default['gametype'] == 'neumann'
+            ]
+        )
+    )
+    gametype.add_argument(
+        '-6', '--hex', '--hexagonal',
         action='store_const', dest='gametype', const='hex',
-        help="Use a hexagonal field. (6 neighbours.)" +
-        default_s[default['gametype'] == 'hex'])
-    gametype.add_argument('-8', '--moore', '--traditional',
+        help=(
+            "Use a hexagonal field. (6 neighbours.)" +
+            default_s[
+                default['gametype'] == 'hex'
+            ]
+        )
+    )
+    gametype.add_argument(
+        '-8', '--moore', '--traditional',
         action='store_const', dest='gametype', const='moore',
-        help="Traditional minesweeper; Moore neighbourhoods. (8)" +
-        default_s[default['gametype'] == 'moore'])
+        help=(
+            "Traditional minesweeper; Moore neighbourhoods. (8)" +
+            default_s[
+                default['gametype'] == 'moore'
+            ]
+        )
+    )
     # Bools.
     flagcount = parser.add_mutually_exclusive_group()
-    flagcount.add_argument('-f', '--flagcount', dest='flagcount',
-        action='store_true', help="Show how many flags are left." +
-        default_s[default['flagcount']])
-    flagcount.add_argument('-F', '--no-flagcount', dest='noflagcount',
-        action='store_true', help="Don't Show how many flags are left." +
-        default_s[not default['flagcount']])
+    flagcount.add_argument(
+        '-f', '--flagcount', dest='flagcount', action='store_true',
+        help=(
+            "Show how many flags are left." + default_s[
+                default['flagcount']
+            ]
+        )
+    )
+    flagcount.add_argument(
+        '-F', '--no-flagcount', dest='noflagcount', action='store_true',
+        help=(
+            "Don't Show how many flags are left." + default_s[
+                not default['flagcount']
+            ]
+        )
+    )
     guessless = parser.add_mutually_exclusive_group()
-    guessless.add_argument('-g', '--guessless', dest='guessless',
-        action='store_true',
-        help="Play a minesweeper that can be solved without guessing." +
-        default_s[default['guessless']])
-    guessless.add_argument('-G', '--no-guessless', dest='noguessless',
-        action='store_true',
-        help="""Play with the risk of having to guess.
-        Large fields will be initialized much faster.""" +
-        default_s[not default['flagcount']])
+    guessless.add_argument(
+        '-g', '--guessless', dest='guessless', action='store_true',
+        help=(
+            "Play a minesweeper that can be solved without guessing." +
+            default_s[
+                default['guessless']
+            ]
+        )
+    )
+    guessless.add_argument(
+        '-G', '--no-guessless', dest='noguessless', action='store_true',
+        help=(
+            "Play with the risk of having to guess. " +
+            "Large fields will be initialized much faster." + default_s[
+                not default['flagcount']
+            ]
+        )
+    )
     insult = parser.add_mutually_exclusive_group()
-    insult.add_argument('-r', '--rude', dest='insult',
-        action='store_true', help="<std>" + default_s[default['insult']])
-    insult.add_argument('-n', '--nice', dest='noinsult',
-        action='store_true', help="(more polite setting)" +
-        default_s[not default['insult']])
+    insult.add_argument(
+        '-r', '--rude', dest='insult', action='store_true',
+        help=(
+            "<std>" + default_s[
+                default['insult']
+            ]
+        )
+    )
+    insult.add_argument(
+        '-n', '--nice', dest='noinsult', action='store_true',
+        help=(
+            "(more polite setting)" + default_s[
+                not default['insult']
+            ]
+        )
+    )
     #
     # Parse the args and store the params.
     args = parser.parse_args()
@@ -1071,6 +1143,7 @@ without guessing and supports three different game types:
             if key not in params:
                 params[key] = default[key]
     return user_input_required, params
+
 
 def user_input(default, cursescfg_path):
     '''Retrieve game parameters from the user.
@@ -1152,6 +1225,7 @@ def user_input(default, cursescfg_path):
         sys.stdin.readline()
     return parameters
 
+
 def play_game(parameters):
     '''Play a custom game of minesweeper.
     
@@ -1206,6 +1280,7 @@ def play_game(parameters):
                 '\n\n"Congratulations", you won the unlosable game.\n')
         else:
             sys.stdout.write('\n\nYou moron, you lost the unlosable game!\n')
+
 
 def main():
     '''42
@@ -1285,7 +1360,7 @@ def main():
         parameters.update(cfgfiles)
         play_game(parameters)
 
-###
+
 assert os.geteuid(), "Why the-fuck(7) are you playing games as root?"
 if __name__ == '__main__':
     try:
