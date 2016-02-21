@@ -26,7 +26,10 @@ sudo add-shell /usr/local/games/anonymine
 echo 'No user for playing Anonymine has been added yet'
 addplayer
 
-sudo nano /etc/motd
+sudo cat > /etc/motd << __EOF__
+Welcome to an Anonymine over SSH VM.
+
+__EOF__
 
 cd "$oldpwd"
 
