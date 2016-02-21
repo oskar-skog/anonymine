@@ -31,8 +31,6 @@ addplayer
 
 sudo cp /dev/null /etc/motd
 
-__EOF__
-
 cd "$oldpwd"
 
 echo 'Installation is now complete'
