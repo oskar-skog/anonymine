@@ -26,6 +26,8 @@ sudo add-shell /usr/local/games/anonymine
 echo 'No user for playing Anonymine has been added yet'
 addplayer
 
+sudo nano /etc/motd
+
 cd "$oldpwd"
 
 echo 'Installation is now complete'

@@ -48,3 +48,14 @@ calibrate-anonymine
 **Overwrite** `/etc/anonymine/enginecfg` with a configuration appropriate
 for the virtual machine.
 This expects to be run as a user with permission to overwrite that file.
+
+
+
+Creation of premade VMs
+=======================
+
+The scripts are written for Debian (Jessie) using sudo to become root.
+
+The scripts should simply be placed in an appropriate directory such
+as `/usr/local/bin`.  You may want to change `/etc/motd`.
+
