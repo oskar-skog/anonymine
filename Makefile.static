@@ -280,7 +280,8 @@ PKG_NOCONV := Windows.txt Windows-admin.bat Windows-user.bat \
 	desktop/$(NAME)-*.png desktop/$(NAME)*.xcf
 PKG_FILES := $(NAME).py $(NAME)_engine.py $(NAME)_fields.py $(NAME)_solver.py \
 	configure.py Makefile.static install-cfg check.sh enginecfg cursescfg \
-	test.py desktop/Info.plist.py desktop/icon.icns.py
+	test.py desktop/Info.plist.py desktop/icon.icns.py \
+	VM-README.md vmsetup update-anonymine calibrate-anonymine addplayer
 PKG_SUBDIRS := desktop
 
 check: FORCE

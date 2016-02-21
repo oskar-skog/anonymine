@@ -1,0 +1,42 @@
+#!/usr/bin/python
+
+import subprocess
+import time
+import pprint
+
+debug = False
+
+if debug:
+    conf_file = '/dev/stdout'
+else:
+    conf_file = '/etc/anonymine/enginecfg'
+
+def main():
+    cpus = int(subprocess.check_output(
+        "lscpu -p | grep -v '#' | wc -l", shell=True
+    ))
+    start = time.time()
+    i = 0
+    while i < 10**7:
+        i += 1
+    bogomips = 10/(time.time() - start)
+    
+    # Magic:
+    procs = int(0.75 * cpus + 0.5)
+    maxtime = bogomips/27.39
+    
+    cfg = {
+        'procs': procs,
+        'maxtime': maxtime,
+        'filename': '/tmp/mines.{0}',
+    }
+    
+    f = open(conf_file, 'w')
+    f.write('# Auto generated using calibrate-anonymine\n')
+    f.write(pprint.pformat(cfg))
+    f.write('\n')
+    f.close()
+    
+
+if __name__ == '__main__':
+    main()

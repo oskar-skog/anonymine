@@ -1,0 +1,26 @@
+#!/bin/sh
+
+repo="https://github.com/oskar-skog/anonymine.git"
+dir=anonymine
+
+oldpwd=`pwd`
+
+cd ~/dl-area
+
+
+if [ -d $dir ]; then
+    cd $dir
+    sudo make uninstall
+    cd ..
+    rm -rf -- $dir
+fi
+
+git clone $repo
+cd $dir
+./configure
+make
+sudo make install
+
+sudo calibrate-anonymine
+
+cd "$oldpwd"
