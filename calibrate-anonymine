@@ -26,9 +26,11 @@ def main():
     maxtime = bogomips/27.39
     
     cfg = {
-        'procs': procs,
-        'maxtime': maxtime,
-        'filename': '/tmp/mines.{0}',
+        'init-field': {
+            'procs': procs,
+            'maxtime': maxtime,
+            'filename': '/tmp/mines.{0}',
+        }
     }
     
     f = open(conf_file, 'w')

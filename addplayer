@@ -4,6 +4,8 @@ game_name=Anonymine
 conf_dir=/etc/anonymine
 executable=/usr/local/games/anonymine
 
+echo
+echo
 echo 'Add new user for playing Anonymine remotely'
 echo 'Enter user name (no spaces, quotes, slashes or colons are allowed):'
 read username
