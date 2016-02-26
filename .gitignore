@@ -11,3 +11,6 @@ Info.plist
 check.py
 anonymine-wrapper
 anonymine.desktop
+enginecfg.out
+mkenginecfg.py
+

@@ -1,0 +1,66 @@
+#!/bin/sh
+
+# ./mkenginecfg srcdir builddir
+
+# TODO: measure time by the time it takes to solve some known fields.
+
+srcdir=$1
+builddir=$2
+
+userfile="${builddir}enginecfg.user"
+defaultfile="${srcdir}enginecfg.default"
+outfile="${builddir}enginecfg.out"
+
+pyfile="${builddir}mkenginecfg.py"
+
+if [ -f "$userfile" ]; then
+    cp "$userfile" "$outfile"
+    exit 0
+fi
+
+cat > "$pyfile" << __EOF__
+import pprint
+import time
+import sys
+
+def main():
+    cpus = int(sys.argv[1])
+    start = time.time()
+    i = 0
+    while i < 10**8:
+        i += 1
+    bogomips = 100/(time.time() - start)
+    
+    # Magic:
+    procs = int(0.83 * cpus + 0.5)
+    maxtime = bogomips/27.5
+    
+    cfg = {
+        'init-field': {
+            'procs': procs,
+            'maxtime': maxtime,
+            'filename': '/tmp/mines.{0}',
+        }
+    }
+    
+    sys.stdout.write('# Auto generated during "build".\n')
+    sys.stdout.write(pprint.pformat(cfg))
+    sys.stdout.write('\n')
+    sys.stdout.close()
+    
+
+if __name__ == '__main__':
+    main()
+__EOF__
+
+if [ -n "`which lscpu`" ]; then
+    ncpus="`lscpu -p | grep -v '#' | wc -l`"
+fi
+if [ -n "`which sysctl`" ]; then
+    ncpus="`sysctl -n hw.ncpus`"
+fi
+
+oldpwd=`pwd`
+cd "$srcdir"
+python "$pyfile" $ncpus > "$outfile" || cp "$defaultfile" "$outfile"
+cd "$oldpwd"

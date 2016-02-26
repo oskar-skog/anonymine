@@ -1,13 +1,17 @@
 #!/bin/sh
 
 # check.sh $(srcdir) $(builddir)
+srcdir=$1
+builddir=$2
 
-cat > $2check.py << __EOF__
+cat > ${builddir}check.py << __EOF__
+# check.py enginecfg
 import anonymine_engine
+import sys
 
 for mode in ('moore', 'hex', 'neumann'):
     engine = anonymine_engine.game_engine(
-        'enginecfg',
+        sys.argv[1],
         width=10, height=10,
         mines=20,
         flagcount=True, guessless=True,
@@ -19,13 +23,22 @@ __EOF__
 
 cd $1
 
+file1="${builddir}enginecfg.out"
+file2="${builddir}enginecfg.user"
+file3="${srcdir}enginecfg.default"
+for enginecfg in $file1 $file2 $file3; do
+    if [ -f $enginecfg ]; then
+        break
+    fi
+done
+
 has_any=0
 fail_any=0
-assert_ver="import sys; assert sys.version_info[0] == 3 or sys.version_info[1] >= 6"
+v_ck="import sys; assert sys.version_info[0] == 3 or sys.version_info[1] >= 6"
 for interpreter in python2 python3 python; do
-    if $interpreter -c "$assert_ver" 2>/dev/null ; then
+    if $interpreter -c "$v_ck" 2>/dev/null ; then
         has_any=1
-        if ! $interpreter $2check.py; then
+        if ! $interpreter ${builddir}check.py $enginecfg; then
             fail_any=1
         fi
     fi

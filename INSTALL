@@ -55,7 +55,7 @@ RUN IN CURRENT DIRECTORY
 You can run Anonymine right here in this directory (the directory) of the
 package.
 
-python anonymine.py -c cursescfg -e enginecfg
+python anonymine.py -c cursescfg -e enginecfg.default
 
 
 ADVANCED INSTALLATION
@@ -69,9 +69,8 @@ ADVANCED INSTALLATION
         * The other version of python is expected to by "python3" or
         "python2"; make sure you have that symlink as well if you want the
         modules to be installed for both versions.
-        
-        * You may want to make some changes to '/etc/anonymine/enginecfg'
-          after installation.
+        * enginecfg is auto-generated since 0.1.19, you can override the file
+        by creating `$(builddir)enginecfg.user` as your own enginecfg.
     
     
     ./configure; make; make install
@@ -129,6 +128,9 @@ ADVANCED INSTALLATION
         freedesktop             Empty=false, non-empty=true; "Linux" desktop
         macosx                  Empty=false, non-empty=true; Mac OS X
         windows                 Empty=false, non-empty=true; Windows (Cygwin)
+        
+        verbose                 If set to true (default), make will be verbose
+        
     
         prefix, bindir and libdir:
             http://www.gnu.org/prep/standards/html_node/Directory-Variables.html

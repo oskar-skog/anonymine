@@ -1,3 +1,17 @@
+2016-02-26      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.1.19
+        *: Removed vm-README.md, update-anonymine, vmsetup and addplayer.
+        * calibrate-anonymine: Repurposed and renamed to mkenginecfg.
+        * Makefile.static:
+            - Use mkenginecfg
+            - Split up `all` and use Makefile properly.
+            - Move quotes from variable definitions to rules.
+            - mkenginecfg and check.sh should be in PKG_NOCONV.
+            - Added $(info) as a shutupable wrapper for verbose messages.
+                (Not the gmake function.)
+        * check.sh: Fixed to choose the appropriate enginecfg.
+        * INSTALL: updated
+
 2016-02-21      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.1.18
         * anonymine.py: Code clean up.
