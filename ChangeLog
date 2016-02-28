@@ -2,8 +2,11 @@
         * mkenginecfg:
             - Rewrote processor counting part.
             - Bugfix: Used speed instead of time for time.
-        * Makefile.static: enginecfg.out depends on mkenginecfg
-        
+        * Makefile.static:
+            - `$(builddir)enginecfg.out` depends on `$(srcdir)mkenginecfg`.
+            - `clean` cleans up `$(builddir)enginecfg.out` and
+                `$(builddir)enginecfg.py`.
+            - Removed commented old rule for `all`.
 
 2016-02-26      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.1.19

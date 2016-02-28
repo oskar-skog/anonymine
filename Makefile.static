@@ -71,25 +71,9 @@ CYG_ICO_DEST := $(CYG_ICO_DIR)/$(NAME).ico
 
 # make clean
 ALL_STAGE := "$(MAIN_STAGE)" "$(OSX_WRAPPER)" "$(OSX_INFO_PLIST)" \
-	"$(OSX_ICON)" "$(builddir)check.py" "$(FD_DESKTOP_STAGE)"
+	"$(OSX_ICON)" "$(builddir)check.py" "$(FD_DESKTOP_STAGE)" \
+	"$(ENGINECFG_STAGE)" "$(builddir)mkenginecfg.py"
 
-# all : FORCE
-# 	@: # Create the appropriate shebang line
-# 	@echo "#!`which python`" > $(MAIN_STAGE)
-# 	@cat $(MAIN_SRC) >> $(MAIN_STAGE)
-# 	@: # Refer to desktop/README for information about the following.
-# 	@if [ -n "$(freedesktop)" ]; then \
-# 		$(FD_MK_DESKTOP) $(FD_DESKTOP_STAGE) $(NAME) "$(NAME_C)" \
-# 			"$(DESCRIPTION) -- version $(VERSION)"; \
-# 	fi
-# 	@if [ -n "$(macosx)" ]; then \
-# 		echo '#!/bin/sh' > $(OSX_WRAPPER); \
-# 		echo 'open -b com.apple.terminal' $(MAIN_DEST) \
-# 			>> $(OSX_WRAPPER); \
-# 		python $(OSX_MK_INFO_PLIST) $(OSX_INFO_PLIST) "$(NAME_C)" \
-# 			"$(NAME_C) - $(DESCRIPTION)" $(VERSION) $(NAME); \
-# 		python $(OSX_MK_ICON) $(OSX_ICON) "$(srcdir)desktop/$(NAME)"; \
-# 	fi
 all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 	@$(info) 'Maybe building .desktop and app/bundle'
 	@if [ -n "$(freedesktop)" ]; then \
