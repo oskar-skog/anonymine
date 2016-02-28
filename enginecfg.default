@@ -1,10 +1,8 @@
 #!/usr/bin/python
 {
     'init-field': {
-        'procs':        3,      # N logical processors on the system
-                                # minus M reserved for other processes.
+        'procs':        1,      # Default is to not overload.
         'filename':     '/tmp/mines.{0}',
-        'maxtime':      1.2,    # The longest reasonable solving time
-                                # of a possible field.
+        'maxtime':      1.4,    # I'm at 1.2
     },
 }

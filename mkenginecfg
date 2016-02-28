@@ -4,6 +4,9 @@
 
 # TODO: measure time by the time it takes to solve some known fields.
 
+# This shell script is a wrapper around a Python script that will be spit
+# out.
+
 srcdir=$1
 builddir=$2
 
@@ -13,6 +16,7 @@ outfile="${builddir}enginecfg.out"
 
 pyfile="${builddir}mkenginecfg.py"
 
+# Allow user to override.
 if [ -f "$userfile" ]; then
     cp "$userfile" "$outfile"
     exit 0
@@ -53,12 +57,18 @@ if __name__ == '__main__':
     main()
 __EOF__
 
-if [ -n "`which lscpu`" ]; then
-    ncpus="`lscpu -p | grep -v '#' | wc -l`"
-fi
-if [ -n "`which sysctl`" ]; then
-    ncpus="`sysctl -n hw.ncpus`"
-fi
+
+# Count the number of logical processors.
+#                       v: Don't forget the semicolon!
+_ncpus0 () { nproc --all;                       } # Debian
+_ncpus1 () { lscpu -p | grep -v '#' | wc -l;    } # (Linux)/Debian
+_ncpus2 () { sysctl -n kern.smp.cpus;           } # BSD (Should I use this?)
+_ncpus3 () { sysctl -n hw.logicalcpu;           } # BSD
+_ncpus4 () { sysctl -n hw.ncpu;                 } # BSD (fallback)
+_ncpus5 () { psrinfo | wc -l;                   } # (OpenSolaris)/openidiana
+for n in `seq 0 5`; do
+    ncpus=`_ncpus$n` 2> /dev/null && break
+done
 
 oldpwd=`pwd`
 cd "$srcdir"

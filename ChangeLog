@@ -1,3 +1,6 @@
+    0.1.20
+        * mkenginecfg: Rewrote processor counting part.
+
 2016-02-26      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.1.19
         *: Removed vm-README.md, update-anonymine, vmsetup and addplayer.
