@@ -33,11 +33,11 @@ def main():
     i = 0
     while i < 10**8:
         i += 1
-    bogomips = 100/(time.time() - start)
+    time_spent = time.time() - start
     
     # Magic:
     procs = int(0.83 * cpus + 0.5)
-    maxtime = bogomips/27.5
+    maxtime = 0.416 * time_spent
     
     cfg = {
         'init-field': {

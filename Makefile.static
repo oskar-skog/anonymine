@@ -104,7 +104,7 @@ $(MAIN_STAGE) : $(MAIN_SRC)
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
 	@cat "$(MAIN_SRC)" >> "$(MAIN_STAGE)"
 
-$(ENGINECFG_STAGE) :
+$(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
 	@$(info) 'Calibrating enginecfg: 10^8 no-ops'
 	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)"
 
