@@ -1,4 +1,9 @@
+2016-02-29      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.1.20
+        * cygwin-sshd: Tested, fixed and improved.
+        * Windows-admin.bat:
+            - Invoke cygwin-sshd
+            - Use '&&' in bash rather than ';'.
         * mkenginecfg:
             - Rewrote processor counting part.
             - Bugfix: Used speed instead of time for time.
