@@ -63,7 +63,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 1, 20)
+GAME_VERSION = (0, 1, 21)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -1368,6 +1368,13 @@ if __name__ == '__main__':
     except SystemExit as e:
         # Cause the interpreter to exit with the expected status.
         os._exit(e.code)
+    except game_engine.security_alert as e:
+        try:
+            curses.endwin()
+        except:
+            pass
+        sys.stderr.write('Security alert: ' + e.message + '\n')
+        os._exit(1)
     except:
         # Get the traceback without fucking up the terminal.
         exception = sys.exc_info()

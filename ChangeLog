@@ -1,3 +1,21 @@
+2016-03-20      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.1.21
+        *:
+            - DoS prevention by field area and initialization time.
+                (Raises new class security_alert).
+            - Removed timeout from initialization slaves to improve
+                initialization on larger (emphasis on comparative) fields.
+        * anonymine_engine.py: New class: security_alert.
+        * anonymine_engine.py (game_engine.init_field2):
+            Added DoS prevention timeout.
+        * anonymine_engine.py (game_engine.init_field2.child):
+            - Removed the time limitation for each attempt.
+            - Moved os._exit() from `child`, to the spawn loop.
+        * enginecfg.*, mkenginecfg:
+            - Removed key: 'init-field'.'maxtime' (and the code for it)
+            - Added keys: 'init-field'.'sec-maxarea' and
+                'init-field'.'sec-maxtime'
+
 2016-02-29      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.1.20
         * cygwin-sshd: Tested, fixed and improved.

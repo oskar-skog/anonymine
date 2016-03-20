@@ -29,21 +29,14 @@ import sys
 
 def main():
     cpus = int(sys.argv[1])
-    start = time.time()
-    i = 0
-    while i < 10**8:
-        i += 1
-    time_spent = time.time() - start
-    
-    # Magic:
     procs = int(0.83 * cpus + 0.5)
-    maxtime = 0.416 * time_spent
     
     cfg = {
         'init-field': {
             'procs': procs,
-            'maxtime': maxtime,
             'filename': '/tmp/mines.{0}',
+            'sec-maxtime': 90,
+            'sec-maxarea': 10000,
         }
     }
     

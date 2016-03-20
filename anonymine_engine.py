@@ -49,6 +49,9 @@ import sys
 import anonymine_solver as solver
 import anonymine_fields as fields
 
+class security_alert(Exception):
+    pass
+
 class game_engine():
     r'''
     This class creates game engine objects.
@@ -201,8 +204,13 @@ class game_engine():
                 parameters[key] = default[key]
         assert parameters['gametype'] in ('neumann', 'hex', 'moore')
         
-        # Begin initialization.
         self.cfg = eval(open(cfgfile).read())
+        # Prevent DoS:
+        area = parameters['width'] * parameters['height']
+        if area > self.cfg['init-field']['sec-maxarea']:
+            raise security_alert('Area too large, aborting')
+        
+        # Begin initialization.
         self.gametype = parameters['gametype']
         self.n_mines = parameters['mines']
         self.guessless = parameters['guessless']
@@ -232,11 +240,9 @@ class game_engine():
         '''(Internal use.)  Uses enginecfg.
         
         Uses multiple processes to test random fields to find a
-        solvable one.  Each process will have a limited amount of time
-        for each field, if it fails in the limited time it will start
-        over.  When a process finds a solvable field, it will store the
-        coordinates of the mines in a tempfile which will then be read
-        by the master process.
+        solvable one.  When a process finds a solvable field, it will
+        store the coordinates of the mines in a tempfile which will
+        then be read by the master process.
         
         enginecfg['init-field']
             'procs'     int: Number of slaves.
@@ -244,12 +250,12 @@ class game_engine():
                         for this long.
             'filename'  string: tempfile, filename.format(x)
         '''
-        # Difference from the old version:
-        #       * Use signal.setitimer (unix) in the child processes rather
-        #         than having the parent killing them.
-        #         -> This sets a time limit on each field rather
-        #         than all fields together.
-        #       * Because of the above, the parent code can be simplified.
+        
+        if 'alarm' in dir(signal):      # (unix only)
+            def die(ignore1, ignore2):
+                raise Exception
+            signal.signal(signal.SIGALRM, die)
+        
         def child():
             # The startpoint and its neighbours MUST NOT be mines.
             safe = self.field.get_neighbours(startpoint) + [startpoint]
@@ -257,36 +263,18 @@ class game_engine():
                 lambda x: x not in safe,
                 self.field.all_cells()
             ))
-            # Raise Exception when too much time has been spent.
-            if 'setitimer' in dir(signal):
-                maxtime = self.cfg['init-field']['maxtime']
-                def handler(ignore1, ignore2):
-                    raise Exception('<Caught SIGALRM>')
-                def die(ignore1, ignore2):
-                    os._exit(0)
-                signal.signal(signal.SIGALRM, handler)
-                signal.signal(signal.SIGCONT, die)      # see BUG#6
+            def die(ignore1, ignore2):
+                os._exit(0)
+            signal.signal(signal.SIGCONT, die)  # see BUG#6
             solved = False
             while not solved:
-                try:
-                    # Choose self.n_mines randomly selected mines.
-                    cells.sort(key=lambda x: os.urandom(1))
-                    mines = cells[:self.n_mines]
-                    self.field.clear()
-                    self.field.fill(mines)
-                    self.field.reveal(startpoint)
-                    # Try to solve the field in a limited time.
-                    # NOTICE:   ITIMER_REAL     SIGALRM
-                    #           ITIMER_VIRTUAL  SIGVTALRM
-                    #           ITIMER_PROF     SIGPROF
-                    if 'setitimer' in dir(signal):
-                        signal.setitimer(signal.ITIMER_REAL, maxtime)
-                        solved = self.solver.solve()[0]
-                        signal.setitimer(signal.ITIMER_REAL, 0.0)
-                    else:
-                        solved = self.solver.solve()[0]
-                except Exception:
-                    pass
+                # Choose self.n_mines randomly selected mines.
+                cells.sort(key=lambda x: os.urandom(1))
+                mines = cells[:self.n_mines]
+                self.field.clear()
+                self.field.fill(mines)
+                self.field.reveal(startpoint)
+                solved = self.solver.solve()[0]
             # Store the mine coordinates in the tempfile.
             filename = self.cfg['init-field']['filename'].format(os.getpid())
             try:
@@ -296,17 +284,22 @@ class game_engine():
                     f = open(filename, 'x')
                 assert not os.path.islink(filename)
             except:
-                raise Exception('Break-in attempt!')
+                raise security_alert('Break-in attempt (tempfile)!')
             for x, y in mines:
                 f.write('{0} {1}\n'.format(x, y))
             f.close()
-            os._exit(0)
+            # Disarm security timeout when finished.
         # FUNCTION STARTS HERE.
         # Clean up after whatever may have called us.
         self.field.clear()
         # Compatibility for non-unix systems.
         if 'fork' not in dir(os):
-            child()
+            if 'alarm' not in dir(signal):
+                child()
+            else:
+                signal.alarm(self.cfg['init-field']['sec-maxtime'])
+                child()
+                signal.signal(signal.SIGALRM, signal.SIG_IGN)
             return
         # Create slaves.
         children = []
@@ -317,17 +310,27 @@ class game_engine():
             else:
                 try:
                     child()
+                    os._exit(0)
                 except KeyboardInterrupt:
                     # Kill the python interpreter on ^C.
                     os._exit(1)
-        # Wait for the first child to finish.
+        
+        # Wait for the first child to finish, or for emergency timeout.
         success_pid = 0
-        while success_pid not in children:
-            pid, status = os.wait()
-            if os.WIFEXITED(status):
-                success_pid = pid
-            else:
-                print(pid)
+        security_timeout = False
+        if 'alarm' in dir(signal):
+            signal.alarm(self.cfg['init-field']['sec-maxtime'])
+        try:
+            while success_pid not in children:
+                pid, status = os.wait()
+                if os.WIFEXITED(status):
+                    success_pid = pid
+                else:
+                    print(pid)
+        except Exception:
+            security_timeout = True
+        if 'alarm' in dir(signal):
+            signal.signal(signal.SIGALRM, signal.SIG_IGN)
         # Kill all remaining children.
         # Delete potential left-over tempfiles.
         filename = self.cfg['init-field']['filename']
@@ -339,6 +342,9 @@ class game_engine():
                     os.remove(filename.format(child))
                 except OSError:
                     pass
+        if security_timeout:
+            raise security_alert('Initialization took too long, aborted')
+        
         # Parse the tempfile.
         f = open(filename.format(success_pid))
         lines = f.read().split('\n')[:-1]
