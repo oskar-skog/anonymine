@@ -26,6 +26,7 @@ import random
 import signal
 import pprint
 import cProfile
+import os
 
 def output(field, argument):
     print(field)
@@ -185,4 +186,116 @@ def bug1():
     signal.signal(signal.SIGWINCH, handler)
     while True:
         sys.stdin.readline()
+
+def init_time(width, height, n_mines, runs=10):
+    i = 0
+    dellen = 0
+    times = []
+    while i < runs:
+        i += 1
+        e = anonymine_engine.game_engine(
+            'testcfg',
+            width=width, height=height, mines=n_mines
+        )
+        coord = random.randint(0, width - 1), random.randint(0, height - 1)
+        start = time.time()
+        try:
+            e.init_field((coord))
+        except anonymine_engine.security_alert as e:
+            sys.stderr.write('\n{}\n'.format(e.message))
+        x = time.time() - start
+        del e
+        times.append(x)
+        times.sort()
+        msg = '{}: {}  This: {}  Avg: {}  Median: {}  Min/Max: {}/{}'.format(
+            '{}@{}x{}'.format(n_mines, width, height),
+            '{}/{}'.format(i, runs),
+            x,
+            sum(times)/len(times),
+            times[len(times)//2],
+            times[0], times[-1],
+        )
+        #sys.stderr.write('\b' * dellen)
+        sys.stderr.write('\x1b[2K\r')
+        dellen = len(msg) + 1
+        sys.stderr.write(msg)
+        sys.stderr.flush()
+    sys.stderr.write('\n')
+    return times
+
+def run2(path):
+    f = open(path, 'w')
+    data = {
+         '20@10x10': init_time(10, 10,  20, 1000),
+         '80@20x20': init_time(20, 20,  80, 1000),
+        '180@30x30': init_time(30, 30, 180, 1000),
+    }
+    f.write(pprint.pformat(data))
+    f.close()
+
+def chance(width, height, n_mines, runs):
+    spinner = '\\|/-'
+    solver = anonymine_solver.solver()
+    field = anonymine_fields.generic_field([width, height])
+    solver.field = field
     
+    starttime = time.time()
+    
+    i = 0
+    success = 0.0
+    while i < runs:
+        i += 1
+        mines = field.all_cells()
+        random.shuffle(mines)
+        field.clear()
+        field.fill(mines[:n_mines])
+        for mine in mines[n_mines:]:
+            for neighbour in field.get_neighbours(mine):
+                if neighbour in mines[:n_mines]:
+                    break
+            else:
+                field.reveal(mine)
+                break
+        progress = int(40.0 * i/runs)
+        success += solver.solve()[0]
+        
+        ETA = (runs - i) * (time.time() - starttime)/i
+        
+        sys.stderr.write('\x1b[2K\r{}@{}x{}:\t{}%\t[{}{}]{}\tETA: {}+{}'.format(
+            n_mines, width, height,
+            int(100.0 * success/i + 0.5),
+            '=' * progress, ' ' * (40 - progress),
+            spinner[i % len(spinner)],
+            int(ETA/86400), time.strftime('%H:%M:%S', time.gmtime(ETA))
+        ))
+    sys.stderr.write('\n')
+    return success/runs
+
+def run3(path):
+    os.system('clear')
+    f = open(path, 'w')
+    #data = {
+        #'20@10x10':  chance(10, 10,  20, 1000),
+        #'45@15x15':  chance(15, 15,  45, 1000),
+        #'80@20x20':  chance(20, 20,  80, 1000),
+        #'125@25x25': chance(25, 25, 125, 1000),
+        #'180@30x30': chance(30, 30, 180, 1000),
+        #'245@35x35': chance(35, 35, 245, 1000),
+        #'320@40x40': chance(40, 40, 320, 1000),
+        #'405@45x45': chance(45, 45, 405, 1000),
+        #'500@50x50': chance(50, 50, 500, 1000),
+    #}
+    data = {}
+    times = {}
+    #for x in (20, 40, 80, 160):
+    #for x in (120, 60, 30, 15):
+    for x in (100, 50, 25):
+        mines = int(.2 * x**2)
+        key = '{}@{}x{}'.format(mines, x, x)
+        start = time.time()
+        #data[key] = chance(x, x, mines, 3000)
+        data[key] = chance(x, x, mines, 2000)
+        times[key] = time.time() - start
+    
+    f.write(pprint.pformat({'times': times, 'data': data}))
+    f.close()
