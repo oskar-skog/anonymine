@@ -31,7 +31,8 @@ See also
 Tested platforms
 ================
 
-TL;won't R:  Windows, Mac OS X, Linux/unix
+The dependencies are:
+(Python 3.x || Python >= 2.6) && "curses" module && (unix || "argparse" module) 
     
 Note that Python 2.6, 3.0 and 3.1 are not expected to have the
 module "argparse".
@@ -52,6 +53,10 @@ CPython 2.6.6 is lowest version of Python that has been tested.
 |OpenSUSE 12.2 [Py 2, 3]             |                              |
 |Trisquel 6.0 [Py 2, 3]              |*                             |
 |openindiana [Py 2.6]                |GNOME terminal is buggy.      |
+
+
+
+TL;DR:  Windows, Mac OS X, Linux/unix
 
 
 

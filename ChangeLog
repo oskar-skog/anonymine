@@ -1,3 +1,9 @@
+2016-06-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.0
+        *: Well, it's fast enough.
+        * README: Minor changes
+        * test.py, testcfg: Something I did a long time ago.
+
 2016-03-20      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.1.21
         *:
