@@ -12,10 +12,12 @@ Apart from being solvable without guessing, anonymine:
       of a field.
 
 
-You can also try it over SSH at ssh://anonymine:anonymine@oskog97.com:2222
-ie: User "anonymine", password "anonymine", host "oskog97.com", port "2222".
-Or using my [shellinabox server](http://oskog97.com:8080/) with the same
-username and password.
+You can also try it over SSH at
+ssh://anonymine:anonymine@anonymine-demo.oskog97.com:2222 ie:
+User "anonymine", password "anonymine", host "anonymine-demo.oskog97.com",
+port "2222".
+Or using my [shellinabox server](http://anonymine-demo.oskog97.com:8080/)
+with the same username and password.
 
 You can find screenshots and more at
 [my website](http://oskog97.com/projects/anonymine/).
