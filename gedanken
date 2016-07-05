@@ -1,0 +1,31 @@
+Highscores:
+{
+    'list_lengths': (3, 4), # top 3 winners and top 4 loser
+    'enable-nick': True,    # Pseudo cheating
+    'enable-user': True,    # Privacy
+    'winner-times': [
+        (score, nick, user, time),
+        ...
+    ],
+    'loser-times': [
+        (score, nick, user, time),
+        ...
+    ],
+}
+# `score` is time it took to play in seconds.
+# `nick` is a user name chosen by the player.
+# `user` is the actual logged in user.
+# `time` is unix time of game completion.
+enginecfg
+{
+    'hiscorefile': blah,
+    ...
+}
+
+anonymine_engine.game_engine.record_hiscore(won, time)
+anonymine_engine.game_engine.fetch_hiscore()    # NOTE: game_engine
+# game_engine instances have the enginecfg config file loaded,
+# nothing else has.
+
+TO THINK OF: User input
+TO THINK OF: installation (chmod 666 vs. setgid)
