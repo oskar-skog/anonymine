@@ -392,6 +392,11 @@ def main():
     #
     error |= detect_desktop(Makefile, flags)
     
+    if flags['v']:
+        Makefile['verbose'] = 'true'
+    else:
+        Makefile['verbose'] = 'false'
+    
     v('')
     if flags['v']:
         of_interest = (

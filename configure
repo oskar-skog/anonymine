@@ -11,7 +11,7 @@ if [ $# -eq 1 ]; then
     done
     for version_option in -V --version; do
         if [ "$1" = $version_option ]; then
-            echo Anonymine 0.2.1
+            echo Anonymine 0.2.2
             echo Handmade configure and configure.py
             echo Version info from configure may lag behind.
             exit

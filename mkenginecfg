@@ -28,7 +28,14 @@ import time
 import sys
 
 def main():
-    cpus = int(sys.argv[1])
+    try:
+        cpus = int(sys.argv[1])
+        assert cpus >= 1
+    except:
+        sys.stderr.write(
+            'Do you really have {} processors?\n'.format(sys.argv[1])
+        )
+        cpus = 1
     procs = int(0.83 * cpus + 0.5)
     
     cfg = {
@@ -52,15 +59,17 @@ __EOF__
 
 
 # Count the number of logical processors.
-#                       v: Don't forget the semicolon!
-_ncpus0 () { nproc --all;                       } # Debian
-_ncpus1 () { lscpu -p | grep -v '#' | wc -l;    } # (Linux)/Debian
-_ncpus2 () { sysctl -n kern.smp.cpus;           } # BSD (Should I use this?)
-_ncpus3 () { sysctl -n hw.logicalcpu;           } # BSD
-_ncpus4 () { sysctl -n hw.ncpu;                 } # BSD (fallback)
-_ncpus5 () { psrinfo | wc -l;                   } # (OpenSolaris)/openidiana
+# WARNING: If the first command in a pipeline fails, the pipeline itself may
+# succeed!  (wc -l says there are zero processors.)
+# NOTICE                v: Don't forget the semicolon!
+_n0 () { nproc --all;                               } # Debian
+_n1 () { lscpu && lscpu -p | grep -v '#' | wc -l;   } # (Linux)/Debian
+_n2 () { sysctl -n kern.smp.cpus;                   } # BSD (Should I use this?)
+_n3 () { sysctl -n hw.logicalcpu;                   } # BSD
+_n4 () { sysctl -n hw.ncpu;                         } # BSD (fallback)
+_n5 () { psrinfo && psrinfo | wc -l;                } # (OpenSolaris)/openidiana
 for n in `seq 0 5`; do
-    ncpus=`_ncpus$n` 2> /dev/null && break
+    ncpus=`_n$n` 2> /dev/null && break
 done
 
 oldpwd=`pwd`

@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.1
+VERSION := 0.2.2
 
 # Three more variables are required: EXECUTABLES and MODULES
 # and MODULES_OTHERVER (= "non-existent").
@@ -152,8 +152,8 @@ check-install-cfg : FORCE
 overwrite-cfg: FORCE
 	@$(INSTALL) -m 644 "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL) -m 644 "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
-	@echo "Configuration has been overwritten"
-	@echo "All (if any) system-wide modifications are lost"
+	@$(info) "Configuration has been overwritten"
+	@$(info) "All (if any) system-wide modifications are lost"
 
 install-dirs : FORCE
 	@$(info) 'Installing directories'
@@ -317,7 +317,6 @@ check: FORCE
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
 dist : tarballs zip
-	@echo Depends on '"'tarballs'"' and '"'zip'"'
 	@$(info) 'make check; This will take a while'
 	@make check >/dev/null
 	@$(info) 'make release'
@@ -330,6 +329,7 @@ release : FORCE
 		|| echo You are not me.
 
 tarballs : FORCE
+	@$(info) "Building tarballs"
 	@mkdir "$(PKG)"
 	@for subdir in $(PKG_SUBDIRS); do mkdir "$(PKG)/$$subdir"; done;
 	@: # Copy all files normally:
@@ -345,6 +345,7 @@ tarballs : FORCE
 	@rm -r -- "$(PKG)"
 
 zip : FORCE
+	@$(info) "Building zip for Windows version"
 	@mkdir "$(PKG)"
 	@for subdir in $(PKG_SUBDIRS); do mkdir "$(PKG)/$$subdir"; done;
 	@: # /(.*)$/ -> /\1.txt/

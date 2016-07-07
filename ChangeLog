@@ -1,4 +1,19 @@
 2016-07-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.2
+        * mkenginecfg: Bugfix:
+            `nonexisting-cpulister | wc -l` returns 0 processors
+            and succeeds.
+            - Fixed the pipelines.
+            - Added a sanity check.
+        * configure.py: Fix verbosity setting for Makefile.
+            Give Makefile verbose=false as default and verbose=true
+            if the -v flag was used.
+        * Makefile.static (overwrite-cfg):
+            Use $(info) instead of echo.
+        * Makefile.static (dist, tarballs, zip):
+            Don't bother writing out the "Depends on tarballs and zip"
+            message as that itself depends on those two targets.
+            Messages are now printed by zip and tarballs.
     0.2.1
         * NEWS: Changes from 0.1.0 to 0.2.0
         * Makefile.static: FILES gone; LICENSE back

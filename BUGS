@@ -101,6 +101,11 @@ BUG#7 2016-02-09
         is not space (0x20).
     Workaround in place.
 
+SOLVED BUG#8 2016-07-07
+    mkenginecfg
+        `nonexistent-cpulister | wc -l` prints "0" and SUCCEEDS.
+        The bug was fixed immediately on discovery.
+
 Problematic platforms
 =====================
 
