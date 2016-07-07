@@ -302,8 +302,8 @@ print-destinations: FORCE
 PKG_INDIR := $(NAME)-$(VERSION)
 PKG := $(builddir)$(PKG_INDIR)
 # .txt in zips.
-PKG_TEXTFILES := BUGS ChangeLog FAQ FILES INSTALL NEWS README desktop/FILES \
-	desktop/README
+PKG_TEXTFILES := BUGS ChangeLog FAQ INSTALL NEWS README desktop/FILES \
+	desktop/README LICENSE
 # Already CRLF + old crap.
 PKG_NOCONV := Windows.txt Windows-admin.bat Windows-user.bat \
 	configure check.sh desktop/$(NAME).ico desktop/desktop.sh \
