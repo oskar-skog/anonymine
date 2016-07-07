@@ -1,3 +1,47 @@
+What's new in 0.2.0 since 0.1.0?
+================================
+
+New questions in FAQ
+
+Portability:
+    0.1.1   Critical bugfix for Windows version
+    0.1.8   Mac OS X
+    0.1.14  Shortcut for Windows (Use Cygwin tools, don't DIY!); Doc fix.
+    0.1.20  Cygwin-sshd
+    
+Desktops:
+    *       Installation options. freedesktop= macosx= windows=
+    0.1.9   Icon for Mac; multiple sizes for freedesktop.org 16 32 64 256
+    0.1.14  anonymine.desktop is from now on generated; Windows shortcuts
+    
+Installation:
+    *       Makefile.static has had some serious clean up, including:
+                - Using Makefile as a makefile rather than a batch job
+                - Renamed variables
+                - Moved quatation marks from variable definitions to
+                  invocation.
+                - `make verbose=false`
+    *       The desktop variables
+                freedesktop
+                macosx
+                windows
+    0.1.15  Changes to configure
+                - Prohibit quotes in variables and $() in their names.
+                - Less misleading error messages when arguments don't make
+                  sense.
+                - Don't crash when there were errors in verbose mode.
+                - Use $PAGER and pager(1) if available.
+
+0.1.19 to 0.1.21 - DoS protection:
+    - DoS prevention by field area and initialization time.
+    - Removed timeout from initialization slaves to improve the
+      initialization time on larger (emphasis on comparative) fields.
+    - This introduced incompatibilities to the configuration file.
+    - Uses mkenginecfg to set the number of slave processes in the
+      enginecfg configuration file
+
+
+
 What's new in 0.1.0 since 0.0.0?
 ================================
 
