@@ -1,17 +1,15 @@
 Highscores:
 {
-    'list_lengths': (3, 4), # top 3 winners and top 4 loser
+    'list-length': 5,       # Top 5 for each param set.
+    'max-filesize': 1000000 # (Unknown number of param sets with highscores.)
     'enable-nick': True,    # Pseudo cheating
     'enable-user': True,    # Privacy
-    'winner-times': [
-        (score, nick, user, time),
-        ...
-    ],
-    'loser-times': [
+    params: [
         (score, nick, user, time),
         ...
     ],
 }
+# params = "{}@{}x{}".format(mines, width, height) + '-nocount'*nocount + '-losable'*losable
 # `score` is time it took to play in seconds.
 # `nick` is a user name chosen by the player.
 # `user` is the actual logged in user.
