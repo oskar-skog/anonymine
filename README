@@ -4,11 +4,11 @@ solvable without guessing and has a few other features.
 The game doesn't have a real name yet; suggestions are welcome.
 
 Apart from being solvable without guessing, anonymine:
-- can use traditional Moore neighbourhoods (8 neighbours per cell),
-- a hexagonal field (6 neighbours per cell)
-- or von Neumann neighbourhoods (4 neighbours per cell).
+    - can use traditional Moore neighbourhoods (8 neighbours per cell),
+    - a hexagonal field (6 neighbours per cell)
+    - or von Neumann neighbourhoods (4 neighbours per cell).
   
-- The anonymine_solver module can also be used to "measure the difficulty"
+    - The anonymine_solver module can also be used to "measure the difficulty"
       of a field.
 
 
@@ -16,52 +16,50 @@ You can also try it over SSH at
 ssh://anonymine:anonymine@anonymine-demo.oskog97.com:2222 ie:
 User "anonymine", password "anonymine", host "anonymine-demo.oskog97.com",
 port "2222".
-Or using my [shellinabox server](http://anonymine-demo.oskog97.com:8080/)
-with the same username and password.
+Or at http://anonymine-demo.oskog97.com:8080/ with the same username and
+password.
 
-You can find screenshots and more at
-[my website](https://oskog97.com/projects/anonymine/).
+You can find screenshots and more at https://oskog97.com/projects/anonymine/
 
 
 See also
 ========
 
-- Windows.txt for installation instructions for Windows.
-- INSTALL for installation instructions. ./configure; make; make install
-- FILES to get a hint of all files in the package.
-
+    - Windows.txt for installation instructions for Windows.
+    - INSTALL for installation instructions. ./configure; make; make install
+    - FILES to get a hint of all files in the package.
 
 
 Tested platforms
 ================
 
-The dependencies are:
-(Python 3.x || Python >= 2.6) && "curses" module && (unix || "argparse" module) 
-
-The argparse module is needed for Anonymine to take command line options.
-The configuration files can be specified with the -e and -c command line options
-to override the default locations which happen to be unix paths.
+    The dependencies are:
+    (Python 3.x || Python >= 2.6) && curses mod. && (unix || argparse mod.)
     
-Note that Python 2.6, 3.0 and 3.1 are not expected to have the
-module "argparse".
+    The argparse module is needed for Anonymine to take command line options.
+    The configuration files can be specified with the -e and -c command line
+    options to override the default locations which happen to be unix paths.
+        
+    Note that Python 2.6, 3.0 and 3.1 are not expected to have the
+    module "argparse".
+        
+    CPython 2.6.6 is lowest version of Python that has been tested.
     
-CPython 2.6.6 is lowest version of Python that has been tested.
-
-    
-|platform                            |Notes                         |
-|------------------------------------|------------------------------|
-|Cygwin on NT 6.1 [Py 2]             |Don't resize the terminal!    |
-|Debian6/kFreeBSD8 [Py 2.6]          |*                             |
-|Debian 7                            |*                             |
-|Debian 8 [Py 2, 3]                  |                              |
-|FreeBSD 9.2 [Py 2]                  |                              |
-|Mac OS X [Py 2]                     |ICNS icon is untested         |
-|Minix 3.3 [Py 2]                    |$(prefix) is /usr/pkg         |
-|NetBSD 6.1 [Py 2]                   |No color                      |
-|OpenBSD 5.8                         |                              |
-|OpenSUSE 12.2 [Py 2, 3]             |                              |
-|Trisquel 6.0 [Py 2, 3]              |*                             |
-|openindiana [Py 2.6]                |GNOME terminal is buggy.      |
+        
+    Platform                  Notes                         
+    --------                  -----
+    Cygwin on NT 6.1 [Py 2]   Don't resize the terminal!
+    Debian 7                  
+    Debian 8 [Py 2, 3]        Host system, well tested
+    FreeBSD 9.2 [Py 2]        
+    FreeBSD 10 [Py 2]         http://anonymine-demo.oskog97.com:8080/
+    Mac OS X [Py 2]           ICNS icon is untested
+    Minix 3.3 [Py 2]          $(prefix) is /usr/pkg
+    NetBSD 6.1 [Py 2]         No color
+    OpenBSD 5.8               
+    OpenSUSE 12.2 [Py 2, 3]   
+    Trisquel 6.0 [Py 2, 3]    Old host system, old versions well tested
+    openindiana [Py 2.6]      /usr/ucb/install is buggy. GNOME terminal worse.
 
 
 
@@ -69,13 +67,13 @@ CPython 2.6.6 is lowest version of Python that has been tested.
 Goals
 =====
 
-|Version|Change                                                         |
-|-------|---------------------------------------------------------------|
-|0.2    |Performance improvements, no nasty calibration of enginecfg.   |
-|0.3    |High-scores.                                                   |
-|0.4    |Mouse support.                                                 |
-|0.5    |Create a statistics collection module.                         |
-|0.6    |Good documentation for the solver algorithm.                   |
+    Version Change
+    ------- ------
+    0.2     Performance improvements, no nasty calibration of enginecfg.
+    0.3     High-scores.
+    0.4     Mouse support.
+    0.5     Create a statistics collection module.
+    0.6     Good documentation for the solver algorithm.
 
 
 
