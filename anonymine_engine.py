@@ -44,6 +44,7 @@ import os
 import time
 import signal
 import sys
+import getpass
 
 # Allow module names to be changed later.
 import anonymine_solver as solver
@@ -51,6 +52,19 @@ import anonymine_fields as fields
 
 class security_alert(Exception):
     pass
+
+class hiscores_dummy():
+    '''
+    If the 'hiscores' field does not exist due to an old egninecfg
+    lacking 'hiscores' or perhaps an internal error, this class can
+    be used to create replacement objects for `hiscores`.
+    '''
+    def __init__(self, cfg, paramstring, delta_time):
+        pass
+    def add_entry(self, inputfunction):
+        pass
+    def display(self, outputfunction):
+        pass
 
 class hiscores():
     '''
@@ -70,10 +84,6 @@ class hiscores():
         self.delta_time = delta_time
         self.win_time = time.time()
         
-        self.hiscores = list(map(
-            lambda line: line.split(':', 4),
-            list(filter(None, open(cfg['file']).read().split('\n')))
-        ))
         self.hiscorefile = cfg['file']
         
         self.maxize = cfg['maxsize']
@@ -83,6 +93,17 @@ class hiscores():
         self.use_nick = cfg['use-nick']
         
         self.display_caption = 'Higscores for these settings'
+        
+        try:
+            self.hiscores = list(map(
+                lambda line: line.split(':', 4),
+                list(filter(None, open(cfg['file']).read().split('\n')))
+            ))
+        except:
+            self.add_entry = lambda x: None,
+            self.hiscores = []
+            self.display_caption = 'Error opening highsores file'
+        
     
     
     def add_entry(self, inputfunction):
@@ -93,21 +114,25 @@ class hiscores():
         if self.delta_time is None:
             return
         
+        # Fetch wanted information about the player
         if self.use_nick:
             nick = inputfunction('Nickname')
-            assert '\n' not in nick
         else:
             nick = ''
-        
         if self.user_user:
-            user = getpass.getuser()
-            assert '\n' not in user
+            try:
+                user = getpass.getuser()
+            except:
+                user = '(unknown)'
         else:
             user = ''
         user = user.replace('\\', '\\\\').replace(':', '\\x3a')
         
+        # Prepare the new entry
         new_entry = [paramsting, self.delta_time, self.win_time, user, nick]
+        assert '\n' not in ''.join(new_entry)
         
+        # Find the wanted list.
         sublist = list(filter(
             lambda entry: entry[0] == self.paramstring,
             self.hiscores
