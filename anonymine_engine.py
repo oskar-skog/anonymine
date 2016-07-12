@@ -52,6 +52,108 @@ import anonymine_fields as fields
 class security_alert(Exception):
     pass
 
+class hiscores():
+    '''
+    
+    '''
+    def __init__(self, cfg, paramstring, delta_time):
+        '''
+        Create a `hiscores` object for the played game.
+        This object is created by `game_engine.play_game` after
+        the game has been won.
+        
+        If `delta_time` is None, the `add_entry` method is neutralized.
+        Do this if the game has been lost and not won, or if you just
+        want to display the highscores.
+        '''
+        self.paramstring = paramsting
+        self.delta_time = delta_time
+        self.win_time = time.time()
+        
+        self.hiscores = list(map(
+            lambda line: line.split(':', 4),
+            list(filter(None, open(cfg['file']).read().split('\n')))
+        ))
+        self.hiscorefile = cfg['file']
+        
+        self.maxize = cfg['maxsize']
+        self.n_entries = cfg['entries']
+        
+        self.use_user = cfg['use-user']
+        self.use_nick = cfg['use-nick']
+        
+        self.display_caption = 'Higscores for these settings'
+    
+    
+    def add_entry(self, inputfunction):
+        '''
+        string = inputfunction(prompt)
+        '''
+        # Display only mode:
+        if self.delta_time is None:
+            return
+        
+        if self.use_nick:
+            nick = inputfunction('Nickname')
+            assert '\n' not in nick
+        else:
+            nick = ''
+        
+        if self.user_user:
+            user = getpass.getuser()
+            assert '\n' not in user
+        else:
+            user = ''
+        user = user.replace('\\', '\\\\').replace(':', '\\x3a')
+        
+        new_entry = [paramsting, self.delta_time, self.win_time, user, nick]
+        
+        sublist = list(filter(
+            lambda entry: entry[0] == self.paramstring,
+            self.hiscores
+        ))
+        self.hiscores = list(filter(
+            lambda entry: entry[0] != self.paramstring,
+            self.hiscores
+        ))
+        
+        sublist.append(new_entry)
+        sublist.sort(key = lambda entry: entry[1])
+        sublist = sublist[:self.n_entries]
+        
+        position = sublist.find(new_entry)
+        if position is not None:
+            self.display_caption = "You made it to #{0}".format(
+                position + 1
+            )
+        else:
+            self.display_caption = "You didn't make it to the top {0}".format(
+                self.n_entries
+            )
+        
+        self.hiscores.extend(sublist)
+        content = ''
+        for entry in self.hiscores:
+            content += ':'.join(entry) + '\n'
+        if len(content) <= self.maxsize:
+            f = open(self.hiscorefile, 'w')
+            f.write(content)
+            f.close()
+        else:
+            pass
+            # TODO: Complain
+        
+    
+    def display(self, outputfunction):
+        '''
+        outputfunction(caption, (header, ...), [(column, ...), ...])
+        '''
+        sublist = list(filter(
+            lambda entry: entry[0] == self.paramstring,
+            self.hiscores
+        ))
+
+
 class game_engine():
     r'''
     This class creates game engine objects.

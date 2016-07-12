@@ -1,29 +1,27 @@
-Highscores:
+enginecfg
 {
-    'list-length': 5,       # Top 5 for each param set.
-    'max-filesize': 1000000 # (Unknown number of param sets with highscores.)
-    'enable-nick': True,    # Pseudo cheating
-    'enable-user': True,    # Privacy
-    params: [
-        (score, nick, user, time),
-        ...
-    ],
+    'hiscores': {
+        'file': '/var/games/anonymine',
+        'maxsize': '16384',
+        'entries': 10,
+        'use-user': True,
+        'use-nick': True,
+    }
 }
+
+/var/games/anonymine
+paramstring:delta_time:time:user:nick
+paramstring:delta_time:time:user:nick
+paramstring:delta_time:time:user:nick
+
 # params = "{}@{}x{}".format(mines, width, height) + '-nocount'*nocount + '-losable'*losable
 # `score` is time it took to play in seconds.
 # `nick` is a user name chosen by the player.
 # `user` is the actual logged in user.
 # `time` is unix time of game completion.
-enginecfg
-{
-    'hiscorefile': blah,
-    ...
-}
 
-anonymine_engine.game_engine.record_hiscore(won, time)
-anonymine_engine.game_engine.fetch_hiscore()    # NOTE: game_engine
-# game_engine instances have the enginecfg config file loaded,
-# nothing else has.
-
-TO THINK OF: User input
 TO THINK OF: installation (chmod 666 vs. setgid)
+
+
+No colons allowed in username
+paramstring:delta_time:time:user:nick
