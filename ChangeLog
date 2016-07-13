@@ -1,3 +1,14 @@
+    0.2.3
+        * anonymine_engine.py: New class: hiscores
+        * anonymine_engine.py (game_engine (play_game)): Create a `hiscores`
+            object.
+            Second return argument is now a `hiscores` object, previously
+            it was a float representing the time it took to win or lose.
+        * anonymine_engine.py (game_engine (__init__)): Added self.dimensions
+            and self.flagcount to allow `play_game` to create a proper
+            paramstring for hiscores.__init__.
+
+
 2016-07-07      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.2
         * mkenginecfg: Bugfix:

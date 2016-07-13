@@ -14,7 +14,7 @@ paramstring:delta_time:time:user:nick
 paramstring:delta_time:time:user:nick
 paramstring:delta_time:time:user:nick
 
-# params = "{}@{}x{}".format(mines, width, height) + '-nocount'*nocount + '-losable'*losable
+# params = "{}@{}x{}-{}".format(mines, width, height, gametype) + '-nocount'*nocount + '-losable'*losable
 # `score` is time it took to play in seconds.
 # `nick` is a user name chosen by the player.
 # `user` is the actual logged in user.

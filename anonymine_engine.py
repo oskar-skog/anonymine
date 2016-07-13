@@ -59,12 +59,14 @@ class hiscores_dummy():
     If the 'hiscores' field does not exist due to an old egninecfg
     lacking 'hiscores' or perhaps an internal error, this class can
     be used to create replacement objects for `hiscores`.
+    
+    NOTICE: The `__init__` method takes `self` as the only argument.
     '''
-    def __init__(self, cfg, paramstring, delta_time):
+    def __init__(self):
         pass
     def add_entry(self, inputfunction):
         pass
-    def display(self, outputfunction):
+    def display(self):
         pass
 
 class hiscores():
@@ -117,9 +119,9 @@ class hiscores():
         The syntax that will be used for paramstrings should be
         documented somewhere and somehow.
         
-        "{mines}@{width}x{height}" + nc*"-nocount" + g*"-losable"
+        "{mines}@{width}x{height}-{gametype}" + nfc*"+nocount" + ng*"+losable"
         
-        <mines>"@"<width>"x"<height>["-nocount"]["-losable"]
+        <mines>"@"<width>"x"<height>"-"<gametype>["+nocount"]["+losable"]
     '''
     def __init__(self, cfg, paramstring, delta_time):
         '''
@@ -475,8 +477,10 @@ class game_engine():
             raise security_alert('Area too large, aborting')
         
         # Begin initialization.
+        self.dimensions = (parameters['width'], parameters['height'])
         self.gametype = parameters['gametype']
         self.n_mines = parameters['mines']
+        self.flagcount = parameters['flagcount']
         self.guessless = parameters['guessless']
         if self.gametype == 'hex':
             self.field = fields.hexagonal_field(
@@ -700,7 +704,30 @@ class game_engine():
         except NameError:
             pass
         
-        return self.game_status == 'game-won', time.time() - self.start
+        # Won? Time?
+        game_won = self.game_status == 'game-won'
+        if game_won:
+            delta_time = time.time() - self.start
+        else:
+            delta_time = None
+        # Create a proper paramstring for the hiscores object.
+        paramsting = '{0}@{1}x{2}-{3}'.format(
+            self.n_mines,
+            self.dimensions[0],
+            self.dimensions[1],
+            self.gametype
+        )
+        if not self.flagcount:
+            paramstring += '+nocount'
+        if not self.guessless:
+            paramstring += '+losable'
+        # Allow old configuration files.
+        if 'hiscores' in self.cfg:
+            hs = hiscores(cfg['hiscores'], paramstring, delta_time)
+        else:
+            hs = hiscores_dummy()
+        # NOTICE: This used to return game_won, delta_time
+        return game_won, hs
 
 assert os.geteuid(), "Why the-fuck(7) are you playing games as root?"
 assert __name__ != '__main__', "I'm not a script."
