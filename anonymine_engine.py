@@ -85,26 +85,45 @@ class hiscores():
         self.win_time = time.time()
         
         self.hiscorefile = cfg['file']
-        
         self.maxize = cfg['maxsize']
         self.n_entries = cfg['entries']
-        
         self.use_user = cfg['use-user']
         self.use_nick = cfg['use-nick']
         
+        # The caption that will be displayed by the callback sent to
+        # `display`.  This caption can be changed by any method before
+        # ending up on the screen.
         self.display_caption = 'Higscores for these settings'
-        
-        try:
-            self.hiscores = list(map(
-                lambda line: line.split(':', 4),
-                list(filter(None, open(cfg['file']).read().split('\n')))
-            ))
-        except:
-            self.add_entry = lambda x: None,
-            self.hiscores = []
-            self.display_caption = 'Error opening highsores file'
-        
+        self.hiscores = None
     
+    def _load(self):
+        '''Load `self.hiscores` from `self.hiscorefile`.'''
+        def line_to_entry(line):
+            return tuple(line.split(':', 4))
+        try:
+            f = open(self.hiscorefile)
+        except IOError as err:
+            self.display_caption = 'IO error on read: ' + err.strerror
+            return
+        filecontent = f.read()
+        lines = list(filter(None, filecontent.split('\n')))
+        self.hiscores = list(map(line_to_entry, lines))
+    
+    def _store(self):
+        '''Store `self.hiscores` to `self.hiscorefile`.'''
+        content = ''
+        for entry in self.hiscores:
+            content += ':'.join(entry) + '\n'
+        if len(content) <= self.maxsize:
+            try:
+                f = open(self.hiscorefile, 'w')
+            except IOError as err:
+                self.display_caption = 'IO error on write: ' + err.strerror
+                return
+            f.write(content)
+            f.close()
+        else:
+            self.display_caption = "New highscore's filesize too large"
     
     def add_entry(self, inputfunction):
         '''
@@ -113,7 +132,6 @@ class hiscores():
         # Display only mode:
         if self.delta_time is None:
             return
-        
         # Fetch wanted information about the player
         if self.use_nick:
             nick = inputfunction('Nickname')
@@ -127,12 +145,12 @@ class hiscores():
         else:
             user = ''
         user = user.replace('\\', '\\\\').replace(':', '\\x3a')
-        
         # Prepare the new entry
         new_entry = [paramsting, self.delta_time, self.win_time, user, nick]
         assert '\n' not in ''.join(new_entry)
         
-        # Find the wanted list.
+        # Load wanted list and other lists.
+        self._load()
         sublist = list(filter(
             lambda entry: entry[0] == self.paramstring,
             self.hiscores
@@ -141,10 +159,13 @@ class hiscores():
             lambda entry: entry[0] != self.paramstring,
             self.hiscores
         ))
-        
+        # Add entry.
         sublist.append(new_entry)
         sublist.sort(key = lambda entry: entry[1])
         sublist = sublist[:self.n_entries]
+        # Write back
+        self.hiscores.extend(sublist)
+        self._store()
         
         position = sublist.find(new_entry)
         if position is not None:
@@ -155,24 +176,13 @@ class hiscores():
             self.display_caption = "You didn't make it to the top {0}".format(
                 self.n_entries
             )
-        
-        self.hiscores.extend(sublist)
-        content = ''
-        for entry in self.hiscores:
-            content += ':'.join(entry) + '\n'
-        if len(content) <= self.maxsize:
-            f = open(self.hiscorefile, 'w')
-            f.write(content)
-            f.close()
-        else:
-            pass
-            # TODO: Complain
-        
     
     def display(self, outputfunction):
         '''
         outputfunction(caption, (header, ...), [(column, ...), ...])
         '''
+        if self.hiscores is None:
+            self._load()
         sublist = list(filter(
             lambda entry: entry[0] == self.paramstring,
             self.hiscores
