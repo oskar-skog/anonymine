@@ -44,6 +44,7 @@ import os
 import time
 import signal
 import sys
+import math
 import getpass
 
 # Allow module names to be changed later.
@@ -68,7 +69,57 @@ class hiscores_dummy():
 
 class hiscores():
     '''
+    Manage highscores.
     
+    The `play_game` method of `game_engine` will return a
+    pre-configured `hiscores` object to the interface (its caller).
+    
+    The `add_entry` method will need to be called to add the recently
+    played game to the list.  There is no need to check if the game
+    was actually won, as `add_entry` is made a no-op on the returned
+    `hiscores` object if the game was lost.
+    
+    
+    File format
+    -----------
+    
+        Each line represents an item in a list, the list items also
+        specify in which list they are.
+        
+        The file does not support comments.
+    
+        line = <paramstring> ":" <delta_time> ":" <time> ":" <user> ":" <nick>
+        
+        `paramsting` identifies in which list the item is.
+        
+        `delta_time` is the time in seconds of how long it took to
+        play.
+        
+        `time` is the Unix time when the `hiscores` instance was
+        created.  (The time when the game was won.)
+        
+        `user` is the user name (login name) of the player.
+        
+        `nick` is a player chosen nickname.  `nick` is the only field
+        that MAY contain a colon.  Other fields MUST NOT contain
+        colons.
+        
+        Even if either `user` or `nick` is disabled in the
+        configuration, their fields must still appear in the
+        highscores file.  Disabling them only disables them from
+        being reported by the `display` method and makes the
+        `add_entry` method set their fields to an empty string.
+    
+    
+    paramstring
+    -----------
+    
+        The syntax that will be used for paramstrings should be
+        documented somewhere and somehow.
+        
+        "{mines}@{width}x{height}" + nc*"-nocount" + g*"-losable"
+        
+        <mines>"@"<width>"x"<height>["-nocount"]["-losable"]
     '''
     def __init__(self, cfg, paramstring, delta_time):
         '''
@@ -79,6 +130,15 @@ class hiscores():
         If `delta_time` is None, the `add_entry` method is neutralized.
         Do this if the game has been lost and not won, or if you just
         want to display the highscores.
+        
+        `paramstring` selects the sublist (game settings/parameters).
+        
+        `cfg` is a dictionary that MUST contain the following keys:
+            - 'file'        string; Path to the highscores file
+            - 'maxsize'     int; Maximum allowed filesize
+            - 'entries'     int; Entries per sublist (paramstring)
+            - 'use-user'    bool; List and display user/login names
+            - 'use-nick'    bool; List and display nicknames
         '''
         self.paramstring = paramsting
         self.delta_time = delta_time
@@ -126,7 +186,9 @@ class hiscores():
             self.display_caption = "New highscore's filesize too large"
     
     def add_entry(self, inputfunction):
-        '''
+        '''Call this method to add yourself to the hiscores list.
+        
+        `inputfunction` is a callback to the interface.
         string = inputfunction(prompt)
         '''
         # Display only mode:
@@ -177,16 +239,81 @@ class hiscores():
                 self.n_entries
             )
     
-    def display(self, outputfunction):
+    def display(self):
         '''
-        outputfunction(caption, (header, ...), [(column, ...), ...])
+        self.display -> caption, headers, rows
+        
+        `caption` is a string.
+        `headers` is a tuple of strings.
+        `rows` is a list of tuples of strings.
+        
+        Explaining with pseudoHTML:
+        <h1>caption</h1>
+        <table>
+            <tr><th>headers[0]</th>...<th>headers[c]</tr>
+            <tr><td>rows[0][0]</td>...<td>rows[0][c]</tr>
+            ...
+            <tr><td>rows[r][0]</td>...<td>rows[r][c]</tr>
+        </table>
+        <!-- There are r-1 rows and c-1 columns -->
         '''
+        
+        def format_deltatime(t):
+            def tfmt(format, t):
+                return time.strftime(format, time.gmtime(t))
+            if t <= 3559.999:
+                t = math.ceil(t * 1000.0) / 1000.0
+                subsec = int(math.ceil(t * 1000.0) % 1000)
+                ds = str(subsec/100)
+                cs = str(subsec/10%10)
+                ms = str(subsec%10)
+                return tfmt('%M:%S.', t) + ds + cs + ms
+            elif t <= 86399:
+                t = math.ceil(t)
+                return tfmt('%H:%M:%S', t)
+            elif t <= 863940:
+                t = 60 * math.ceil(t / 60.0)
+                return "{0}d {1}".format(int(t//86400), tfmt('%H:%M', t))
+            else:
+                return "A long time"
+        
+        def format_wontime(t):
+            # Does not need to be precise, anything less than a week is good.
+            if time.time() - t < 300000:
+                return time.strftime('%a %H:%M', time.localtime(t))
+            else:
+                return time.strftime('%Y-%m-%d', time.localtime(t))
+        
+        # Load of not already loaded.
         if self.hiscores is None:
             self._load()
+        # Use only the relevant sublist.
         sublist = list(filter(
             lambda entry: entry[0] == self.paramstring,
             self.hiscores
         ))
+        sublist.sort(key=lambda entry: entry[1])
+        
+        headers = ['Rank', '/\\T', 'Won at']
+        if self.use_user:
+            headers.append('Login name')
+        if self.use_nick:
+            headers.append('Nickname')
+        
+        rows = []
+        for index, entry in enumerate(sublist):
+            row = [
+                '#' + str(index + 1),
+                format_deltatime(entry[1]),
+                format_wontime(entry[2]),
+            ]
+            if self.use_user:
+                row.append(entry[3])
+            if self.use_nick:
+                row.append(entry[4])
+            rows.append(tuple(row))
+        
+        return self.display_caption, headers, rows
 
 
 class game_engine():
