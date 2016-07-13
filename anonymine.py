@@ -1268,11 +1268,17 @@ def play_game(parameters):
         parameters['gametype'],
     )
     try:
-        win, time_spent = engine.play_game(interface)
+        win, highscores = engine.play_game(interface)
     except KeyboardInterrupt:
         interface.leave()
         return
     interface.leave()
+    
+    def add_entry_test(prompt):
+        sys.stdout.write(prompt + ' ')
+        return sys.stdin.readline()[:-1]
+    highscores.add_entry(add_entry_test)
+    print(highscores.display())
     
     if parameters['insult']:
         if win:

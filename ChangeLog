@@ -1,5 +1,7 @@
+2016-07-13      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.3
-        * anonymine_engine.py: New class: hiscores
+        * anonymine.py: Primitive highscores interface for debugging purposes.
+        * anonymine_engine.py: New classes: hiscores, hiscores_dummy
         * anonymine_engine.py (game_engine (play_game)): Create a `hiscores`
             object.
             Second return argument is now a `hiscores` object, previously

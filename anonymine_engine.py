@@ -67,7 +67,7 @@ class hiscores_dummy():
     def add_entry(self, inputfunction):
         pass
     def display(self):
-        pass
+        return '', (), []
 
 class hiscores():
     '''
@@ -142,12 +142,15 @@ class hiscores():
             - 'use-user'    bool; List and display user/login names
             - 'use-nick'    bool; List and display nicknames
         '''
-        self.paramstring = paramsting
-        self.delta_time = delta_time
-        self.win_time = time.time()
+        self.paramstring = paramstring
+        if delta_time is None:
+            self.delta_time = None
+        else:
+            self.delta_time = str(delta_time)
+        self.win_time = str(time.time())
         
         self.hiscorefile = cfg['file']
-        self.maxize = cfg['maxsize']
+        self.maxsize = cfg['maxsize']
         self.n_entries = cfg['entries']
         self.use_user = cfg['use-user']
         self.use_nick = cfg['use-nick']
@@ -201,7 +204,7 @@ class hiscores():
             nick = inputfunction('Nickname')
         else:
             nick = ''
-        if self.user_user:
+        if self.use_user:
             try:
                 user = getpass.getuser()
             except:
@@ -210,7 +213,13 @@ class hiscores():
             user = ''
         user = user.replace('\\', '\\\\').replace(':', '\\x3a')
         # Prepare the new entry
-        new_entry = [paramsting, self.delta_time, self.win_time, user, nick]
+        new_entry = [
+            self.paramstring,
+            self.delta_time,
+            self.win_time,
+            user,
+            nick,
+        ]
         assert '\n' not in ''.join(new_entry)
         
         # Load wanted list and other lists.
@@ -225,13 +234,13 @@ class hiscores():
         ))
         # Add entry.
         sublist.append(new_entry)
-        sublist.sort(key = lambda entry: entry[1])
+        sublist.sort(key = lambda entry: float(entry[1]))
         sublist = sublist[:self.n_entries]
         # Write back
         self.hiscores.extend(sublist)
         self._store()
         
-        position = sublist.find(new_entry)
+        position = sublist.index(new_entry)
         if position is not None:
             self.display_caption = "You made it to #{0}".format(
                 position + 1
@@ -294,7 +303,7 @@ class hiscores():
             lambda entry: entry[0] == self.paramstring,
             self.hiscores
         ))
-        sublist.sort(key=lambda entry: entry[1])
+        sublist.sort(key=lambda entry: float(entry[1]))
         
         headers = ['Rank', '/\\T', 'Won at']
         if self.use_user:
@@ -306,8 +315,8 @@ class hiscores():
         for index, entry in enumerate(sublist):
             row = [
                 '#' + str(index + 1),
-                format_deltatime(entry[1]),
-                format_wontime(entry[2]),
+                format_deltatime(float(entry[1])),
+                format_wontime(float(entry[2])),
             ]
             if self.use_user:
                 row.append(entry[3])
@@ -711,7 +720,7 @@ class game_engine():
         else:
             delta_time = None
         # Create a proper paramstring for the hiscores object.
-        paramsting = '{0}@{1}x{2}-{3}'.format(
+        paramstring = '{0}@{1}x{2}-{3}'.format(
             self.n_mines,
             self.dimensions[0],
             self.dimensions[1],
@@ -723,7 +732,7 @@ class game_engine():
             paramstring += '+losable'
         # Allow old configuration files.
         if 'hiscores' in self.cfg:
-            hs = hiscores(cfg['hiscores'], paramstring, delta_time)
+            hs = hiscores(self.cfg['hiscores'], paramstring, delta_time)
         else:
             hs = hiscores_dummy()
         # NOTICE: This used to return game_won, delta_time
