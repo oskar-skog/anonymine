@@ -12,10 +12,10 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.8
+VERSION := 0.2.9
 
-# Three more variables are required: EXECUTABLES and MODULES
-# and MODULES_OTHERVER (= "non-existent").
+# Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
+# MODULES, and MODULES_OTHERVER which may be set to "non-existent".
 # They will be prepended to the actual Makefile by the "configure" script.
 
 # srcdir, builddir and DESTDIR may also be prepended by the "configure"
@@ -50,7 +50,7 @@ MAIN_SRC := $(srcdir)$(NAME).py
 MAIN_STAGE := $(builddir)$(NAME)
 MAIN_DEST := $(DESTDIR)$(EXECUTABLES)/$(NAME)
 
-HISCORE_FILE := $(vargamesdir)/anonymine
+HISCORE_FILE := $(DESTDIR)$(vargamesdir)/anonymine
 ENGINECFG_STAGE := $(builddir)enginecfg.out
 
 # freedesktop.org, see desktop/README
@@ -146,7 +146,7 @@ check-install-cfg : FORCE
 	@$(PRE_INSTALL)
 	@: # Cause installation to fail if the configuration is incompatible.
 	@$(info) 'Installing or checking configuration'
-	@$(INSTALL) -d "$(CFG_DIR)"
+	@: #$(INSTALL) -d "$(CFG_DIR)"
 	@$(INSTALL_CFG) "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
 
@@ -158,6 +158,8 @@ overwrite-cfg: FORCE
 
 install-dirs : FORCE
 	@$(info) 'Installing directories'
+	@mkdir -p "$(CFG_DIR)" || true
+	@mkdir -p "$(DESTDIR)$(vargamesdir)" || true
 	@mkdir -p "$(DESTDIR)$(EXECUTABLES)" || true
 	@mkdir -p "$(DESTDIR)$(MODULES)" || true
 	@if [ "$(MODULES_OTHERVER)" != "non-existent" ]; then \

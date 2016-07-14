@@ -95,7 +95,7 @@ ADVANCED INSTALLATION
         
         configure will also accept these short options:
             -f      Force; write the Makefile even if there were errors.
-            -v      verbose
+            -v      verbose; this also affects the Makefile
             -w      Use sys.prefix as prefix. (For quickly removing old
                     versions.)
         
@@ -113,9 +113,12 @@ ADVANCED INSTALLATION
         --------                --------------------------
         
         prefix                  sys.prefix
-        bindir                  $(prefix)/bin NOTICE: may not work as expected.
+        bindir                  $(prefix)/bin        # NOTE 1
         gamesdir                $(prefix)/games
         libdir                  $(prefix)/lib
+        localstatedir           $(prefix)/var, /var
+        sysconfdir              $(prefix)/etc, /etc  # NOTE 2
+        vargamesdir             $(localstatedir)/games, $(localstatedir)
         
         EXECUTABLES             This program will be installed in $(gamesdir)
         MODULES                 See its own subsection
@@ -129,10 +132,16 @@ ADVANCED INSTALLATION
         macosx                  Empty=false, non-empty=true; Mac OS X
         windows                 Empty=false, non-empty=true; Windows (Cygwin)
         
-        verbose                 If set to true (default), make will be verbose
+
+        NOTE 1
+            gamesdir will override bindir if possible, so setting bindir
+            might have no effect
         
-    
-        prefix, bindir and libdir:
+        NOTE 2
+            The game itself only tests for sys.prefix+'/etc' and '/etc'.
+            ./configure will fails if sysconfdir is not usable by the game.
+        
+        prefix, bindir and libdir, localstatedir, sysconfdir:
             http://www.gnu.org/prep/standards/html_node/Directory-Variables.html
         
         DESTDIR
@@ -148,6 +157,11 @@ ADVANCED INSTALLATION
             
             Both of these default to the current working directory.
         
+        sysconfdir
+            Configuration files will be stored in $(sysconfdir)/anonymine/
+        
+        vargamesdir
+            The highscores file is $(vargamesdir)/anonymine
         
         EXECUTABLES
         ===========

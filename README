@@ -104,7 +104,6 @@ Asterisk marks that the file will be created during building.
   configure.py          Used internally by configure
   cursescfg             The configuration file for the curses interface
   enginecfg             The configuration file for the game's engine
-  gedanken              Thoughts...
   install-cfg           Script for installing configuration files
   test.py               Misc small unnecessary functions: demos, etc
   desktop/              Non-essential files for the graphical environments:

@@ -1,4 +1,13 @@
 2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.9
+        * INSTALL: Updated
+        * enginecfg.default: Added the hiscores key.
+        * cygwin-sshd:
+            - Added "Things that will be done:" to avoid confusion.
+            - exit 0 instead of fatal if the user aborts.
+        * Makefile.static:
+            - Added DESTDIR to HISCORE_FILE
+            - install-dirs now installs CFG_DIR and $(DESTDIR)$(vargamesdir)
     0.2.8
         * configure.py: New functions: find_sysconfdir and find_vargamesdir.
         * anonymine.py, configure.py, Makefile.static: Place configuration

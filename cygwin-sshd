@@ -48,6 +48,7 @@ as any other user than the one you create to play Anonymine on mobile devices.
 
 If you are installing something else at the same time, race conditions
 may occur, and if they do, they will probably be quite nasty.
+Things that will be done:
     - Install 'openssh' and 'cygrunsrv' with /setup.exe
     - Run 'ssh-host-config' (which will do various things)
     - Modify '/etc/sshd_config'
@@ -134,7 +135,7 @@ __EOF__
         error 'The SSH server seems to be configured already.'
         error "The AllowUsers key was found in /etc/sshd_config"
         ask "Configure manually" || fatal "Can't configure the SSH daemon."
-        ask "Continue installation" || fatal
+        ask "Continue installation" || exit 0
     fi
     
     # Launch SSH daemon

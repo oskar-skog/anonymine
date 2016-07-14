@@ -115,7 +115,7 @@
         #       be a positive integer.
         # [1]:  character (Required by all keys except 'number', 'grid'
         #       and 'text'. For these three, the character will be
-        #       ignored.  'background' will also be ignore due to BUG #7)
+        #       ignored.  'background' will also be ignored due to BUG #7)
         # [2]:  foreground color; valid colors are: "BLACK", "BLUE",
         #       "GREEN", "CYAN", "RED", "MAGENTA", "YELLOW" and
         #       "WHITE".

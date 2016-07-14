@@ -7,4 +7,11 @@
                                 # than one and a half minute.
         'sec-maxarea':  10000,  # Crash if a huge field is requested.
     },
+    'hiscores': {
+        'file':         '/var/games/anonymine',
+        'maxsize':      524288,
+        'entries':      10,
+        'use-user':     True,
+        'use-nick':     True,
+    },
 }
