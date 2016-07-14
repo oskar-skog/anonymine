@@ -196,11 +196,32 @@ class hiscores():
         `inputfunction` is a callback to the interface.
         string = inputfunction(titlebar, prompt)
         '''
+        def load_split_add(self_reference, new_entry):
+            '''
+            Load self_reference.hiscores and separates the sublist
+            from it.  `new_entry` will be appended to the sublist.
+            
+            Returns the sorted and tail truncated sublist.
+            self_reference.hiscores does not contain the sublist.
+            '''
+            self_reference._load()
+            sublist = list(filter(
+                lambda entry: entry[0] == self_reference.paramstring,
+                self_reference.hiscores
+            ))
+            self.hiscores = list(filter(
+                lambda entry: entry[0] != self_reference.paramstring,
+                self_reference.hiscores
+            ))
+            # Add entry.
+            sublist.append(new_entry)
+            sublist.sort(key = lambda entry: float(entry[1]))
+            sublist = sublist[:self_reference.n_entries]
+            return sublist
         # Display only mode:
         if self.delta_time is None:
             return
-        # Fetch wanted information about the player
-        nick = 'fetch-later'
+        # Get login name
         if self.use_user:
             try:
                 user = getpass.getuser()
@@ -215,42 +236,31 @@ class hiscores():
             self.delta_time,
             self.win_time,
             user,
-            nick,
+            '',
         ]
         assert '\n' not in ''.join(new_entry)
-        
-        # Load wanted list and other lists.
-        self._load()
-        sublist = list(filter(
-            lambda entry: entry[0] == self.paramstring,
-            self.hiscores
-        ))
-        self.hiscores = list(filter(
-            lambda entry: entry[0] != self.paramstring,
-            self.hiscores
-        ))
-        # Get position
-        # Add entry.
-        sublist.append(new_entry)
-        sublist.sort(key = lambda entry: float(entry[1]))
-        sublist = sublist[:self.n_entries]
-        
+        # Get the nickname only if the player actually made it to the list.
+        # The entry will actually be added twice, but only the latter will
+        # be stored.
+        position = load_split_add(self, new_entry).index(new_entry)
+        if position is not None:
+            if self.use_nick:
+                nick = inputfunction(
+                    'You made it to #{0}'.format(position + 1),
+                    'Nickname'
+                )
+        # Load the list again (inputfunction may take a very long time)
+        # and add the nickname to the entry.
+        new_entry[4] = nick
+        sublist = load_split_add(self, new_entry)
+        # Position message.
         position = sublist.index(new_entry)
         if position is not None:
-            self.display_caption = "You made it to #{0}".format(
-                position + 1
-            )
-            # Get the nickname only if the player actually made it to the list.
-            if self.use_nick:
-                nick = inputfunction(self.display_caption, 'Nickname')
-            else:
-                nick = ''
-            sublist[position][4] = nick
+            self.display_caption = 'You made it to #{0}'.format(position + 1)
         else:
             self.display_caption = "You didn't make it to the top {0}".format(
                 self.n_entries
             )
-        
         # Write back
         self.hiscores.extend(sublist)
         self._store()
