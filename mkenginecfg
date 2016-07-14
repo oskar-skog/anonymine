@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ./mkenginecfg srcdir builddir
+# ./mkenginecfg srcdir builddir hiscorefile
 
 # TODO: measure time by the time it takes to solve some known fields.
 
@@ -9,6 +9,7 @@
 
 srcdir=$1
 builddir=$2
+hiscorefile=$3
 
 userfile="${builddir}enginecfg.user"
 defaultfile="${srcdir}enginecfg.default"
@@ -23,8 +24,6 @@ if [ -f "$userfile" ]; then
 fi
 
 cat > "$pyfile" << __EOF__
-import pprint
-import time
 import sys
 
 def main():
@@ -38,20 +37,24 @@ def main():
         cpus = 1
     procs = int(0.83 * cpus + 0.5)
     
-    cfg = {
-        'init-field': {
-            'procs': procs,
-            'filename': '/tmp/mines.{0}',
-            'sec-maxtime': 90,
-            'sec-maxarea': 10000,
-        }
-    }
-    
-    sys.stdout.write('# Auto generated during "build".\n')
-    sys.stdout.write(pprint.pformat(cfg))
-    sys.stdout.write('\n')
-    sys.stdout.close()
-    
+    hiscorefile = sys.argv[2]
+    sys.stdout.write('''# Auto generated during "build".
+{
+    'init-field': {
+        'procs':        '''+str(procs)+''',
+        'filename':     '/tmp/mines.{0}',
+        'sec-maxtime':  90,     # Security timeout
+        'sec-maxarea':  10000,  # Maximum allowed area
+    },
+    'hiscores': {
+        'file':         "'''+str(hiscorefile)+'''",
+        'entries':      10,     # Top N, how many entries per sublist
+        'maxsize':      524288, # Security: Maximum allowed filesize
+        'use-user':     True,   # List login names
+        'use-nick':     True,   # Let players choose their own names
+    },
+}
+''')
 
 if __name__ == '__main__':
     main()
@@ -74,5 +77,5 @@ done
 
 oldpwd=`pwd`
 cd "$srcdir"
-python "$pyfile" $ncpus > "$outfile" || cp "$defaultfile" "$outfile"
+python "$pyfile" $ncpus "$hiscorefile" > "$outfile" || cp "$defaultfile" "$outfile"
 cd "$oldpwd"

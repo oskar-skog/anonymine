@@ -240,10 +240,55 @@ def find_EXECUTABLES(Makefile, flags):
     else:
         return False
 
+def find_sysconfdir(Makefile, flags):
+    '''
+    '''
+    if 'sysconfdir' in Makefile:
+        if expand('sysconfdir', Makefile) not in ('/etc', sys.prefix+'/etc'):
+            sys.stderr.write('Will not be able to find configuration\n')
+            return True
+        else:
+            return False
+    else:
+        if Makefile['prefix'] == sys.prefix:
+            try:
+                os.listdir(Makefile['prefix'] + '/etc')
+                Makefile['sysconfdir'] = '$(prefix)/etc'
+                return False
+            except:
+                pass
+        Makefile['sysconfdir'] = '/etc'
+        return False
+
+def find_vargamesdir(Makefile, flags):
+    '''
+    '''
+    if 'localstatedir' not in Makefile:
+        try:
+            os.listdir(Makefile['prefix'] + '/var')
+            Makefile['localstatedir'] = '$(prefix)/var'
+        except:
+            try:
+                os.listdir('/var')
+                Makefile['localstatedir'] = '/var'
+            except:
+                return True
+    if 'vargamesdir' not in Makefile:
+        for tail in ('/games', ''):
+            try:
+                os.listdir(Makefile['localstatedir'] + tail)
+                Makefile['vargamesdir'] = '$(localstatedir)' + tail
+                return False
+            except:
+                pass
+        else:
+            return True
+    else:
+        return False
+
 def get_module_dir(libdir, acceptable, major, minor):
     '''
     '''
-   
     major, minor = str(major), str(minor)
     single = str(major)
     dual = str(major) + '.' + str(minor)
@@ -387,6 +432,8 @@ def main():
     error |= find_EXECUTABLES(Makefile, flags)
     error |= find_MODULES(Makefile, flags)
     ignore = find_MODULES_OTHERVER(Makefile, flags)
+    error |= find_sysconfdir(Makefile, flags)
+    error |= find_vargamesdir(Makefile, flags)
     # and the install tool.
     error |= find_INSTALL_CMD(Makefile, flags)
     #
@@ -407,6 +454,8 @@ def main():
             'freedesktop',
             'macosx',
             'windows',
+            'sysconfdir',
+            'vargamesdir',
         )
         for variable in of_interest:
             try:

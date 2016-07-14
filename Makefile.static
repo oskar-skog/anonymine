@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.7
+VERSION := 0.2.8
 
 # Three more variables are required: EXECUTABLES and MODULES
 # and MODULES_OTHERVER (= "non-existent").
@@ -50,6 +50,7 @@ MAIN_SRC := $(srcdir)$(NAME).py
 MAIN_STAGE := $(builddir)$(NAME)
 MAIN_DEST := $(DESTDIR)$(EXECUTABLES)/$(NAME)
 
+HISCORE_FILE := $(vargamesdir)/anonymine
 ENGINECFG_STAGE := $(builddir)enginecfg.out
 
 # freedesktop.org, see desktop/README
@@ -89,8 +90,8 @@ $(MAIN_STAGE) : $(MAIN_SRC)
 	@cat "$(MAIN_SRC)" >> "$(MAIN_STAGE)"
 
 $(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
-	@$(info) 'Calibrating enginecfg: 10^8 no-ops'
-	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)"
+	@$(info) 'Making enginecfg: mostly counting processors'
+	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
 
 build-freedesktop : FORCE
 	@: # Refer to desktop/README for information about the following.
@@ -116,7 +117,7 @@ INSTALL ?= install
 
 INSTALL_CFG := python "$(srcdir)install-cfg" "$(INSTALL)"
 
-CFG_DIR := $(DESTDIR)/etc/$(NAME)
+CFG_DIR := $(DESTDIR)$(sysconfdir)/$(NAME)
 # Modules: FOO_SRC, FOO_DEST, FOO_DEST_OTHERVER
 ENGINE_SRC := $(srcdir)$(NAME)_engine.py
 ENGINE_DEST := $(DESTDIR)$(MODULES)/$(NAME)_engine.py
@@ -181,6 +182,9 @@ install : check-install-cfg install-dirs
 	@$(INSTALL) -m 644 "$(ENGINE_SRC)" "$(ENGINE_DEST)"
 	@$(INSTALL) -m 644 "$(SOLVER_SRC)" "$(SOLVER_DEST)"
 	@$(INSTALL) -m 644 "$(FIELDS_SRC)" "$(FIELDS_DEST)"
+	@: # Create highscore file unless it already exists.
+	@touch "$(HISCORE_FILE)"
+	@chmod 666 "$(HISCORE_FILE)"
 	@if [ -n "$(freedesktop)" ]; then \
 		$(info) 'Installing icons and .desktop (NORMAL_INSTALL)'; \
 		$(INSTALL) -m 644 "$(FD_DESKTOP_STAGE)" "$(FD_DESKTOP_DEST)"; \

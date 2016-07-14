@@ -63,7 +63,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 7)
+GAME_VERSION = (0, 2, 8)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -1361,6 +1361,7 @@ def main():
         else:
             locations = (
                 os.path.expanduser('~/.' + GAME_FILENAME + '/' + cfgfile),
+                sys.prefix + '/etc/' + GAME_FILENAME + '/' + cfgfile,
                 '/etc/' + GAME_FILENAME + '/' + cfgfile,
             )
             for location in locations:

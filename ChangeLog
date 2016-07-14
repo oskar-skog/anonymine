@@ -1,4 +1,12 @@
 2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.8
+        * configure.py: New functions: find_sysconfdir and find_vargamesdir.
+        * anonymine.py, configure.py, Makefile.static: Place configuration
+            files in $(sysconfdir)/anonymine
+        * Makefile.static: enginecfg calibration message updated.
+        * mkenginecfg, Makefile.static: Install highscore file.
+        * mkenginecfg: time and pprint modules are no longer needed.
+        * mkenginecfg: Write out the configuration file manually.
     0.2.7
         * anonymine_engine.py anonymine.py: Python 3 fixes:
             - anonymine_engine.hiscores.display.format_deltatime formatted
