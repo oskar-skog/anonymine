@@ -67,7 +67,7 @@ class hiscores_dummy():
     def add_entry(self, inputfunction):
         pass
     def display(self):
-        return '', (), []
+        return 'Higscores unavailable', (), []
 
 class hiscores():
     '''

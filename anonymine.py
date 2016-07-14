@@ -63,7 +63,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 5)
+GAME_VERSION = (0, 2, 6)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -1225,6 +1225,34 @@ def user_input(default, cursescfg_path):
         sys.stdin.readline()
     return parameters
 
+def highscores_add_entry(title, prompt):
+    '''
+    '''
+    sys.stdout.write(title + '\n')
+    sys.stdout.write(prompt + ' ')
+    return sys.stdin.readline()[:-1]
+
+def highscores_display(title, headers, rows):
+    '''
+    '''
+    # Create all rows to be displayed.
+    header_underline = ['='*len(col) for col in headers]
+    header_blankline = ['' for col in headers]
+    all_rows = [headers] + [header_underline] + [header_blankline] + rows
+    # Calculate column widths.
+    column_width = []
+    for column in zip(*all_rows):
+        column_width.append(max(list(map(len, column))) + 1)
+    # Print
+    sys.stdout.write('\n' + '_'*len(title) + '\n')
+    sys.stdout.write(title + '\n\n')
+    for row in all_rows:
+        for index, width in enumerate(column_width):
+            sys.stdout.write(row[index])
+            sys.stdout.write(' ' * (width - len(row[index])))
+            sys.stdout.write('  ')
+        sys.stdout.write('\n')
+    sys.stdout.write('\n')
 
 def play_game(parameters):
     '''Play a custom game of minesweeper.
@@ -1274,19 +1302,17 @@ def play_game(parameters):
         return
     interface.leave()
     
-    def add_entry_test(title, prompt):
-        sys.stdout.write(title + '\n')
-        sys.stdout.write(prompt + ' ')
-        return sys.stdin.readline()[:-1]
-    highscores.add_entry(add_entry_test)
-    print(highscores.display())
-    
     if parameters['insult']:
         if win:
             sys.stdout.write(
                 '\n\n"Congratulations", you won the unlosable game.\n')
         else:
             sys.stdout.write('\n\nYou moron, you lost the unlosable game!\n')
+    sys.stdout.write('Press enter to continue... ')
+    sys.stdin.readline()
+    highscores.add_entry(highscores_add_entry)
+    title, headers, rows = highscores.display()
+    highscores_display(title, headers, rows)
 
 
 def main():

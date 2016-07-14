@@ -1,4 +1,9 @@
 2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.6
+        * anonymine.py: New functions highscores_display and
+            highscores_add_entry.  Highscores are now displayed
+            almost properly.
+        * anonymine_engine.py (hiscores_dummy (display)): Title no longer empty.
     0.2.5
         * anonymine_engine.py (hiscores.add_entry): Reload the hiscores file
             after retrieving the nickname to avoid overwriting potential
