@@ -63,7 +63,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 6)
+GAME_VERSION = (0, 2, 7)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -1229,7 +1229,8 @@ def highscores_add_entry(title, prompt):
     '''
     '''
     sys.stdout.write(title + '\n')
-    sys.stdout.write(prompt + ' ')
+    sys.stdout.write(prompt + ': ')
+    sys.stdout.flush()
     return sys.stdin.readline()[:-1]
 
 def highscores_display(title, headers, rows):
@@ -1309,6 +1310,7 @@ def play_game(parameters):
         else:
             sys.stdout.write('\n\nYou moron, you lost the unlosable game!\n')
     sys.stdout.write('Press enter to continue... ')
+    sys.stdout.flush()
     sys.stdin.readline()
     highscores.add_entry(highscores_add_entry)
     title, headers, rows = highscores.display()

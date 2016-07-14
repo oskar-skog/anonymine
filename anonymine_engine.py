@@ -290,9 +290,9 @@ class hiscores():
             if t <= 3559.999:
                 t = math.ceil(t * 1000.0) / 1000.0
                 subsec = int(math.ceil(t * 1000.0) % 1000)
-                ds = str(subsec/100)
-                cs = str(subsec/10%10)
-                ms = str(subsec%10)
+                ds = str(int(subsec/100))
+                cs = str(int(subsec/10%10))
+                ms = str(int(subsec%10))
                 return tfmt('%M:%S.', t) + ds + cs + ms
             elif t <= 86399:
                 t = math.ceil(t)
@@ -320,7 +320,7 @@ class hiscores():
         ))
         sublist.sort(key=lambda entry: float(entry[1]))
         
-        headers = ['Rank', '/\\T', 'Won at']
+        headers = ['Rank', '/\\T time', 'Won at']
         if self.use_user:
             headers.append('Login name')
         if self.use_nick:

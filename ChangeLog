@@ -1,4 +1,11 @@
 2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.7
+        * anonymine_engine.py anonymine.py: Python 3 fixes:
+            - anonymine_engine.hiscores.display.format_deltatime formatted
+              the ms part as gibberish. [Fixed]
+            - anonymine.play_game, anonymine.highscores_add_entry did not
+              flush. [Fixed]
+        * anonymine_engine.py (hiscores (display)): "/\T" -> "/\T time"
     0.2.6
         * anonymine.py: New functions highscores_display and
             highscores_add_entry.  Highscores are now displayed
