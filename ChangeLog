@@ -1,3 +1,11 @@
+2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.4
+        * anonymine_engine.py (hiscores):  Get the nickname only if the player
+            actually made it to the list.
+        * anonymine_engine.py (hiscores (add_entry)):  The input callback MUST
+            now take two arguments: title, prompt
+        * anonymine.py: Input callback updated.
+
 2016-07-13      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.3
         * anonymine.py: Primitive highscores interface for debugging purposes.

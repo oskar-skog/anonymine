@@ -194,16 +194,13 @@ class hiscores():
         '''Call this method to add yourself to the hiscores list.
         
         `inputfunction` is a callback to the interface.
-        string = inputfunction(prompt)
+        string = inputfunction(titlebar, prompt)
         '''
         # Display only mode:
         if self.delta_time is None:
             return
         # Fetch wanted information about the player
-        if self.use_nick:
-            nick = inputfunction('Nickname')
-        else:
-            nick = ''
+        nick = 'fetch-later'
         if self.use_user:
             try:
                 user = getpass.getuser()
@@ -232,23 +229,31 @@ class hiscores():
             lambda entry: entry[0] != self.paramstring,
             self.hiscores
         ))
+        # Get position
         # Add entry.
         sublist.append(new_entry)
         sublist.sort(key = lambda entry: float(entry[1]))
         sublist = sublist[:self.n_entries]
-        # Write back
-        self.hiscores.extend(sublist)
-        self._store()
         
         position = sublist.index(new_entry)
         if position is not None:
             self.display_caption = "You made it to #{0}".format(
                 position + 1
             )
+            # Get the nickname only if the player actually made it to the list.
+            if self.use_nick:
+                nick = inputfunction(self.display_caption, 'Nickname')
+            else:
+                nick = ''
+            sublist[position][4] = nick
         else:
             self.display_caption = "You didn't make it to the top {0}".format(
                 self.n_entries
             )
+        
+        # Write back
+        self.hiscores.extend(sublist)
+        self._store()
     
     def display(self):
         '''
