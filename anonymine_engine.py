@@ -542,12 +542,6 @@ class game_engine():
                         for this long.
             'filename'  string: tempfile, filename.format(x)
         '''
-        
-        if 'alarm' in dir(signal):      # (unix only)
-            def die(ignore1, ignore2):
-                raise Exception
-            signal.signal(signal.SIGALRM, die)
-        
         def child():
             # The startpoint and its neighbours MUST NOT be mines.
             safe = self.field.get_neighbours(startpoint) + [startpoint]
@@ -555,9 +549,15 @@ class game_engine():
                 lambda x: x not in safe,
                 self.field.all_cells()
             ))
+            # Set up handler for kill signal.
+            # see BUG#6
             def die(ignore1, ignore2):
                 os._exit(0)
-            signal.signal(signal.SIGCONT, die)  # see BUG#6
+            if 'SIGCONT' in dir(signal):
+                signal.signal(signal.SIGCONT, die)
+            else:
+                signal.signal(signal.SIGTERM, die)
+            # Solve
             solved = False
             while not solved:
                 # Choose self.n_mines randomly selected mines.
@@ -568,75 +568,102 @@ class game_engine():
                 self.field.reveal(startpoint)
                 solved = self.solver.solve()[0]
             # Store the mine coordinates in the tempfile.
-            filename = self.cfg['init-field']['filename'].format(os.getpid())
+            #filename = self.cfg['init-field']['filename'].format(os.getpid())
             try:
                 if sys.version_info[0] == 2:
-                    f = open(filename, 'wx')
+                    f = open(filename.format(os.getpid()), 'wx')
                 else:
-                    f = open(filename, 'x')
-                assert not os.path.islink(filename)
+                    f = open(filename.format(os.getpid()), 'x')
             except:
-                raise security_alert('Break-in attempt (tempfile)!')
+                raise security_alert('Exploit attempt (tempfile)!')
             for x, y in mines:
                 f.write('{0} {1}\n'.format(x, y))
             f.close()
-            # Disarm security timeout when finished.
         # FUNCTION STARTS HERE.
         # Clean up after whatever may have called us.
         self.field.clear()
-        # Compatibility for non-unix systems.
+        unix = True
         if 'fork' not in dir(os):
-            if 'alarm' not in dir(signal):
-                child()
-            else:
-                signal.alarm(self.cfg['init-field']['sec-maxtime'])
-                child()
-                signal.signal(signal.SIGALRM, signal.SIG_IGN)
-            return
+            unix = False
+        # Need to know tempfile name before creating children because
+        # we're going to add 64 bits of entropy just in case exclusive
+        # opening somehow would fail to stop a tempfile exploit.
+        filename = self.cfg['init-field']['filename']
+        for i in range(8):
+            filename += '-'+str(ord(os.urandom(1)))
         # Create slaves.
-        children = []
-        for i in range(self.cfg['init-field']['procs']):
-            pid = os.fork()
-            if pid:
-                children.append(pid)
-            else:
+        if unix:
+            children = []
+            for i in range(self.cfg['init-field']['procs']):
                 try:
-                    child()
-                    os._exit(0)
-                except KeyboardInterrupt:
-                    # Kill the python interpreter on ^C.
-                    os._exit(1)
-        
-        # Wait for the first child to finish, or for emergency timeout.
-        success_pid = 0
-        security_timeout = False
-        if 'alarm' in dir(signal):
+                    pid = os.fork()
+                except:
+                    # Do without fork if there are no children at all.
+                    if not children:
+                        unix = False
+                    break
+                if pid:
+                    children.append(pid)
+                else:
+                    try:
+                        child()
+                        os._exit(0)
+                    except KeyboardInterrupt:
+                        # Kill the python interpreter on ^C.
+                        os._exit(1)
+        # Security timeout raises Exception
+        if 'alarm' in dir(signal):      # (unix only)
+            def die(ignore1, ignore2):
+                raise Exception
+            def stop_alarm():
+                signal.signal(signal.SIGALRM, signal.SIG_IGN)
+            signal.signal(signal.SIGALRM, die)
             signal.alarm(self.cfg['init-field']['sec-maxtime'])
+        else:
+            def stop_alarm():
+                pass
+        security_timeout = False
+        # Compatibility for non-unix systems, or on fork failure.
+        if not unix:
+            try:
+                child()
+            except Exception:
+                security_timeout = True
+            stop_alarm()
+            return
+        # Wait for the first child to finish.
+        success_pid = 0
         try:
             while success_pid not in children:
                 pid, status = os.wait()
                 if os.WIFEXITED(status):
                     success_pid = pid
-                else:
-                    print(pid)
+                #else:
+                #    print(pid)
+                # Old debugging crap?
         except Exception:
             security_timeout = True
-        if 'alarm' in dir(signal):
-            signal.signal(signal.SIGALRM, signal.SIG_IGN)
+        stop_alarm()
         # Kill all remaining children.
         # Delete potential left-over tempfiles.
-        filename = self.cfg['init-field']['filename']
+        if 'SIGCONT' in dir(signal):
+            killsig = signal.SIGCONT
+        else:
+            killsig = signal.SIGTERM
         for child in children:
             if child != success_pid:
                 try:
-                    os.kill(child, signal.SIGCONT)      # See BUG#6
-                    os.waitpid(child, 0)    # Destroy the zombie.
                     os.remove(filename.format(child))
                 except OSError:
-                    pass
+                    # File does not exist, process has not finished.
+                    try:
+                        os.kill(child, killsig)      # See BUG#6
+                        os.waitpid(child, 0)    # Destroy the zombie.
+                        os.remove(filename.format(child))
+                    except OSError:
+                        pass
         if security_timeout:
             raise security_alert('Initialization took too long, aborted')
-        
         # Parse the tempfile.
         f = open(filename.format(success_pid))
         lines = f.read().split('\n')[:-1]

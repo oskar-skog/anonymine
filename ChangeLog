@@ -1,3 +1,13 @@
+2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.10
+        * anonymine_engine.py (init_field2):
+            - Use SIGTERM to kill children if SIGCONT is unavailable.
+            - Allow fork() to fail.
+            - Use signal.alarm() in a more elegant way.
+            - Add 64 bits of entropy to the tempfiles, just in case
+              open(file, 'wx') fails to do its trick.
+            
+
 2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.9
         * INSTALL: Updated
@@ -187,7 +197,7 @@
         * Makefile.static (all) [Windows], Windows-*.bat: Gave up trying to
             create those cursed .lnk files from hell.  Use mkshortcut(1)
             from Cygwin instead.
-            https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
+https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         *: Added perkele subdirectory.
 
 2016-02-12      Oskar Skog      <oskar.skog.finland@gmail.com>
