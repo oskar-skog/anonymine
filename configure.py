@@ -53,7 +53,7 @@ def getargs(flag_chars):
         -F
     
     `Makefile` is a dictionary of the specified variables (long
-    options).  The command line syntaxes are:
+    options) and some default variables.  The command line syntaxes are:
         key value
         key=value
         --key value
@@ -128,7 +128,10 @@ def getargs(flag_chars):
     return Makefile, flags
 
 def check_variables(Makefile, flags):
-    '''Check user specified variables. No infinite loops allowed, etc.
+    '''
+    Check user specified variables. No infinite loops allowed, etc.
+    
+    Returns True if any variable has a bad value.  Otherwise False.
     '''
     error = False
     for variable in Makefile:
@@ -193,6 +196,18 @@ def chk_deps():
 
 def find_prefix(Makefile, flags):
     '''
+    All functions beginning with "find_" are Makefile variable generator
+    function.
+    It takes two arguments: Makefile and flags.
+    
+    `Makefile` is a dictionary of all Makefile variables to be prepended
+    to the Makefile.
+    
+    `flags` is a dictionary where each key is a flag and its value is a
+    boolean representing if the flag was set or not.
+    
+    Set Makefile['prefix'] if needed to.
+    This is probably the first variable that needs to be set.
     '''
     # http://stackoverflow.com/questions/4271494/what-sets-up-sys-path-with-python-and-when
     if 'prefix' not in Makefile:
@@ -228,6 +243,11 @@ def find_prefix(Makefile, flags):
 
 def find_EXECUTABLES(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Set Makefile['EXECUTABLES'] if needed to.
+    Depends (directly) on $(gamesdir) and $(bindir).
+    Depends (indirectly) on $(prefix).
     '''
     if 'EXECUTABLES' not in Makefile:
         acceptable = os.getenv('PATH').split(':')
@@ -242,6 +262,10 @@ def find_EXECUTABLES(Makefile, flags):
 
 def find_sysconfdir(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Set Makefile['sysconfdir'] if needed to.
+    Depends on $(prefix)
     '''
     if 'sysconfdir' in Makefile:
         if expand('sysconfdir', Makefile) not in ('/etc', sys.prefix+'/etc'):
@@ -262,6 +286,11 @@ def find_sysconfdir(Makefile, flags):
 
 def find_vargamesdir(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Set Makefile['localstatedir'] if needed to.
+    Set Makefile['vargamesdir'] if needed to.
+    Depends on $(prefix).
     '''
     if 'localstatedir' not in Makefile:
         try:
@@ -288,6 +317,15 @@ def find_vargamesdir(Makefile, flags):
 
 def get_module_dir(libdir, acceptable, major, minor):
     '''
+    Used by `find_MODULES` and `find_MODULES_OTHERVER`.
+    
+    Return the proper item from `acceptable`.
+    Returns False on error.
+    
+    `libdir` is $(libdir).
+    `acceptable` is sys.path of the target interpreter.
+    `major` and `minor` is the version number (language version) of the
+    target interpreter.
     '''
     major, minor = str(major), str(minor)
     single = str(major)
@@ -296,7 +334,7 @@ def get_module_dir(libdir, acceptable, major, minor):
         '/python' + single + '/site-packages',
         '/python' + dual + '/site-packages',
         '/python' + single + '/dist-packages', # Debianism
-        '/python' + dual + '/dist-packages',
+        '/python' + dual + '/dist-packages', # Debianism
     ]
     module_dirs_outside = [
         # Mac OS X
@@ -328,6 +366,14 @@ def get_module_dir(libdir, acceptable, major, minor):
 
 def find_MODULES(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Set Makefile['MODULES'] if needed to.
+    Depends (directly) on $(libdir).
+    Depends (indirectly) on $(prefix).
+    
+    $(MODULES) is where Python modules (for the active version) should
+    be installed.
     '''
     if 'MODULES' not in Makefile:
         Makefile['MODULES'] = get_module_dir(
@@ -350,6 +396,15 @@ def find_MODULES(Makefile, flags):
 
 def find_MODULES_OTHERVER(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Set Makefile['MODULES_OTHERVER'] if needed to.
+    Depends (directly) on $(libdir).
+    Depends (indirectly) on $(prefix).
+    
+    $(MODULES_OTHERVER) is where modules for the other Python version
+    should be installed.  It's set to "non-existent" if there is only
+    one Python version on the system.
     '''
     if 'MODULES_OTHERVER' not in Makefile:
         try:
@@ -380,6 +435,12 @@ def find_MODULES_OTHERVER(Makefile, flags):
 
 def find_INSTALL_CMD(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Sets Makefile['INSTALL_CMD'] if needed.
+    
+    $(INSTALL_CMD) is normally "install", but on Solares it needs to be
+    "/usr/ucb/install".
     '''
     if 'INSTALL_CMD' not in Makefile:
         trywith = [
@@ -399,6 +460,16 @@ def find_INSTALL_CMD(Makefile, flags):
 
 def detect_desktop(Makefile, flags):
     '''
+    See the doc-string for find_prefix as well.
+    
+    Sets Makefile['freedesktop'] if needed.
+    Sets Makefile['macosx'] if needed.
+    Sets Makefile['windows'] if needed.
+    
+    The value for these variables are either an empty string (meaning
+    false) or a non-empty string (meaning true).
+    
+    Checks for the existence of various desktop environments.
     '''
     # LOL, all these tests are based on listing a directory.
     mapping = {
@@ -416,6 +487,16 @@ def detect_desktop(Makefile, flags):
     return False
 
 def main():
+    '''
+    Parse arguments
+    Generate Makefile variables
+    Print messages in verbose mode
+    Prepend Makefile variables to the output Makefile
+    
+    NOTICE:
+    The defaults for $(srcdir), $(builddir), $(gamesdir), $(bindir) and
+    $(libdir) are set in `getargs`.
+    '''
     def v(s):
         if flags['v']:
             sys.stdout.write(s + '\n')
