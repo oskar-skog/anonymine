@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.13
+VERSION := 0.2.14
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -146,7 +146,9 @@ check-install-cfg : FORCE
 	@$(PRE_INSTALL)
 	@: # Cause installation to fail if the configuration is incompatible.
 	@$(info) 'Installing or checking configuration'
-	@: #$(INSTALL) -d "$(CFG_DIR)"
+	@: # Install the directory for the configuration files as install-dirs
+	@: # might not have been run yet.
+	@mkdir -p "$(CFG_DIR)"
 	@$(INSTALL_CFG) "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
 
