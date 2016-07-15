@@ -76,7 +76,7 @@ BUG#5
     can't be deleted (most likely because they don't exist yet);
     Update 2016-07-15:  SIGTERM will be used if SIGCONT does not exist.
 
-(SOLVED) BUG#7 2016-02-09
+BUG#7 2016-02-09
     anonymine.py (curses_game.output)
         window.bkgdset causes a nasty issue when the background character
         is not space (0x20).
