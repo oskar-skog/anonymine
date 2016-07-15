@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.14
+VERSION := 0.2.15
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -276,36 +276,36 @@ uninstall: FORCE
 	fi
 
 print-destinations: FORCE
-	@echo "> Main program:\t\t\t" $(MAIN_DEST)
-	@echo "> Engine module:\t\t" $(ENGINE_DEST)
-	@echo "> Solver module:\t\t" $(SOLVER_DEST)
-	@echo "> Fields module:\t\t" $(FIELDS_DEST)
+	@echo "Main program:         " $(MAIN_DEST)
+	@echo "Engine module:        " $(ENGINE_DEST)
+	@echo "Solver module:        " $(SOLVER_DEST)
+	@echo "Fields module:        " $(FIELDS_DEST)
 	@$(NO_OTHERVER) || \
-		echo "> Engine module symlink:\t" $(ENGINE_DEST_OTHERVER)
+		echo "Engine module symlink:" $(ENGINE_DEST_OTHERVER)
 	@$(NO_OTHERVER) || \
-		echo "> Solver module symlink:\t" $(SOLVER_DEST_OTHERVER)
+		echo "Solver module symlink:" $(SOLVER_DEST_OTHERVER)
 	@$(NO_OTHERVER) || \
-		echo "> Fields module symlink:\t" $(FIELDS_DEST_OTHERVER)
-	@echo "> Configuration files:\t\t" $(CFG_DIR) '(directory)'
-	@echo "> Highscores file:\t\t" $(HISCORE_FILE)
+		echo "Fields module symlink:" $(FIELDS_DEST_OTHERVER)
+	@echo "Configuration files:  " $(CFG_DIR) '(directory)'
+	@echo "Highscores file:      " $(HISCORE_FILE)
 	@if [ -n "$(freedesktop)" ]; then \
-		echo "> [freedesktop.org] .desktop:\t" $(FD_DESKTOP_DEST); \
+		echo "[freedesktop.org] .desktop:" $(FD_DESKTOP_DEST); \
 		for size in $(FD_ICON_SIZES); do \
-			echo "> [freedesktop.org] Icon:\t" $(FD_ICON_DEST); \
+			echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST); \
 		done; \
 	fi
 	@if [ -n "$(macosx)" ]; then \
-		echo "> [Mac OS X] Bundle (App):\t" $(BUNDLE) '(directory)'; \
+		echo "[Mac OS X] Bundle (App):" $(BUNDLE) '(directory)'; \
 	fi
 	@if [ -n "$(windows)" ]; then \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_STARTMENU_NT5X_ALL); \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_STARTMENU_NT5X_ME); \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_STARTMENU_NT6X_ALL); \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_STARTMENU_NT6X_ME); \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_DESKTOP_NT5X_ALL); \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_DESKTOP_NT6X_ALL); \
-		echo "> [Windows] Shortcut:\t\t" $(CYG_DESKTOP_ME); \
-		echo "> [Windows] Icon:\t\t" $(CYG_ICO_DEST); \
+		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT5X_ALL); \
+		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT5X_ME); \
+		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT6X_ALL); \
+		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT6X_ME); \
+		echo "[Windows] Shortcut:" $(CYG_DESKTOP_NT5X_ALL); \
+		echo "[Windows] Shortcut:" $(CYG_DESKTOP_NT6X_ALL); \
+		echo "[Windows] Shortcut:" $(CYG_DESKTOP_ME); \
+		echo "[Windows] Icon:    " $(CYG_ICO_DEST); \
 	fi
 
 PKG_INDIR := $(NAME)-$(VERSION)

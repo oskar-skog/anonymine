@@ -1,4 +1,7 @@
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.15
+        * Makefile.static (print-destinations): \t doesn't work on FreeBSD;
+            indented manually with normal whitespace instead.
     0.2.14
         * Makefile.static: Undo change in 0.2.9 causing configuration files
             to not be installed in clean environments:
