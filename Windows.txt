@@ -27,11 +27,11 @@ Installation instructions for Windows
     
     *4. After a while, the Cygwin installer will launch and ask you to select
         a mirror to download Cygwin from.  After choosing the mirror you will
-        only have to click "next".
+        only have to click "next" a few times.
         (This will only happen the first time you install the game.)
     
      5. The Cygwin installer will launch to install all dependencies of the
-        game, you will only have to click "next".
+        game. You will only have to click "next" a few times.
     
     
     

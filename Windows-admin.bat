@@ -1,4 +1,4 @@
-:: @echo off
+@echo off
 :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :: Where you want Cygwin to be installed:

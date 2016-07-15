@@ -41,7 +41,6 @@ Installation:
       enginecfg configuration file
 
 
-
 What's new in 0.1.0 since 0.0.0?
 ================================
 
@@ -77,4 +76,3 @@ What's new in 0.1.0 since 0.0.0?
 Broken releases:
     Python 2 broke on 0.0.38
     Python 3 broke on 0.0.33
-

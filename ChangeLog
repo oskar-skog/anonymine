@@ -1,4 +1,6 @@
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.11
+        *: Tidied up lots of files.
     0.2.10
         * anonymine_engine.py (init_field2):
             - Use SIGTERM to kill children if SIGCONT is unavailable.
@@ -6,7 +8,6 @@
             - Use signal.alarm() in a more elegant way.
             - Add 64 bits of entropy to the tempfiles, just in case
               open(file, 'wx') fails to do its trick.
-            
 
 2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.9

@@ -524,10 +524,6 @@ class game_engine():
         self.solver = solver.solver()
         self.solver.field = self.field
     
-    #def init_field1(self, startpoint):
-        # Available in versions 0.0.28 to 0.0.35.
-        # Available as just "init_field" in versions prior to 0.0.28.
-    
     def init_field2(self, startpoint):
         '''(Internal use.)  Uses enginecfg.
         
@@ -568,7 +564,6 @@ class game_engine():
                 self.field.reveal(startpoint)
                 solved = self.solver.solve()[0]
             # Store the mine coordinates in the tempfile.
-            #filename = self.cfg['init-field']['filename'].format(os.getpid())
             try:
                 if sys.version_info[0] == 2:
                     f = open(filename.format(os.getpid()), 'wx')

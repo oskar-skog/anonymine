@@ -11,7 +11,6 @@ Apart from being solvable without guessing, anonymine:
     - The anonymine_solver module can also be used to "measure the difficulty"
       of a field.
 
-
 You can also try it over SSH at
 ssh://anonymine:anonymine@anonymine-demo.oskog97.com:2222 ie:
 User "anonymine", password "anonymine", host "anonymine-demo.oskog97.com",
@@ -62,8 +61,6 @@ Tested platforms
     openindiana [Py 2.6]      /usr/ucb/install is buggy. GNOME terminal worse.
 
 
-
-
 Goals
 =====
 
@@ -74,7 +71,6 @@ Goals
     0.4     Mouse support.
     0.5     Create a statistics collection module.
     0.6     Good documentation for the solver algorithm.
-
 
 
 Files in this package

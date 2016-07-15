@@ -60,7 +60,6 @@ if __name__ == '__main__':
     main()
 __EOF__
 
-
 # Count the number of logical processors.
 # WARNING: If the first command in a pipeline fails, the pipeline itself may
 # succeed!  (wc -l says there are zero processors.)
