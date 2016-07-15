@@ -1,26 +1,5 @@
-BUG#0 2016-01-03
-    NO HYPOTHESIS
-    Version: Anonymine 0.0.15
-    Python: CPython 3.1.3
-    OS: (DEAD) Debian Squeeze (kFreeBSD 8)
-    curses.version: 2.2
-    Library: ncurses5.7
-    Description:
-        Things get fucked up when curses gets reinitialized.
-        Symptoms:
-            (1st game works fine)
-            2nd game: Crap is written on the terminal.
-                Requires complete redrawing.
-            Issues with aborting the game. Stuck in an infinite loop.
-                A new game starts immediately; no questions are asked while
-                not in curses mode.
-        Sending a ^Z during the first or second game and then bringing the
-        game back to foreground seems to disarm the issue with aborting.
-    NOTICE:
-        This VM "died" of some reason.
-        I can't do any further testing.
-
-BUG#1 long known, insignificant
+BUG#1
+    long known, insignificant
     Python: CPython 2.7.3 (3.2.3 doesn't seem to have this bug,
         but further testing is needed.)
     OS: Only one has been tested: Trisquel 6.0 (Linux 3.2)
@@ -33,7 +12,7 @@ BUG#1 long known, insignificant
             sys.excepthook is missing
             lost sys.stderr
 
-BUG#2 2016-01-07, solved
+(SOLVED) BUG#2 2016-01-07
     Solved in 0.0.25, bug is available in 0.0.24 and below:
         A bug in anonymine_solver.py (solver.rule9bf) has been fixed,
         the symptoms of this bug haven't occured since the fix.
@@ -63,7 +42,6 @@ BUG#2 2016-01-07, solved
 (SOLVED) BUG#3 2016-01-08, severe
     More or less platform specific.
     OS: Debian 8 (Linux 3.16) (x86-64)
-    Python: CPython 2.7.9, CPython 3.4.2
     curses.version: 2.2
     Library: ncurses5.9
     Description:
@@ -87,63 +65,50 @@ BUG#5
     wide, and will be loaded if available.  If they are out of date the game
     will crash.
 
-BUG#6 2016-02-03
+(SOLVED) BUG#6 2016-02-03
     There was a small possibility that another slave would finish before
     getting killed by the master, causing os.kill to fail.
     Because of this, the slaves will from now on be killed with SIGCONT
     rather than SIGTERM, as SIGCONT will be ignored by an innocent process
     that might start after a second slave finishes but before the slave
     gets killed by the master.
+    Update 2016-07-15:  Processes will only be killed if their tempfiles
+    can't be deleted (most likely because they don't exist yet);
+    Update 2016-07-15:  SIGTERM will be used if SIGCONT does not exist.
 
-BUG#7 2016-02-09
+(SOLVED) BUG#7 2016-02-09
     anonymine.py (curses_game.output)
         window.bkgdset causes a nasty issue when the background character
         is not space (0x20).
     Workaround in place.
 
-SOLVED BUG#8 2016-07-07
+(SOLVED) BUG#8 2016-07-07
     mkenginecfg
         `nonexistent-cpulister | wc -l` prints "0" and SUCCEEDS.
         The bug was fixed immediately on discovery.
 
+
 Problematic platforms
 =====================
 
-    #0  Debian GNU/kFreeBSD (Debian Squeeze)
-    #1  Debian 7 with CPython 2.6.7
-    #2  openindiana
-    #3  PyPy
-    #4  Cygwin
+    #1  Minor: Debian 7 with CPython 2.6.7
+    #2  Major: openindiana
+    #3  Fatal: PyPy
+    #4  Minor: Cygwin
     
-    #0:
-        OS:             Debian Squeeze (6.x)
-        kernel:         kFreeBSD k8
-        arch:           x86-32 (VirtualBox)
-        Python:         CPython 3.1.3
-        curses.version: 2.2
-        curses library: ncurses 5.7
-        severity:       Potentially severe.
-        symptoms:       First round is symptom-free. The game can be quit
-                        after the first game.  The following rounds:
-                        ^C doesn't work; ^Z doesn't work; crap is printed on
-                        the screen whenever you do something; doesn't ask for
-                        the game parameters between the rounds.
     #1
-        OS:             Debian 7
-        kernel:         Linux
-        arch:           x86-32 (VirtualBox)
+        OS:             Debian 7 (x86-32 on VM)
         Python:         CPython 2.6.8
         curses.version  2.2
         curses library: ncurses 5.9
         severity:       minor/potentially medium
         symptoms:       Terminal resizing doesn't work.
+    
     #2
         OS:             openindiana
         kernel:         illumos
         arch:           x86-32 (VirtualBox)
         Python:         CPython 2.6.4
-        curses.version: 2.2
-        curses library: unknown
         terminal:       GNOME Terminal 2.30.2
         severity:       bad
         symptoms:       * Manual installation required:
@@ -152,11 +117,7 @@ Problematic platforms
                         * Crashes ALL terminal windows when the window is
                             shrunk too much.
     #3
-        OS:             Debian 8        (Also with Trisquel 6.0  )
-        kernel:         Linux 3.16      (          with Linux 3.2)
-        arch:           x86-64 (native)
-        Python:         PyPy (2.4.0) (language: 2.7.8)
-        curses:         irrelevant
+        Python:         PyPy
         severity:       severe
         symptoms:       The solver function misbehaves.
                         This probably causes the long/infinite initialization
@@ -177,10 +138,8 @@ Problematic platforms
     
     #4
         OS:             Cygwin (unknown)
-        Windows:        NT 6.0 (64 bit) or NT 6.1 (64 bit)
-        arch:           x86-64
+        Windows:        NT 6.1 (64 bit)
         Python:         2.7.10 (python package on Cygwin; probably CPython)
-        curses:         unknown
         severity:       conditionally severe
         symptoms:       Screen goes black on resizing.
 
