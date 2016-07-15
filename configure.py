@@ -1,4 +1,29 @@
 #!/usr/bin/ptyhon
+
+# Copyright (c) Oskar Skog, 2016
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# 1.  Redistributions of source code must retain the above copyright notice,
+#     this list of conditions and the following disclaimer.
+# 
+# 2.  Redistributions in binary form must reproduce the above copyright notice,
+#     this list of conditions and the following disclaimer in the documentation
+#     and/or other materials provided with the distribution.
+# 
+# This software is provided by the copyright holders and contributors "as is"
+# and any express or implied warranties, including, but not limited to, the
+# implied warranties of merchantability and fitness for a particular purpose
+# are disclaimed. In no event shall the copyright holder or contributors be
+# liable for any direct, indirect, incidental, special, exemplary, or
+# consequential damages (including, but not limited to, procurement of
+# substitute goods or services; loss of use, data, or profits; or business
+# interruption) however caused and on any theory of liability, whether in
+# contract, strict liability, or tort (including negligence or otherwise)
+# arising in any way out of the use of this software, even if advised of the
+# possibility of such damage.
+
 import sys
 import os
 
@@ -62,13 +87,6 @@ def getargs(flag_chars):
     `flags` is a dictionary where each character of `flag_chars` is a
     key. The value is True if the flag was specified and False if not.
     '''
-    default = {
-        'srcdir': '',           # REQUIRED
-        'builddir': '',         # REQUIRED
-        'gamesdir': '$(prefix)/games',
-        'bindir': '$(prefix)/bin',
-        'libdir': '$(prefix)/lib',
-    }
     # Find all variables
     accept_flags = True
     flags = {}
@@ -121,10 +139,6 @@ def getargs(flag_chars):
         sys.stderr.write('There may be more errors.\n')
         sys.exit(1)
     
-    # Fill in the defaults if needed.
-    for key in default:
-        if key not in Makefile:
-            Makefile[key] = default[key]
     return Makefile, flags
 
 def check_variables(Makefile, flags):
@@ -500,7 +514,16 @@ def main():
     def v(s):
         if flags['v']:
             sys.stdout.write(s + '\n')
-    Makefile, flags = getargs('fvw')
+    
+    Makefile = {
+        'srcdir': '',           # REQUIRED
+        'builddir': '',         # REQUIRED
+        'gamesdir': '$(prefix)/games',
+        'bindir': '$(prefix)/bin',
+        'libdir': '$(prefix)/lib',
+    }
+    forced_vars, flags = getargs('fvw')
+    Makefile.update(forced_vars)
     
     error = chk_deps()
     # Find the prefix and check sanity of the variables.

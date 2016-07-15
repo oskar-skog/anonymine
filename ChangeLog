@@ -6,6 +6,7 @@
             - Tidied
             - Removed #0
         * configure.py:  Wrote missing doc-strings.
+        * configure.py:  Moved default Makefile variables from getargs to main.
     0.2.10
         * anonymine_engine.py (init_field2):
             - Use SIGTERM to kill children if SIGCONT is unavailable.
