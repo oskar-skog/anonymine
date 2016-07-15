@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.11
+VERSION := 0.2.12
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -284,7 +284,8 @@ print-destinations: FORCE
 		echo "> Solver module symlink:\t" $(SOLVER_DEST_OTHERVER)
 	@$(NO_OTHERVER) || \
 		echo "> Fields module symlink:\t" $(FIELDS_DEST_OTHERVER)
-	@echo "> Configuration files:\t\t" $(CFG_DIR)
+	@echo "> Configuration files:\t\t" $(CFG_DIR) '(directory)'
+	@echo "> Highscores file:\t\t" $(HISCORE_FILE)
 	@if [ -n "$(freedesktop)" ]; then \
 		echo "> [freedesktop.org] .desktop:\t" $(FD_DESKTOP_DEST); \
 		for size in $(FD_ICON_SIZES); do \
@@ -292,7 +293,7 @@ print-destinations: FORCE
 		done; \
 	fi
 	@if [ -n "$(macosx)" ]; then \
-		echo "> [Mac OS X] Bundle (App):\t" $(BUNDLE); \
+		echo "> [Mac OS X] Bundle (App):\t" $(BUNDLE) '(directory)'; \
 	fi
 	@if [ -n "$(windows)" ]; then \
 		echo "> [Windows] Shortcut:\t\t" $(CYG_STARTMENU_NT5X_ALL); \

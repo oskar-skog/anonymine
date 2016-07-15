@@ -33,5 +33,3 @@ Installation instructions for Windows
      5. The Cygwin installer will launch to install all dependencies of the
         game. You will only have to click "next" a few times.
     
-    
-    

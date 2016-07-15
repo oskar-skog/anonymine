@@ -11,7 +11,7 @@ DEPENDENCIES
     * The curses module. (Python bindings for curses.)
     * A screen size of at least 10 columns by 8 rows.
         (7 by 4 for non-hexagonal gametypes.)
-    * A unix-like operating system AND/OR the argparse module.
+    * A unix-like operating system or the argparse module.
     
     Normal installation will only work on unix-like operating
     systems.
@@ -24,38 +24,35 @@ DEPENDENCIES
 PROPER INSTALLATION
 ===================
 
-Some progress has been made; the Makefile will be written by the configure
-script.
-
-If you want to use srcdir and builddir, you still have to configure the
-Makefile manually.
-
-In the directory extracted from the tarball, run:
-    ./configure
-    make
-    make install        # as root
-
-NOTICE:
-    The system-wide configuration files for the game will only be created if
-    they do not exist.  `make install` will fail if the format of the
-    configuration has changed and old configuration files exist.
+    In the directory extracted from the tarball, run:
+        ./configure
+        make
+        make install        # as root
     
-    To force an overwrite of the system-wide configuration files, run
-    `make overwrite-cfg`.  If you do this because of a failed make install,
-    run make install again.
+    Use "./configure -v" to make the whole installation process verbose.
 
-Anonymine will be installed as 'anonymine'.
+    NOTICE:
+        The system-wide configuration files for the game will only be created
+        if they do not exist.  `make install` will fail if the format of the
+        configuration has changed and old configuration files exist.
+        
+        To force an overwrite of the system-wide configuration files, run
+        `make overwrite-cfg`.  If you do this because of a failed make install,
+        run make install again.
 
-You may want to make some changes to '/etc/anonymine/enginecfg'.
+    Anonymine will be installed as 'anonymine'.
+    
+    You may want to make some changes to '$(sysconfdir)/anonymine/enginecfg'.
+    Run "make print-destinations" to find out where files will be installed.
 
 
 RUN IN CURRENT DIRECTORY
 ========================
 
-You can run Anonymine right here in this directory (the directory) of the
-package.
-
-python anonymine.py -c cursescfg -e enginecfg.default
+    You can run Anonymine right here in this directory (the directory) of the
+    package.
+    
+    python anonymine.py -c cursescfg -e enginecfg.default
 
 
 ADVANCED INSTALLATION
@@ -200,6 +197,32 @@ ADVANCED INSTALLATION
             Makefile.
     
     
+    srcdir, builddir and DESTDIR
+    ============================
+    
+        srcdir          Directory extracted from the tarball.
+        
+        builddir        Temporary storage;
+                        directory for files from the build process.
+        
+        DESTDIR         Prepended to all paths on install and uninstall;
+                        alternative root.
+        
+        
+        Both srcdir and builddir default to the current working directory.
+        
+        These three variables can be sent to either ./configure or make,
+        but there are some differences between the two.
+        
+        ./configure will prepend variables to the Makefile which will be
+        saved in builddir.
+        
+        Sending builddir= to ./configure will create the Makefile inside
+        builddir. While if you send builddir= to make, you'll have to run
+        "make builddir=foo && sudo make builddir=foo install" in the
+        current directory.
+    
+    
     Targets in the Makefile
     =======================
     
@@ -234,6 +257,7 @@ ADVANCED INSTALLATION
             make tarballs
         
         zip
+            NOTE: Requires unix2dos(1) and zip(1).
             Generate an archive suitable for Windrugs users.
                 - zip
                 - CRLF line endings

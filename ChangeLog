@@ -1,4 +1,11 @@
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.12
+        * INSTALL:
+            - Tidying.
+            - Wrote a section on srcdir, builddir and DESTDIR.
+        * Makefile.static (print-destinations):
+            - Highscores file
+            - Append (directory) on directory lines.
     0.2.11
         *: Tidied up lots of files.
         * BUGS:
