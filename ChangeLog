@@ -1,4 +1,9 @@
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.13
+        * configure.py: BUGFIX in many find_ functions:
+            Don't use Makefile[var] for checking the existence of directories,
+            use expand(var, Makefile) instead.  Detected on FreeBSD where
+            $(prefix)/var both exists and doesn't.
     0.2.12
         * INSTALL:
             - Tidying.

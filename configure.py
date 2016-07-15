@@ -290,7 +290,7 @@ def find_sysconfdir(Makefile, flags):
     else:
         if Makefile['prefix'] == sys.prefix:
             try:
-                os.listdir(Makefile['prefix'] + '/etc')
+                os.listdir(expand('prefix', Makefile) + '/etc')
                 Makefile['sysconfdir'] = '$(prefix)/etc'
                 return False
             except:
@@ -308,7 +308,7 @@ def find_vargamesdir(Makefile, flags):
     '''
     if 'localstatedir' not in Makefile:
         try:
-            os.listdir(Makefile['prefix'] + '/var')
+            os.listdir(expand('prefix', Makefile) + '/var')
             Makefile['localstatedir'] = '$(prefix)/var'
         except:
             try:
@@ -319,7 +319,7 @@ def find_vargamesdir(Makefile, flags):
     if 'vargamesdir' not in Makefile:
         for tail in ('/games', ''):
             try:
-                os.listdir(Makefile['localstatedir'] + tail)
+                os.listdir(expand('localstatedir', Makefile) + tail)
                 Makefile['vargamesdir'] = '$(localstatedir)' + tail
                 return False
             except:
