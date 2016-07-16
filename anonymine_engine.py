@@ -252,7 +252,17 @@ class hiscores():
                     'Nickname'
                 )
                 if sys.version_info[0] == 2:
-                    nick = nick.decode(locale.getpreferredencoding())
+                    encodings = [
+                        locale.getpreferredencoding(),  # SHOULD be correct.
+                        'utf-8',                        # Always worth trying.
+                        'iso-8859-1'                    # Will not fail.
+                    ]
+                    for encoding in encodings:
+                        try:
+                            nick = nick.decode(locale.getpreferredencoding())
+                            break
+                        except:
+                            pass
         # Load the list again (inputfunction may take a very long time)
         # and add the nickname to the entry.
         new_entry[4] = nick
