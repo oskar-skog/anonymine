@@ -573,9 +573,9 @@ class game_engine():
                 solved = self.solver.solve()[0]
             # Store the mine coordinates in the tempfile.
             try:
-                if sys.version_info[0] == 2:
+                try:
                     f = open(filename.format(os.getpid()), 'wx')
-                else:
+                except ValueError:
                     f = open(filename.format(os.getpid()), 'x')
             except:
                 raise security_alert('Exploit attempt (tempfile)!')
