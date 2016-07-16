@@ -11,8 +11,7 @@
         * anonymine.py (highscores_add_entry): sys.stdin.readline may raise
             UnicodeDecodeError on Python 3. Grr.
         * anonymine_engine.py (init_field2): open(file, 'x') raised ValueError
-            on Python 3.2, try with one and handle exception rather than
-            doing different things for Python 2 and 3.
+            on Python 3.2, **try** 'wx' and then 'x', and if both fail, 'w'.
 
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.15

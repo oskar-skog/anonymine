@@ -576,7 +576,11 @@ class game_engine():
                 try:
                     f = open(filename.format(os.getpid()), 'wx')
                 except ValueError:
-                    f = open(filename.format(os.getpid()), 'x')
+                    try:
+                        f = open(filename.format(os.getpid()), 'x')
+                    except ValueError:
+                        # WARNING WARNING
+                        f = open(filename.format(os.getpid()), 'w')
             except:
                 raise security_alert('Exploit attempt (tempfile)!')
             for x, y in mines:
