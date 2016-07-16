@@ -1227,6 +1227,7 @@ def user_input(default, cursescfg_path):
 
 def highscores_add_entry(title, prompt):
     '''
+    Input callback for `game_engine.hiscores.add_entry`.
     '''
     sys.stdout.write(title + '\n')
     while True:
@@ -1239,6 +1240,7 @@ def highscores_add_entry(title, prompt):
 
 def highscores_display(title, headers, rows):
     '''
+    Output formatter function for `game_engine.hiscores.display`.
     '''
     # Create all rows to be displayed.
     header_underline = ['='*len(col) for col in headers]
