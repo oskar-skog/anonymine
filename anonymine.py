@@ -1229,9 +1229,13 @@ def highscores_add_entry(title, prompt):
     '''
     '''
     sys.stdout.write(title + '\n')
-    sys.stdout.write(prompt + ': ')
-    sys.stdout.flush()
-    return sys.stdin.readline()[:-1]
+    while True:
+        sys.stdout.write(prompt + ': ')
+        sys.stdout.flush()
+        try:
+            return sys.stdin.readline()[:-1]
+        except UnicodeDecodeError:
+            sys.stderr.write('Decoding error.\n')
 
 def highscores_display(title, headers, rows):
     '''

@@ -8,6 +8,8 @@
               locale.getprefferedencoding() as encoding
             - The maxsize key now refers to the number of bytes on both
               Pythons.
+        * anonymine.py (highscores_add_entry): sys.stdin.readline may raise
+            UnicodeDecodeError on Python 3. Grr.
 
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.15
