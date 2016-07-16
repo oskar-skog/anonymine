@@ -46,6 +46,7 @@ import signal
 import sys
 import math
 import getpass
+import locale
 
 # Allow module names to be changed later.
 import anonymine_solver as solver
@@ -166,11 +167,11 @@ class hiscores():
         def line_to_entry(line):
             return tuple(line.split(':', 4))
         try:
-            f = open(self.hiscorefile)
+            f = open(self.hiscorefile, 'rb')
         except IOError as err:
             self.display_caption = 'IO error on read: ' + err.strerror
             return
-        filecontent = f.read()
+        filecontent = f.read().decode('utf-8')
         lines = list(filter(None, filecontent.split('\n')))
         self.hiscores = list(map(line_to_entry, lines))
     
@@ -179,9 +180,10 @@ class hiscores():
         content = ''
         for entry in self.hiscores:
             content += ':'.join(entry) + '\n'
+        content = content.encode('utf-8')
         if len(content) <= self.maxsize:
             try:
-                f = open(self.hiscorefile, 'w')
+                f = open(self.hiscorefile, 'wb')
             except IOError as err:
                 self.display_caption = 'IO error on write: ' + err.strerror
                 return
@@ -249,6 +251,8 @@ class hiscores():
                     'You made it to #{0}'.format(position + 1),
                     'Nickname'
                 )
+                if sys.version_info[0] == 2:
+                    nick = nick.decode(locale.getpreferredencoding())
         # Load the list again (inputfunction may take a very long time)
         # and add the nickname to the entry.
         new_entry[4] = nick

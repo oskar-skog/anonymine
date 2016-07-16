@@ -1,3 +1,14 @@
+2016-07-16      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.16
+        * anonymine_engine.py (hiscores): Force UTF-8 on the file.
+            - Functions may return unicode objects as strings on Python 2, but
+              that's no problem as unicode and str can be combined as long as
+              the str only contains bytes in the ASCII range.
+            - add_entry, will decode the str object on Python 2 using
+              locale.getprefferedencoding() as encoding
+            - The maxsize key now refers to the number of bytes on both
+              Pythons.
+
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.15
         * Makefile.static (print-destinations): \t doesn't work on FreeBSD;

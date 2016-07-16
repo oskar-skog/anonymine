@@ -5,13 +5,13 @@ if [ $# -eq 1 ]; then
         if [ "$1" = $help_option ]; then
             if [ -z "$PAGER" ]; then PAGER=false; fi
             $PAGER INSTALL || pager INSTALL || less INSTALL \
-                || more INSTALL || echo Read '"'INSTALL'"'
+                || more INSTALL || echo Read '"INSTALL"'
             exit
         fi
     done
     for version_option in -V --version; do
         if [ "$1" = $version_option ]; then
-            echo Anonymine 0.2.15
+            echo Anonymine 0.2.16
             echo Handmade configure and configure.py
             echo Version info from ./configure may lag behind.
             exit
