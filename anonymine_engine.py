@@ -259,7 +259,7 @@ class hiscores():
                     ]
                     for encoding in encodings:
                         try:
-                            nick = nick.decode(encoding))
+                            nick = nick.decode(encoding)
                             break
                         except:
                             pass
