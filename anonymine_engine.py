@@ -138,7 +138,9 @@ class hiscores():
         
         `cfg` is a dictionary that MUST contain the following keys:
             - 'file'        string; Path to the highscores file
-            - 'maxsize'     int; Maximum allowed filesize
+            - 'maxsize'     int; Maximum allowed filesize (bytes)
+            - 'nick-maxlen' int; Maximum allowed length of nickname
+                            (unicode code points)
             - 'entries'     int; Entries per sublist (paramstring)
             - 'use-user'    bool; List and display user/login names
             - 'use-nick'    bool; List and display nicknames
@@ -155,6 +157,7 @@ class hiscores():
         self.n_entries = cfg['entries']
         self.use_user = cfg['use-user']
         self.use_nick = cfg['use-nick']
+        self.nick_maxlen = cfg['nick-maxlen']
         
         # The caption that will be displayed by the callback sent to
         # `display`.  This caption can be changed by any method before
@@ -247,16 +250,21 @@ class hiscores():
         position = load_split_add(self, new_entry).index(new_entry)
         if position is not None:
             if self.use_nick:
-                nick = inputfunction(
-                    'You made it to #{0}'.format(position + 1),
-                    'Nickname'
-                )
-                if sys.version_info[0] == 2:
-                    # Don't try decoding using other charsets, it'll just
-                    # blow up on output instead.
-                    nick = nick.decode(
-                        locale.getpreferredencoding(), errors='ignore'
-                    )
+                title = 'You made it to #{0}'.format(position + 1)
+                while True:
+                    nick = inputfunction(title, 'Nickname')
+                    if sys.version_info[0] == 2:
+                        # Don't try decoding using other charsets, it'll just
+                        # blow up on output instead.
+                        nick = nick.decode(
+                            locale.getpreferredencoding(), errors='ignore'
+                        )
+                    if len(nick) > self.nick_maxlen:
+                        title = 'No more than {0} characters allowed'.format(
+                            self.nick_maxlen
+                        )
+                    else:
+                        break
         # Load the list again (inputfunction may take a very long time)
         # and add the nickname to the entry.
         new_entry[4] = nick

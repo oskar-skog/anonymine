@@ -10,8 +10,9 @@
     'hiscores': {
         'file':         '/var/games/anonymine',
         'maxsize':      524288,
-        'entries':      10,
+        'entries':      16,
         'use-user':     True,
         'use-nick':     True,
+        'nick-maxlen':  100,
     },
 }

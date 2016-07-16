@@ -1,6 +1,6 @@
 2016-07-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.16
-        * anonymine_engine.py (hiscores): Force UTF-8 on the file.
+        * anonymine_engine.py (hiscores), etc: Force UTF-8 on the file.
             - Functions may return unicode objects as strings on Python 2, but
               that's no problem as unicode and str can be combined as long as
               the str only contains bytes in the ASCII range.
@@ -8,10 +8,12 @@
               locale.getprefferedencoding() as encoding
             - The maxsize key now refers to the number of bytes on both
               Pythons.
+            - Added a nick-maxlen key to limit the length of nicknames.
         * anonymine.py (highscores_add_entry): sys.stdin.readline may raise
             UnicodeDecodeError on Python 3. Grr.
         * anonymine_engine.py (init_field2): open(file, 'x') raised ValueError
             on Python 3.2, **try** 'wx' and then 'x', and if both fail, 'w'.
+        * mkenginecfg, enginecfg.default: entries set to 16, previously: 10
 
 2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.15

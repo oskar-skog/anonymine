@@ -48,10 +48,11 @@ def main():
     },
     'hiscores': {
         'file':         "'''+str(hiscorefile)+'''",
-        'entries':      10,     # Top N, how many entries per sublist
-        'maxsize':      524288, # Security: Maximum allowed filesize
+        'entries':      16,     # Top N, how many entries per sublist
+        'maxsize':      524288, # Security: Maximum allowed filesize (bytes)
         'use-user':     True,   # List login names
         'use-nick':     True,   # Let players choose their own names
+        'nick-maxlen':  100,    # Longest allowed nickname (unicode codepoints)
     },
 }
 ''')
