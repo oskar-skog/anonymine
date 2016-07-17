@@ -3,6 +3,7 @@
         * anonymine.py, BUGS: Got away with only redrawing on the first click
             (initialization).  This was previously a potential performance
             issue.
+        * cursescfg: Bright/bold magenta was too bright for the hexagonal grid.
     0.2.17
         * BUGS, anonymine.py: #9, use a different fix.
             - `ask` modified to handle EINTR

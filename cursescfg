@@ -142,7 +142,7 @@
         'number':         (3, None, "GREEN",   "BLACK",  curses.A_BOLD),
         'zero':           (3, '-',  "GREEN",   "BLACK",  curses.A_BOLD),
         'mine':           (4, 'X',  "RED",     "BLACK",  curses.A_BLINK),
-        'grid':           (5, None, "MAGENTA", "BLACK",  curses.A_BOLD),
+        'grid':           (5, None, "MAGENTA", "BLACK",  curses.A_NORMAL),
         'cursor-l':       (6, '(',  "CYAN",    "BLACK",  curses.A_BOLD),
         'cursor-r':       (6, ')',  "CYAN",    "BLACK",  curses.A_BOLD),
         'text':           (7, None, "YELLOW",  "BLACK",  curses.A_BOLD),
