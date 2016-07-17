@@ -46,15 +46,14 @@ A minesweeper that can be solved without guessing
 import curses
 import os
 import sys
+import errno
 
 # Allow module names to be changed later.
 import anonymine_engine as game_engine
 
 # argparse:     Losing the ability to take command line options is no biggy.
 # traceback:    Not needed unless shit happens.
-# signal:       Required to fix one resizing bug.
 import traceback        # Not required.
-import signal           # Not required.
 # argparse is new in 2.7 and 3.2.
 try:
     import argparse
