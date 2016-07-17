@@ -62,7 +62,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 17)
+GAME_VERSION = (0, 2, 18)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -492,7 +492,8 @@ class curses_game():
             curses.reset_shell_mode()   # BUG #3 (See the file "BUGS".)
             engine.reveal(self.cursor)
             curses.reset_prog_mode()    # BUG #3 (See the file "BUGS".)
-            self.window.redrawwin()     # BUG #3 (See the file "BUGS".)
+            if engine.game_status == 'pre-game':
+                self.window.redrawwin()     # BUG #3 (See the file "BUGS".)
         elif command in direction_keys:
             self.travel(engine.field, command)
         else:

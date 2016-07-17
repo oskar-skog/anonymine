@@ -39,7 +39,7 @@ BUG#1
             assert self.field.get(neighbour) != 'X'
         AssertionError
 
-(SOLVED) BUG#3 2016-01-08, severe
+(WORKAROUND) BUG#3 2016-01-08, severe
     More or less platform specific.
     OS: Debian 8 (Linux 3.16) (x86-64)
     curses.version: 2.2
@@ -55,11 +55,17 @@ BUG#1
             The screen requires one complete redrawal of the screen, so that
         will also be done.
     NOTICE:
+        FOR THE LOVE OF KEN, DO NOT REMOVE WORKAROUND!!
+    NOTICE:
         DO NOT REMOVE.
         This is referenced from the source.
-    WEIRD:
+    NOTICE: WEIRD:
         Of some reason: This must be done whenever a cell is clicked on,
         not just around initialization.
+    Update 2016-07-17:
+        The windows only needs to be redrawn on initialization, not on every
+        click.
+        Trying to leave and re-enter curses mode was no good.
 
 BUG#4 is bogus
 

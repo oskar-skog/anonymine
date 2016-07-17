@@ -1,4 +1,8 @@
 2016-07-17      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.18
+        * anonymine.py, BUGS: Got away with only redrawing on the first click
+            (initialization).  This was previously a potential performance
+            issue.
     0.2.17
         * BUGS, anonymine.py: #9, use a different fix.
             - `ask` modified to handle EINTR
