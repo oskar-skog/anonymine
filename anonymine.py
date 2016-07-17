@@ -63,7 +63,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 16)
+GAME_VERSION = (0, 2, 17)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -291,7 +291,7 @@ class curses_game():
         def toosmall():
             self.leave()
             sys.stdout.flush()
-            sys.stderr.write('\nSCREEN TOO SMALL\n')
+            output(sys.stderr,'\nSCREEN TOO SMALL\n')
             sys.stderr.flush()
             sys.exit(1)
         
@@ -332,36 +332,6 @@ class curses_game():
         except:
             pass
         curses.endwin()
-        # BUG:
-        #       sys.stdin.readline() in `ask` dies with IOError and
-        #       errno=EINTR when the terminal gets resized after curses has
-        #       been de-initialized.
-        #       1: SIGWINCH is sent by the terminal when the screen has been
-        #           resized.
-        #       2: curses forgot to restore the signal handling of SIGWINCH
-        #           to the default of ignoring the signal.
-        #           NOTE: signal.getsignal(signal.SIGWINCH) incorrectly
-        #               returns signal.SIG_DFL. (Default is to be ignored.)
-        #       3: Python fails to handle EINTR when reading from stdin.
-        # REFERENCES:
-        #       Issue 3949: https://bugs.python.org/issue3949
-        #       PEP 0457: https://www.python.org/dev/peps/pep-0475/
-        # SIMULATION:
-        #       Function `bug1` in 'test.py'.
-        # FIX:
-        #       Set signal handling of SIGWINCH to ignore.
-        #       SIGWINCH:       Fixed by the solution.
-        #       SIGINT:         Properly handled by Python. (Well tested.)
-        #       SIGTSTP:        Default is STOP, seems to be at default.
-        #       Any other signal will probably not be caught and
-        #       IOError with errno=EINTR will therefore never be returned.
-        # APPARENTLY IMMUNE PLATFORMS:
-        #       CPython 3.2.3 with curses.version='2.2' and ncurses 5.9
-        try:
-            signal.signal(signal.SIGWINCH, signal.SIG_IGN)
-        except:
-            # SIGWINCH isn't required by POSIX.
-            pass
     
     def curses_output_cfg(self, key):
         '''Retrieve textics directive from cursescfg.
@@ -724,6 +694,31 @@ class curses_game():
         self.print_char(fx(x, y) - 1, fy(x, y), 'cursor-l')
         self.print_char(fx(x, y) + 1, fy(x, y), 'cursor-r')
 
+def output(stream, content):
+    '''
+    Due to BUG #9 syscalls may fail with EINTR after leaving curses mode.
+    
+    Write `content` to `stream` and flush() without crashing.
+    
+    Example:
+    output(sys.stdout, 'Hello world!\n')
+    '''
+    def write():
+        stream.write(content)
+    def flush:
+        stream.flush()
+    for function in (write, flush):
+        while True:
+            try:
+                function()
+            except InterruptedError:
+                continue
+            except IOError as e:
+                if 'EINTR' in dir(errno):
+                    if e.errno == errno.EINTR:
+                        continue
+                raise
+            break
 
 def convert_param(paramtype, s):
     '''Convert user input (potentially incorrect text) to the proper type.
@@ -758,7 +753,7 @@ def convert_param(paramtype, s):
         elif s.upper() in ('N', 'NO'):
             return False
         else:
-            sys.stderr.write('"Yes" or "no" please. (WITHOUT quotes.)\n')
+            output(sys.stderr,'"Yes" or "no" please. (WITHOUT quotes.)\n')
             raise ValueError
     elif paramtype == 'dimension':
         try:
@@ -783,32 +778,32 @@ def convert_param(paramtype, s):
                 ('N' in S or 'F' in S or 'H' in S or 'X' in S) or
                 S.startswith('TW')
             ):
-                sys.stderr.write("Use digits.\n")
+                output(sys.stderr, "Use digits.\n")
             else:
-                sys.stderr.write(
+                output(sys.stderr,
                     'Invalid width or height;'
                     ' "{0}" is not an integer.\n'.format(s)
                 )
             raise ValueError
         if value < 4:
-            sys.stderr.write('Lowest allowed width or height is 4.\n')
+            output(sys.stderr, 'Lowest allowed width or height is 4.\n')
             raise ValueError
         return value
     elif paramtype == 'minecount':
         if len(s) == 0:
-            sys.stderr.write('No (empty) amount of mines specified.\n')
+            output(sys.stderr, 'No (empty) amount of mines specified.\n')
             raise ValueError
         if s[-1] == '%':
             try:
                 value = float(s[:-1])/100
             except ValueError:
-                sys.stderr.write(
+                output(sys.stderr,
                     "You can't have {0} percent of the cells to be mines;"
                     " {0} is not a number.\n".format(s)
                 )
                 raise ValueError
             if value >= 1.0 or value <= 0.0:
-                sys.stderr.write(
+                output(sys.stderr,
                     'Percentage of the cells that will be mines'
                     ' must be in ]0%, 100%[.\n'
                 )
@@ -817,13 +812,13 @@ def convert_param(paramtype, s):
             try:
                 value = int(s)
             except ValueError:
-                sys.stderr.write(
+                output(sys.stderr,
                     "You can't have {0} mines;"
                     " {0} is not an integer\n".format(s)
                 )
                 raise ValueError
             if value <= 0:
-                sys.stderr.write('You must have at least ONE mine.\n')
+                output(sys.stderr,'You must have at least ONE mine.\n')
                 raise ValueError
         return value
     elif paramtype == 'gametype':
@@ -834,7 +829,7 @@ def convert_param(paramtype, s):
         elif s.upper() in ('C', 'MOORE', '8'):
             return 'moore'
         else:
-            sys.stderr.write('Invalid gametype. TODO: explain\n')
+            output(sys.stderr,'Invalid gametype. TODO: explain\n')
             raise ValueError
     elif paramtype == 'reverse-minecount':
         if isinstance(s, float):
@@ -865,17 +860,28 @@ def ask(question, paramtype, default):
     KeyboardInterrupt is raised.
     '''
     while True:
-        sys.stdout.write('{0} [{1}]: '.format(question, default))
-        sys.stdout.flush()      # Needed after curses mode.
+        output(sys.stdout, '{0} [{1}]: '.format(question, default))
         try:
-            answer = sys.stdin.readline().strip()
+            # Due to BUG #9 syscalls may fail with EINTR after leaving
+            # curses mode.
+            while True:
+                try:
+                    answer = sys.stdin.readline().strip()
+                except InterruptedError:
+                    continue
+                except IOError as e:
+                    if 'EINTR' in dir(errno):
+                        if e.errno == errno.EINTR:
+                            continue
+                    raise
+                break
             if not answer:
                 answer = default
             value = convert_param(paramtype, answer)
         except ValueError:
             continue
         except KeyboardInterrupt:
-            sys.stdout.write('\n')
+            output(sys.stdout,'\n')
             sys.exit(0)
         return value
 
@@ -912,7 +918,7 @@ def arg_input(default):
         if len(sys.argv) == 1:
             return True, {}
         else:
-            sys.stderr.write('Cannot parse the arguments without argparse!\n')
+            output(sys.stderr,'Cannot parse the arguments without argparse!\n')
             sys.exit(1)
     # argparse exists:
     default_s = {
@@ -1087,12 +1093,12 @@ without guessing and supports three different game types:
             )
         except ValueError:
             error = True
-            sys.stderr.write(
+            output(sys.stderr,
                 'Error with "--size": Explanation above.\n'
             )
         except:
             error = True
-            sys.stderr.write('Error with "--size": UNKNOWN\n')
+            output(sys.stderr,'Error with "--size": UNKNOWN\n')
             raise
     if args.mines:
         user_input_required = False
@@ -1100,12 +1106,12 @@ without guessing and supports three different game types:
             params['mines'] = convert_param('minecount', args.mines)
         except ValueError:
             error = True
-            sys.stderr.write(
+            output(sys.stderr,
                 'Error with "--mines": Explanation above.\n'
             )
         except:
             error = True
-            sys.stderr.write('Error with "--mines": UNKNOWN\n')
+            output(sys.stderr,'Error with "--mines": UNKNOWN\n')
             raise
     if args.gametype:
         user_input_required = False
@@ -1204,19 +1210,19 @@ def user_input(default, cursescfg_path):
     if ask('Show key bindings?', 'yesno', 'No'):
         cursescfg = eval(open(cursescfg_path).read())
         try:
-            sys.stdout.write(cursescfg['pre-doc'])
+            output(sys.stdout,cursescfg['pre-doc'])
             if parameters['gametype'] == 'hex':
-                sys.stdout.write(cursescfg['doc-hex'])
+                output(sys.stdout,cursescfg['doc-hex'])
             else:
-                sys.stdout.write(cursescfg['doc-square'])
+                output(sys.stdout,cursescfg['doc-square'])
         except KeyError:
-            sys.stdout.write(
+            output(sys.stdout,
                 "The configuration file format for cursescfg"
                 " has been updated since version 0.0.5.\n"
                 "You'll have to guess what keys to press or"
                 " update the configuration files.\n"
             )
-        sys.stdout.write(
+        output(sys.stdout,
             "\nPressing an unrecognised key will refresh the screen.\n"
             "^C (Ctrl-c) to quit a game or the game.\n\n"
             "Press enter when you're done reading this."
@@ -1229,14 +1235,14 @@ def highscores_add_entry(title, prompt):
     '''
     Input callback for `game_engine.hiscores.add_entry`.
     '''
-    sys.stdout.write(title + '\n')
+    output(sys.stdout,title + '\n')
     while True:
-        sys.stdout.write(prompt + ': ')
+        output(sys.stdout,prompt + ': ')
         sys.stdout.flush()
         try:
             return sys.stdin.readline()[:-1]
         except UnicodeDecodeError:
-            sys.stderr.write('Decoding error.\n')
+            output(sys.stderr,'Decoding error.\n')
 
 def highscores_display(title, headers, rows):
     '''
@@ -1251,15 +1257,15 @@ def highscores_display(title, headers, rows):
     for column in zip(*all_rows):
         column_width.append(max(list(map(len, column))) + 1)
     # Print
-    sys.stdout.write('\n' + '_'*len(title) + '\n')
-    sys.stdout.write(title + '\n\n')
+    output(sys.stdout,'\n' + '_'*len(title) + '\n')
+    output(sys.stdout,title + '\n\n')
     for row in all_rows:
         for index, width in enumerate(column_width):
-            sys.stdout.write(row[index])
-            sys.stdout.write(' ' * (width - len(row[index])))
-            sys.stdout.write('  ')
-        sys.stdout.write('\n')
-    sys.stdout.write('\n')
+            output(sys.stdout,row[index])
+            output(sys.stdout,' ' * (width - len(row[index])))
+            output(sys.stdout,'  ')
+        output(sys.stdout,'\n')
+    output(sys.stdout,'\n')
 
 def play_game(parameters):
     '''Play a custom game of minesweeper.
@@ -1311,11 +1317,11 @@ def play_game(parameters):
     
     if parameters['insult']:
         if win:
-            sys.stdout.write(
+            output(sys.stdout,
                 '\n\n"Congratulations", you won the unlosable game.\n')
         else:
-            sys.stdout.write('\n\nYou moron, you lost the unlosable game!\n')
-    sys.stdout.write('Press enter to continue... ')
+            output(sys.stdout,'\n\nYou moron, you lost the unlosable game!\n')
+    output(sys.stdout,'Press enter to continue... ')
     sys.stdout.flush()
     sys.stdin.readline()
     highscores.add_entry(highscores_add_entry)
@@ -1378,17 +1384,17 @@ def main():
                 except IOError:
                     pass
             else:
-                sys.stderr.write('{0} not found.\n'.format(cfgfile))
+                output(sys.stderr,'{0} not found.\n'.format(cfgfile))
                 error = True
     if error:
         sys.exit(1)
     
     if interactive:
-        sys.stdout.write(GAME_CRAPTEXT)
-        sys.stdout.write(
+        output(sys.stdout,GAME_CRAPTEXT)
+        output(sys.stdout,
             'You can quit the game with the interrupt signal. (Ctrl + c)\n\n'
         )
-        sys.stdout.write(
+        output(sys.stdout,
             'How do you want your game to be set up? Write in the values'
             ' and press Enter.\nLeave blank to use the default.\n\n'
         )
@@ -1415,7 +1421,7 @@ if __name__ == '__main__':
             curses.endwin()
         except:
             pass
-        sys.stderr.write('Security alert: ' + e.message + '\n')
+        output(sys.stderr,'Security alert: ' + e.message + '\n')
         os._exit(1)
     except:
         # Get the traceback without fucking up the terminal.

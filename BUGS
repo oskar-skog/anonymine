@@ -87,6 +87,35 @@ BUG#7 2016-02-09
         `nonexistent-cpulister | wc -l` prints "0" and SUCCEEDS.
         The bug was fixed immediately on discovery.
 
+BUG #9 (old)
+        sys.stdin.readline() in `ask` dies with IOError and
+        errno=EINTR when the terminal gets resized after curses has
+        been de-initialized.
+        1: SIGWINCH is sent by the terminal when the screen has been
+            resized.
+        2: curses forgot to restore the signal handling of SIGWINCH
+            to the default of ignoring the signal.
+            NOTE: signal.getsignal(signal.SIGWINCH) incorrectly
+                returns signal.SIG_DFL. (Default is to be ignored.)
+        3: Python fails to handle EINTR when reading from stdin.
+    REFERENCES:
+        Issue 3949: https://bugs.python.org/issue3949
+        PEP 0457: https://www.python.org/dev/peps/pep-0475/
+    SIMULATION:
+        Function `bug1` in 'test.py'.
+    FIX #1 (caused new BUG: Can't resize on later games/SIGWICH not reset):
+        Set signal handling of SIGWINCH to ignore.
+        SIGWINCH:       Fixed by the solution.
+        SIGINT:         Properly handled by Python. (Well tested.)
+        SIGTSTP:        Default is STOP, seems to be at default.
+        Any other signal will probably not be caught and
+        IOError with errno=EINTR will therefore never be returned.
+    APPARENTLY IMMUNE PLATFORMS:
+        CPython 3.2.3 with curses.version='2.2' and ncurses 5.9
+    FIX #2 (0.2.17)
+        Accept that `IOError`s and `InterrputedError`s may be raised
+        by IO functions.  
+
 
 Problematic platforms
 =====================
