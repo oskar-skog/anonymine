@@ -1,4 +1,8 @@
 2016-07-17      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.19
+        * cursescfg: Hexagonal grid was still too bright -> set to A_DIM,
+            text does not need to be bright.
+        * anonymine.py (highscores_add_entry): Fixed double-prompt for nickname.
     0.2.18
         * anonymine.py, BUGS: Got away with only redrawing on the first click
             (initialization).  This was previously a potential performance

@@ -133,7 +133,7 @@
         #               terminals may use a bolder font instead.
         #               - curses.A_BLINK is not always supported and on
         #               the Linux virtual consoles (tty1 to tty6) it does
-        #               something.
+        #               something with the color.
         
        #                  pair      foreground           attributes
        #key                   character        background
@@ -142,10 +142,10 @@
         'number':         (3, None, "GREEN",   "BLACK",  curses.A_BOLD),
         'zero':           (3, '-',  "GREEN",   "BLACK",  curses.A_BOLD),
         'mine':           (4, 'X',  "RED",     "BLACK",  curses.A_BLINK),
-        'grid':           (5, None, "MAGENTA", "BLACK",  curses.A_NORMAL),
+        'grid':           (5, None, "MAGENTA", "BLACK",  curses.A_DIM),
         'cursor-l':       (6, '(',  "CYAN",    "BLACK",  curses.A_BOLD),
         'cursor-r':       (6, ')',  "CYAN",    "BLACK",  curses.A_BOLD),
-        'text':           (7, None, "YELLOW",  "BLACK",  curses.A_BOLD),
+        'text':           (7, None, "YELLOW",  "BLACK",  curses.A_NORMAL),
         'background':     (8, ' ',  "BLUE",    "BLUE",   curses.A_NORMAL),
         'background:hex': (2, ' ',  "BLACK",   "BLACK",  curses.A_NORMAL),
     }

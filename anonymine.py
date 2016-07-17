@@ -62,7 +62,7 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 18)
+GAME_VERSION = (0, 2, 19)
 # GAME_VERSION MAY lag behind the version of the package when no change has
 # been made to this file.
 GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
@@ -1216,9 +1216,9 @@ def user_input(default, cursescfg_path):
         try:
             output(sys.stdout,cursescfg['pre-doc'])
             if parameters['gametype'] == 'hex':
-                output(sys.stdout,cursescfg['doc-hex'])
+                output(sys.stdout, cursescfg['doc-hex'])
             else:
-                output(sys.stdout,cursescfg['doc-square'])
+                output(sys.stdout, cursescfg['doc-square'])
         except KeyError:
             output(sys.stdout,
                 "The configuration file format for cursescfg"
@@ -1239,8 +1239,6 @@ def highscores_add_entry(title, prompt):
     '''
     output(sys.stdout,title + '\n')
     while True:
-        output(sys.stdout,prompt + ': ')
-        sys.stdout.flush()
         try:
             return ask(prompt, 'str', '')
         except UnicodeDecodeError:
@@ -1263,11 +1261,11 @@ def highscores_display(title, headers, rows):
     output(sys.stdout,title + '\n\n')
     for row in all_rows:
         for index, width in enumerate(column_width):
-            output(sys.stdout,row[index])
-            output(sys.stdout,' ' * (width - len(row[index])))
+            output(sys.stdout, row[index])
+            output(sys.stdout, ' ' * (width - len(row[index])))
             output(sys.stdout,'  ')
-        output(sys.stdout,'\n')
-    output(sys.stdout,'\n')
+        output(sys.stdout, '\n')
+    output(sys.stdout, '\n')
 
 def play_game(parameters):
     '''Play a custom game of minesweeper.
