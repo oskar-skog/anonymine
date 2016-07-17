@@ -749,7 +749,7 @@ def convert_param(paramtype, s):
                                 returned value is a string that can be
                                 converted back to `s` with 'minecount'.
     '''
-    if paramtype = 'str':
+    if paramtype == 'str':
         return s
     elif paramtype == 'yesno':
         if s.upper() in ('Y', 'YES'):
