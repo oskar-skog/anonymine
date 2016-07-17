@@ -3,6 +3,7 @@
         * BUGS, anonymine.py: #9, use a different fix.
             - `ask` modified to handle EINTR
             - New function `output` created as wrapper.
+            - Added 'str' as paramtype to `convert_param`
 
 2016-07-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.16

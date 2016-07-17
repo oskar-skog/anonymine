@@ -728,6 +728,8 @@ def convert_param(paramtype, s):
     
     `paramtype` MUST be one of the recognised values:
     
+        'str':          `s` is returned.
+        
         'yesno':        "Yes" is True and "no" is False.
         
         'dimension':    An integer >= 4
@@ -747,7 +749,9 @@ def convert_param(paramtype, s):
                                 returned value is a string that can be
                                 converted back to `s` with 'minecount'.
     '''
-    if paramtype == 'yesno':
+    if paramtype = 'str':
+        return s
+    elif paramtype == 'yesno':
         if s.upper() in ('Y', 'YES'):
             return True
         elif s.upper() in ('N', 'NO'):
@@ -1225,10 +1229,8 @@ def user_input(default, cursescfg_path):
         output(sys.stdout,
             "\nPressing an unrecognised key will refresh the screen.\n"
             "^C (Ctrl-c) to quit a game or the game.\n\n"
-            "Press enter when you're done reading this."
         )
-        sys.stdout.flush()
-        sys.stdin.readline()
+        ask('Press enter to continue...', 'str', '')
     return parameters
 
 def highscores_add_entry(title, prompt):
@@ -1240,9 +1242,9 @@ def highscores_add_entry(title, prompt):
         output(sys.stdout,prompt + ': ')
         sys.stdout.flush()
         try:
-            return sys.stdin.readline()[:-1]
+            return ask(prompt, 'str', '')
         except UnicodeDecodeError:
-            output(sys.stderr,'Decoding error.\n')
+            output(sys.stderr, 'Decoding error.\n')
 
 def highscores_display(title, headers, rows):
     '''
@@ -1321,9 +1323,7 @@ def play_game(parameters):
                 '\n\n"Congratulations", you won the unlosable game.\n')
         else:
             output(sys.stdout,'\n\nYou moron, you lost the unlosable game!\n')
-    output(sys.stdout,'Press enter to continue... ')
-    sys.stdout.flush()
-    sys.stdin.readline()
+    ask('Press enter to continue...', 'str', '')
     highscores.add_entry(highscores_add_entry)
     title, headers, rows = highscores.display()
     highscores_display(title, headers, rows)
