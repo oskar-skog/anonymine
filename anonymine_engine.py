@@ -43,6 +43,7 @@ The engine of Anonymine
 import os
 import time
 import signal
+import errno
 import sys
 import math
 import getpass
