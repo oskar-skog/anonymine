@@ -630,7 +630,7 @@ class game_engine():
         # Security timeout raises Exception
         if 'alarm' in dir(signal):      # (unix only)
             def die(ignore1, ignore2):
-                raise Exception
+                raise security_alert
             def stop_alarm():
                 signal.signal(signal.SIGALRM, signal.SIG_IGN)
             signal.signal(signal.SIGALRM, die)
@@ -643,7 +643,7 @@ class game_engine():
         if not unix:
             try:
                 child()
-            except Exception:
+            except security_alert:
                 security_timeout = True
             stop_alarm()
             return
@@ -664,10 +664,7 @@ class game_engine():
                     break
                 if os.WIFEXITED(status):
                     success_pid = pid
-                #else:
-                #    print(pid)
-                # Old debugging crap?
-        except Exception:
+        except security_alert:
             security_timeout = True
         stop_alarm()
         # Kill all remaining children.
