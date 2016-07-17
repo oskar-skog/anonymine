@@ -57,6 +57,9 @@ BUG#1
     NOTICE:
         DO NOT REMOVE.
         This is referenced from the source.
+    WEIRD:
+        Of some reason: This must be done whenever a cell is clicked on,
+        not just around initialization.
 
 BUG#4 is bogus
 

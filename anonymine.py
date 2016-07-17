@@ -489,11 +489,10 @@ class curses_game():
         elif command == 'reveal':
             if engine.game_status == 'pre-game':
                 self.message('Initializing field...   This may take a while.')
-                curses.reset_shell_mode()   # BUG #3 (See the file "BUGS".)
+            curses.reset_shell_mode()   # BUG #3 (See the file "BUGS".)
             engine.reveal(self.cursor)
-            if engine.game_status == 'pre-game':
-                curses.reset_prog_mode()    # BUG #3 (See the file "BUGS".)
-                self.window.redrawwin()     # BUG #3 (See the file "BUGS".)
+            curses.reset_prog_mode()    # BUG #3 (See the file "BUGS".)
+            self.window.redrawwin()     # BUG #3 (See the file "BUGS".)
         elif command in direction_keys:
             self.travel(engine.field, command)
         else:

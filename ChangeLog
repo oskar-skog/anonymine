@@ -9,10 +9,10 @@
               unintentionally.
             - raise security_alert rather than Exception for the timeout alarm.
               (except Exception caught lots of other stuff.)
-        * anonymine.py (game_engine.input): Only use the BUG#3 workaround
-            when the field is being initialized.
         * anonymine.py: Use str(game_engine.security_alert) rather than
             game_engine.security_alert.message.
+        * BUGS: Added note about #3
+        * mkenginecfg, enginecfg.default: sec-maxtime: 90 -> 900
 
 2016-07-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.16

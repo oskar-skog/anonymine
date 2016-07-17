@@ -43,7 +43,7 @@ def main():
     'init-field': {
         'procs':        '''+str(procs)+''',
         'filename':     '/tmp/mines.{0}',
-        'sec-maxtime':  90,     # Security timeout
+        'sec-maxtime':  900,    # Security timeout
         'sec-maxarea':  10000,  # Maximum allowed area
     },
     'hiscores': {

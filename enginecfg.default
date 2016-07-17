@@ -3,7 +3,7 @@
     'init-field': {
         'procs':        1,      # Default is to not overload.
         'filename':     '/tmp/mines.{0}',
-        'sec-maxtime':  90,     # Crash if initialization takes more
+        'sec-maxtime':  900,    # Crash if initialization takes more
                                 # than one and a half minute.
         'sec-maxarea':  10000,  # Crash if a huge field is requested.
     },
