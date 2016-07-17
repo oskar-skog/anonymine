@@ -650,7 +650,17 @@ class game_engine():
         success_pid = 0
         try:
             while success_pid not in children:
-                pid, status = os.wait()
+                while True:
+                    try:
+                        pid, status = os.wait()
+                    except OSError as e:
+                        if 'EINTR' in dir(errno):
+                            if e.errno == errno.EINTR:
+                                continue
+                        raise
+                    except InterruptedError:
+                        continue
+                    break
                 if os.WIFEXITED(status):
                     success_pid = pid
                 #else:
@@ -797,3 +807,9 @@ class game_engine():
 
 assert os.geteuid(), "Why the-fuck(7) are you playing games as root?"
 assert __name__ != '__main__', "I'm not a script."
+
+# Force InterruptedError to be defined.
+try:
+    InterruptedError
+except NameError:
+    InterruptedError = SystemExit
