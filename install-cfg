@@ -65,6 +65,7 @@ def decide(src, dest, verbose=True):
                 "\nINFORMATIONAL:\n"
                 "The already existing configuration file is at its default\n"
                 "and will therefore be overwritten to install any changes.\n"
+                "\n"
             )
         return 'install'
     # Check if the pre-existing configuration is usable.
@@ -81,8 +82,8 @@ def decide(src, dest, verbose=True):
     if scan_cfg(src_cfg, dest_cfg):
         sys.stderr.write(
             "\nNOTICE:\n"
-            "The format of the configuration file has been changed in in this\n"
-            "version.  Manual installation of the installation file required.\n"
+            "The format of the configuration file has been changed in this\n"
+            "version.  The configuration file must be modified manually.\n"
             "\n"
         )
         return 'fail'
@@ -90,7 +91,7 @@ def decide(src, dest, verbose=True):
         if verbose:
             sys.stderr.write(
                 "\nINFORMATIONAL:\n"
-                "The configuration is already installed and should be usable\n"
+                "The altered configuration file should be usable\n"
                 "by the newly installed version of the program.\n"
                 "\n"
             )
