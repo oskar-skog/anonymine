@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.20
+VERSION := 0.2.21
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -49,6 +49,7 @@ info := test "$(verbose)" != true || echo '//'
 MAIN_SRC := $(srcdir)$(NAME).py
 MAIN_STAGE := $(builddir)$(NAME)
 MAIN_DEST := $(DESTDIR)$(EXECUTABLES)/$(NAME)
+SED_SCRIPT_MAIN_STAGE := s/MAKEFILE_GAME_VERSION/$(VERSION)/
 
 HISCORE_FILE := $(DESTDIR)$(vargamesdir)/anonymine
 ENGINECFG_STAGE := $(builddir)enginecfg.out
@@ -87,7 +88,7 @@ all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 $(MAIN_STAGE) : $(MAIN_SRC)
 	@$(info) 'Creating the appropriate shebang line'
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
-	@cat "$(MAIN_SRC)" >> "$(MAIN_STAGE)"
+	@sed -e "$(SED_SCRIPT_MAIN_STAGE)" "$(MAIN_SRC)" >> "$(MAIN_STAGE)"
 
 $(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
 	@$(info) 'Making enginecfg: mostly counting processors'

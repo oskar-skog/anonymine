@@ -62,13 +62,11 @@ except:
 
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = (0, 2, 20)
-# GAME_VERSION MAY lag behind the version of the package when no change has
-# been made to this file.
-GAME_CRAPTEXT = """{0} version {1}.{2}.{3}
+GAME_VERSION = "MAKEFILE_GAME_VERSION"
+GAME_CRAPTEXT = """{0} version {1}
 Copyright (c) Oskar Skog, 2016
 Released under the Simplified BSD license (2 clause).
-\n""".format(GAME_NAME, GAME_VERSION[0], GAME_VERSION[1], GAME_VERSION[2])
+\n""".format(GAME_NAME, GAME_VERSION)
 
 
 class curses_game():
