@@ -60,13 +60,14 @@ try:
 except:
     pass
 
+# These two are still needed.
 GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
-GAME_VERSION = "MAKEFILE_GAME_VERSION"
-GAME_CRAPTEXT = """{0} version {1}
+
+GAME_CRAPTEXT = """Anonymine version MAKEFILE_GAME_VERSION
 Copyright (c) Oskar Skog, 2016
 Released under the Simplified BSD license (2 clause).
-\n""".format(GAME_NAME, GAME_VERSION)
+\n"""
 
 
 class curses_game():
