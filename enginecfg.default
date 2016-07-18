@@ -1,4 +1,7 @@
 #!/usr/bin/python
+#@not-modified@
+# Remove the above line if this file has been modified.
+# If you don't, this file will be overwritten.
 {
     'init-field': {
         'procs':        1,      # Default is to not overload.

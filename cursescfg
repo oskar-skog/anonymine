@@ -1,5 +1,7 @@
 #!/usr/bin/python
-
+#@not-modified@
+# Remove the above line if this file has been modified.
+# If you don't, this file will be overwritten.
 
 # NOTICE:
 # The keys (the format) may change when you update the game.  If that
@@ -138,7 +140,7 @@
        #                  pair      foreground           attributes
        #key                   character        background
         'flag':           (1, 'F',  "BLACK",   "YELLOW", curses.A_NORMAL),
-        'free':           (2, '?',  "BLACK",   "BLACK",  curses.A_NORMAL),
+        'free':           (2, '.',  "BLACK",   "BLACK",  curses.A_NORMAL),
         'number':         (3, None, "GREEN",   "BLACK",  curses.A_BOLD),
         'zero':           (3, '-',  "GREEN",   "BLACK",  curses.A_BOLD),
         'mine':           (4, 'X',  "RED",     "BLACK",  curses.A_BLINK),

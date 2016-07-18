@@ -1,3 +1,22 @@
+2016-07-18      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.20
+        * cursescfg:  Difficult to see anything in B&W mode: Change '?' to '.'
+            to increase the visual difference between flags and free cells.
+        * INSTALL: Updated to match these changes:
+        * Makefile.static: Disabled overwrite-cfg due to the new behavior
+            of check-install-cfg.
+        * install-cfg:
+            - Wrote docstrings
+            - Changed return values for `decide`
+            - Tell which configuration file is incompatible and refer to the
+              source file.
+        * install-cfg, Configuration files: Added support for a status quo
+            marker line.  If the magic line can be found in the destination
+            file, it will be overwritten.
+        * install-cfg, Makefile.static (check-install-cfg): Send the verbose
+            variable to ./install-cfg to make it shut up if it has nothing
+            exceptional to say.
+
 2016-07-17      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.19
         * cursescfg: Hexagonal grid was still too bright -> set to A_DIM,

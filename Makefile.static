@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.19
+VERSION := 0.2.20
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -149,10 +149,12 @@ check-install-cfg : FORCE
 	@: # Install the directory for the configuration files as install-dirs
 	@: # might not have been run yet.
 	@mkdir -p "$(CFG_DIR)"
-	@$(INSTALL_CFG) "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
-	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
+	@$(INSTALL_CFG) "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg" $(verbose)
+	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg" $(verbose)
 
 overwrite-cfg: FORCE
+	@echo "overwrite-cfg has been disabled" >/dev/stderr && false
+	@false
 	@$(INSTALL) -m 644 "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL) -m 644 "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
 	@$(info) "Configuration has been overwritten"

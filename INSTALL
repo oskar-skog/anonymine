@@ -236,14 +236,10 @@ ADVANCED INSTALLATION
             Print where things will be installed.
         
         install
-            Configuration files will not be replaced by this target.
-            Installation will fails if the pre-existing configuration files
-            are incompatible with the new version of the software, and the
-            old version should be left untouched.
-        
-        overwrite-cfg
-            Overwrite the configuration files.
-            NOTICE: This does not ask for confirmation.
+            Altered configuration files will not be touched by this target.
+            If the existing configuration file is incompatible but does not
+            identify itself as unmodified, installation will fail and the
+            configuration file must be manually edited.
         
         uninstall
             This will remove the system-wide configuration files as well.

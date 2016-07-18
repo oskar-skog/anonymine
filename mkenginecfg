@@ -38,7 +38,11 @@ def main():
     procs = int(0.83 * cpus + 0.5)
     
     hiscorefile = sys.argv[2]
-    sys.stdout.write('''# Auto generated during "build".
+    sys.stdout.write('''#!/usr/bin/python
+#@not-modified@
+# Remove the above line if this file has been modified.
+# If you don't, this file will be overwritten.
+# Auto generated during "build".
 {
     'init-field': {
         'procs':        '''+str(procs)+''',
