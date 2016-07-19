@@ -21,8 +21,8 @@ DEPENDENCIES
     be required on a non-nix platform.
 
 
-PROPER INSTALLATION
-===================
+INSTALLATION
+============
 
     In the directory extracted from the tarball, run:
         ./configure
@@ -44,30 +44,20 @@ PROPER INSTALLATION
     
     You may want to make some changes to '$(sysconfdir)/anonymine/enginecfg'.
     Run "make print-destinations" to find out where files will be installed.
-
-
-RUN IN CURRENT DIRECTORY
-========================
-
-    You can run Anonymine right here in this directory (the directory) of the
-    package.
     
-    python anonymine.py -c cursescfg -e enginecfg.default
-
-
-ADVANCED INSTALLATION
-=====================
     
     Important notes
     ===============
     
         * Anonymine expects to be run by "python", not "python2.7" etc; Make
-        sure you have those symlinks.
+          sure you have those symlinks.
         * The other version of python is expected to by "python3" or
-        "python2"; make sure you have that symlink as well if you want the
-        modules to be installed for both versions.
+          "python2"; make sure you have that symlink as well if you want the
+          modules to be installed for both versions.
         * enginecfg is auto-generated since 0.1.19, you can override the file
-        by creating `$(builddir)enginecfg.user` as your own enginecfg.
+          by creating `$(builddir)enginecfg.user` as your own enginecfg.
+        * You may need to "touch ./*" if you are remaking after a
+          reconfiguration.
     
     
     ./configure; make; make install

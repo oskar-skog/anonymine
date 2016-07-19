@@ -4,6 +4,7 @@
             six days; Added "(Future)"
         * configure.py, Makefile.static, anonymine.py, INSTALL: Allow
             $(sysconfdir) to be anything.
+        * INSTALL: Modified.
 
 2016-07-18      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.21
