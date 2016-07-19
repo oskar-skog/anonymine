@@ -114,7 +114,7 @@ ADVANCED INSTALLATION
         gamesdir                $(prefix)/games
         libdir                  $(prefix)/lib
         localstatedir           $(prefix)/var, /var
-        sysconfdir              $(prefix)/etc, /etc  # NOTE 2
+        sysconfdir              $(prefix)/etc, /etc
         vargamesdir             $(localstatedir)/games, $(localstatedir)
         
         EXECUTABLES             This program will be installed in $(gamesdir)
@@ -132,11 +132,7 @@ ADVANCED INSTALLATION
 
         NOTE 1
             gamesdir will override bindir if possible, so setting bindir
-            might have no effect
-        
-        NOTE 2
-            The game itself only tests for sys.prefix+'/etc' and '/etc'.
-            ./configure will fails if sysconfdir is not usable by the game.
+            might have no effect.
         
         prefix, bindir and libdir, localstatedir, sysconfdir:
             http://www.gnu.org/prep/standards/html_node/Directory-Variables.html

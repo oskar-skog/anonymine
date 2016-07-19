@@ -1,3 +1,10 @@
+2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.22
+        * anonymine_engine.py (hiscores (display)): Www HH:MM goes back to
+            six days; Added "(Future)"
+        * configure.py, Makefile.static, anonymine.py, INSTALL: Allow
+            $(sysconfdir) to be anything.
+
 2016-07-18      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.21
         * Makefile.static, anonymine.py, configure: Moved version numbering

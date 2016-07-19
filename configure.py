@@ -282,19 +282,14 @@ def find_sysconfdir(Makefile, flags):
     Depends on $(prefix)
     '''
     if 'sysconfdir' in Makefile:
-        if expand('sysconfdir', Makefile) not in ('/etc', sys.prefix+'/etc'):
-            sys.stderr.write('Will not be able to find configuration\n')
-            return True
-        else:
-            return False
+        return False
     else:
-        if Makefile['prefix'] == sys.prefix:
-            try:
-                os.listdir(expand('prefix', Makefile) + '/etc')
-                Makefile['sysconfdir'] = '$(prefix)/etc'
-                return False
-            except:
-                pass
+        try:
+            os.listdir(expand('prefix', Makefile) + '/etc')
+            Makefile['sysconfdir'] = '$(prefix)/etc'
+            return False
+        except:
+            pass
         Makefile['sysconfdir'] = '/etc'
         return False
 

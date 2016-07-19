@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.21
+VERSION := 0.2.22
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -49,7 +49,12 @@ info := test "$(verbose)" != true || echo '//'
 MAIN_SRC := $(srcdir)$(NAME).py
 MAIN_STAGE := $(builddir)$(NAME)
 MAIN_DEST := $(DESTDIR)$(EXECUTABLES)/$(NAME)
-SED_SCRIPT_MAIN_STAGE := s/MAKEFILE_GAME_VERSION/$(VERSION)/
+
+CFG_DIR := $(DESTDIR)$(sysconfdir)/$(NAME)
+
+MAIN_STAGE_SED1 := s/MAKEFILE_GAME_VERSION/$(VERSION)/
+SED_CFGDIR := `echo $(CFG_DIR) | sed -e 's/\\//\\\\\\//g'`
+MAIN_STAGE_SED2 := s/MAKEFILE_CFGDIR/$(SED_CFGDIR)/
 
 HISCORE_FILE := $(DESTDIR)$(vargamesdir)/anonymine
 ENGINECFG_STAGE := $(builddir)enginecfg.out
@@ -88,7 +93,8 @@ all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 $(MAIN_STAGE) : $(MAIN_SRC)
 	@$(info) 'Creating the appropriate shebang line'
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
-	@sed -e "$(SED_SCRIPT_MAIN_STAGE)" "$(MAIN_SRC)" >> "$(MAIN_STAGE)"
+	@sed -e "$(MAIN_STAGE_SED1)" "$(MAIN_SRC)" \
+		| sed -e "$(MAIN_STAGE_SED2)" >> "$(MAIN_STAGE)"
 
 $(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
 	@$(info) 'Making enginecfg: mostly counting processors'
@@ -118,7 +124,6 @@ INSTALL ?= install
 
 INSTALL_CFG := python "$(srcdir)install-cfg" "$(INSTALL)"
 
-CFG_DIR := $(DESTDIR)$(sysconfdir)/$(NAME)
 # Modules: FOO_SRC, FOO_DEST, FOO_DEST_OTHERVER
 ENGINE_SRC := $(srcdir)$(NAME)_engine.py
 ENGINE_DEST := $(DESTDIR)$(MODULES)/$(NAME)_engine.py

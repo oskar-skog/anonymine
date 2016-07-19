@@ -1370,6 +1370,7 @@ def main():
         else:
             locations = (
                 os.path.expanduser('~/.' + GAME_FILENAME + '/' + cfgfile),
+                "MAKEFILE_CFGDIR" + '/' + cfgfile,
                 sys.prefix + '/etc/' + GAME_FILENAME + '/' + cfgfile,
                 '/etc/' + GAME_FILENAME + '/' + cfgfile,
             )

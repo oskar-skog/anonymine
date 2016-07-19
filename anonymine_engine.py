@@ -322,8 +322,10 @@ class hiscores():
         
         def format_wontime(t):
             # Does not need to be precise, anything less than a week is good.
-            if time.time() - t < 300000:
+            if time.time() - t < 518400:
                 return time.strftime('%a %H:%M', time.localtime(t))
+            elif time.time() - t < 0:
+                return '(Future)'
             else:
                 return time.strftime('%Y-%m-%d', time.localtime(t))
         
