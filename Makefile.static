@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.2.22
+VERSION := 0.2.23
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -316,67 +316,26 @@ print-destinations: FORCE
 		echo "[Windows] Icon:    " $(CYG_ICO_DEST); \
 	fi
 
-PKG_INDIR := $(NAME)-$(VERSION)
-PKG := $(builddir)$(PKG_INDIR)
-# .txt in zips.
-PKG_TEXTFILES := BUGS ChangeLog FAQ INSTALL NEWS README desktop/FILES \
-	desktop/README LICENSE
-# Already CRLF + old crap.
-PKG_NOCONV := Windows.txt Windows-admin.bat Windows-user.bat \
-	configure check.sh desktop/$(NAME).ico desktop/desktop.sh \
-	desktop/$(NAME)-*.png desktop/$(NAME)*.xcf mkenginecfg
-PKG_FILES := $(NAME).py $(NAME)_engine.py $(NAME)_fields.py $(NAME)_solver.py \
-	configure.py Makefile.static install-cfg enginecfg.default \
-	cursescfg test.py desktop/Info.plist.py desktop/icon.icns.py
-PKG_SUBDIRS := desktop
-
 check: FORCE
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
-dist : tarballs zip
-	@$(info) 'make check; This will take a while'
-	@make check >/dev/null
-	@$(info) 'make release'
-	@make release >/dev/null
+dist : tarballs zip check
+	@true
 
-release : FORCE
+release : dist
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
+		|| echo You are not me.
+	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.xz" \
 		|| echo You are not me.
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).zip" \
 		|| echo You are not me.
 
+PKG := $(NAME)-$(VERSION)
+
 tarballs : FORCE
-	@$(info) "Building tarballs"
-	@mkdir "$(PKG)"
-	@for subdir in $(PKG_SUBDIRS); do mkdir "$(PKG)/$$subdir"; done;
-	@: # Copy all files normally:
-	@for f in $(PKG_TEXTFILES); do cp "$(srcdir)$$f" "$(PKG)/$$f"; done
-	@for f in $(PKG_NOCONV); do cp "$(srcdir)$$f" "$(PKG)/$$f"; done
-	@for f in $(PKG_FILES); do cp "$(srcdir)$$f" "$(PKG)/$$f"; done
-	@: # Tar:
-	@cd "$(builddir)" && tar -cf "$(PKG_INDIR).tar" "$(PKG_INDIR)"
-	@: # Compress:
-	@gzip -f9k -- "$(PKG).tar"
-	@: # Clean-up:
-	@rm -- "$(PKG).tar"
-	@rm -r -- "$(PKG)"
+	@$(srcdir)dist "$(srcdir)" "$(builddir)" "$(PKG)" tar
 
 zip : FORCE
-	@$(info) "Building zip for Windows version"
-	@mkdir "$(PKG)"
-	@for subdir in $(PKG_SUBDIRS); do mkdir "$(PKG)/$$subdir"; done;
-	@: # /(.*)$/ -> /\1.txt/
-	@for f in $(PKG_TEXTFILES); do \
-		unix2dos -q -n "$(srcdir)$$f" "$(PKG)/$$f.txt"; \
-	done
-	@: # Already with CRLF line ends + shell scripts.
-	@for f in $(PKG_NOCONV); do cp "$(srcdir)$$f" "$(PKG)/$$f"; done
-	@: # Notepad is stupid.
-	@for f in $(PKG_FILES); \
-		do unix2dos -q -n "$(srcdir)$$f" "$(PKG)/$$f"; \
-	done
-	@cd "$(builddir)" && zip -rXq "$(PKG_INDIR).zip" "$(PKG_INDIR)"
-	@rm -r -- "$(PKG)"
-
+	@$(srcdir)dist "$(srcdir)" "$(builddir)" "$(PKG)" zip
 
 FORCE:

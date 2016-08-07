@@ -1,3 +1,10 @@
+2016-08-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.23
+        *: New file: HACKING
+        * Makefile.static: $$ doesn't work on FreeBSD's make, it needs to be
+            $$$$ which doesn't work on gmake.  Created small shellscripts to
+            be invoked from make.
+
 2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.22
         * anonymine_engine.py (hiscores (display)): Www HH:MM goes back to

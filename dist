@@ -1,0 +1,52 @@
+#!/bin/sh
+# Usage: ./dist srcdir builddir pkgname {zip|tar}
+srcdir=$1
+builddir=$2
+pkgname=$3
+type=$4
+pkgdir=$builddir$pkgname
+
+NAME="anonymine"
+# Add .txt for Windows.
+textfiles="BUGS ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
+    desktop/README"
+# Already CRLF + shell scripts
+noconv="Windows.txt Windows-admin.bat Windows-user.bat configure check.sh \
+    desktop/${NAME}.ico desktop/desktop.sh desktop/${NAME}-*.png \
+    desktop/${NAME}*.xcf mkenginecfg dist"
+# LF to CRLF conversion for the zip
+files="${NAME}.py ${NAME}_engine.py ${NAME}_fields.py ${NAME}_solver.py \
+    configure.py Makefile.static install-cfg enginecfg.default cursescfg \
+    test.py desktop/Info.plist.py desktop/icon.icns.py"
+subdirs="desktop"
+
+
+mkdir $pkgdir
+for subdir in $subdirs; do
+    mkdir "$pkgdir/$subdir"
+done
+if [ $type = "tar" ] || [ -z "`which unix2dos`" ]; then
+    for f in $textfiles $noconv $files; do
+        cp "$srcdir$f" "$pkgdir/$f"
+    done
+    cd $builddir
+    tar -cf "$pkgname.tar" "$pkgname"
+    gzip -9 -k "$pkgname.tar" || echo no gzip
+    xz -9e -k "$pkgname.tar" || echo no xz
+    rm "$pkgdir.tar"
+fi
+if [ $type = "zip" ] && [ -n "`which unix2dos`" ]; then
+    for f in $textfiles; do
+        unix2dos -q -n "$srcdir$f" "$pkgdir/$f.txt"
+    done
+    for f in $files; do
+        unix2dos -q -n "$srcdir$f" "$pkgdir/$f"
+    done
+    for f in $noconv; do
+        cp "$srcdir$f" "$pkgdir/$f"
+    done
+    cd $builddir
+    zip -rXq "$pkgname.zip" "$pkgname"
+    rm "$pkgdir.zip"
+fi
+rm -r "$pkgdir"
