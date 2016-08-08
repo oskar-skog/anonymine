@@ -25,7 +25,7 @@ mkdir $pkgdir
 for subdir in $subdirs; do
     mkdir "$pkgdir/$subdir"
 done
-if [ $type = "tar" ] || [ -z "`which unix2dos`" ]; then
+if [ $type = "tar" ]; then
     for f in $textfiles $noconv $files; do
         cp "$srcdir$f" "$pkgdir/$f"
     done
