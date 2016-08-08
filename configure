@@ -13,7 +13,6 @@ if [ $# -eq 1 ]; then
         if [ "$1" = $version_option ]; then
             echo Anonymine `grep 'VERSION := ' Makefile.static | cut -d= -f2`
             echo Handmade configure and configure.py
-            echo Version info from ./configure may lag behind.
             exit
         fi
     done
