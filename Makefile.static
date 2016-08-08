@@ -83,10 +83,10 @@ ALL_STAGE := "$(MAIN_STAGE)" "$(OSX_WRAPPER)" "$(OSX_INFO_PLIST)" \
 
 all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 	@$(info) 'Maybe building .desktop and app/bundle'
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		cd "$(builddir)" && make build-freedesktop > /dev/null; \
 	fi
-	@if [ -n "$(macosx)" ]; then \
+	@if "$(macosx)"; then \
 		cd "$(builddir)" && make build-macosx > /dev/null; \
 	fi
 
@@ -185,11 +185,11 @@ install-dirs : FORCE
 	@if [ "$(MODULES_OTHERVER)" != "non-existent" ]; then \
 		mkdir -p "$(DESTDIR)$(MODULES_OTHERVER)" || true; \
 	fi
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		mkdir -p "$(DESTDIR)$(prefix)/share/applications" || true; \
 		mkdir -p "$(DESTDIR)$(prefix)/share/pixmaps" || true; \
 	fi
-	@if [ -n "$(macosx)" ]; then \
+	@if "$(macosx)"; then \
 		$(INSTALL) -d "$(BUNDLE)/Contents"; \
 		$(INSTALL) -d "$(BUNDLE)/Contents/MacOS"; \
 		$(INSTALL) -d "$(BUNDLE)/Contents/Resources"; \
@@ -207,7 +207,7 @@ install : check-install-cfg install-dirs
 	@: # Create highscore file unless it already exists.
 	@touch "$(HISCORE_FILE)"
 	@chmod 666 "$(HISCORE_FILE)"
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		$(info) 'Installing icons and .desktop (NORMAL_INSTALL)'; \
 		$(INSTALL) -m 644 "$(FD_DESKTOP_STAGE)" "$(FD_DESKTOP_DEST)"; \
 		$(INSTALL) -d "$(FD_ICON_DESTDIR16)"; \
@@ -219,7 +219,7 @@ install : check-install-cfg install-dirs
 		$(INSTALL) -d "$(FD_ICON_DESTDIR256)"; \
 		$(INSTALL) -m 644 "$(FD_ICON_SRC256)" "$(FD_ICON_DEST256)"; \
 	fi
-	@if [ -n "$(macosx)" ]; then \
+	@if "$(macosx)"; then \
 		$(info) 'Installing app/bundle'; \
 		$(INSTALL) -m 644 "$(OSX_INFO_PLIST)" \
 			"$(BUNDLE)/Contents/Info.plist"; \
@@ -233,12 +233,12 @@ install : check-install-cfg install-dirs
 	@$(NO_OTHERVER) || ln -sf "$(SOLVER_DEST)" "$(SOLVER_DEST_OTHERVER)"
 	@$(NO_OTHERVER) || ln -sf "$(FIELDS_DEST)" "$(FIELDS_DEST_OTHERVER)"
 	@$(POST_INSTALL)
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		$(info) 'Installing icons and .desktop (POST_INSTALL)'; \
 		xdg-desktop-menu install --novendor --mode system \
 			"$(FD_DESKTOP_DEST)" || true; \
 	fi
-	@if [ -n "$(windows)" ]; then \
+	@if "$(windows)"; then \
 		$(info) 'Installing shortcuts'; \
 		$(INSTALL) "$(CYG_ICO_SRC)" "$(CYG_ICO_DEST)"; \
 		mkshortcut -A -P -a '-lc $(NAME)' -n "$(NAME_C)" \
@@ -269,7 +269,7 @@ CYG_DESKTOP_ME := $(W_U)/Desktop/$(W_F)
 
 uninstall: FORCE
 	@$(PRE_UNINSTALL)
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		xdg-desktop-menu uninstall --novendor --mode system \
 			"$(FD_DESKTOP_DEST)" || true; \
 	fi
@@ -278,16 +278,16 @@ uninstall: FORCE
 	@-rm "$(ENGINE_DEST)" "$(SOLVER_DEST)" "$(FIELDS_DEST)" "$(MAIN_DEST)"
 	@$(NO_OTHERVER) || rm "$(ENGINE_DEST_OTHERVER)" \
 		"$(SOLVER_DEST_OTHERVER)" "$(FIELDS_DEST_OTHERVER)" || true
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		rm "$(FD_DESKTOP_DEST)" || true; \
 		for size in $(FD_ICON_SIZES); do \
 			rm "$(FD_ICON_DEST)" || true; \
 		done; \
 	fi
-	@if [ -n "$(macosx)" ]; then \
+	@if "$(macosx)"; then \
 		rm -r "$(BUNDLE)" || true; \
 	fi
-	@if [ -n "$(windows)" ]; then \
+	@if "$(windows)"; then \
 		rm "$(CYG_STARTMENU_NT5X_ALL)" || true; \
 		rm "$(CYG_STARTMENU_NT5X_ME)" || true; \
 		rm "$(CYG_STARTMENU_NT6X_ALL)" || true; \
@@ -310,17 +310,17 @@ print-destinations: FORCE
 		echo "Fields module symlink: $(FIELDS_DEST_OTHERVER)"
 	@echo "Configuration files:  " '$(CFG_DIR) (directory)'
 	@echo "Highscores file:      " "$(HISCORE_FILE)"
-	@if [ -n "$(freedesktop)" ]; then \
+	@if "$(freedesktop)"; then \
 		echo "[freedesktop.org] .desktop:" $(FD_DESKTOP_DEST)"; \
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST16)"; \
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST32)"; \
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST64)"; \
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST256)"; \
 	fi
-	@if [ -n "$(macosx)" ]; then \
+	@if "$(macosx)"; then \
 		echo "[Mac OS X] Bundle (App):" $(BUNDLE) '(directory)'; \
 	fi
-	@if [ -n "$(windows)" ]; then \
+	@if "$(windows)"; then \
 		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT5X_ALL)"; \
 		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT5X_ME)"; \
 		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT6X_ALL)"; \
@@ -335,8 +335,8 @@ check: FORCE
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
 dist : FORCE
-	@cd "$(builddir)" && make tarballs
-	@cd "$(builddir)" && make zip
+	@cd "$(builddir)" && make tarballs > /dev/null
+	@cd "$(builddir)" && make zip > /dev/null
 
 release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \

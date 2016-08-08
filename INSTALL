@@ -115,9 +115,9 @@ INSTALLATION
         srcdir                  The directory extracted from the tarball.
         builddir                (Current working directory)
         
-        freedesktop             Empty=false, non-empty=true; "Linux" desktop
-        macosx                  Empty=false, non-empty=true; Mac OS X
-        windows                 Empty=false, non-empty=true; Windows (Cygwin)
+        freedesktop             'true' or 'false'; "Linux" desktop
+        macosx                  'true' or 'false'; Mac OS X
+        windows                 'true' or 'false'; Windows (Cygwin)
         
 
         NOTE 1

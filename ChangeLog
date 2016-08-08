@@ -10,6 +10,9 @@
             force the correct version number.
         * Makefile.static (dist): Don't depend on zip and tarballs. Doing
             that will cause issues with parallel make.
+        * Makefile.static, configure.py, RELEASE-NOTES, INSTALL: Changed the
+            values for freedesktop, macosx and windows to the unambiguous true
+            or false.
 
 2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.22

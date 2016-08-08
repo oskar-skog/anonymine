@@ -475,8 +475,7 @@ def detect_desktop(Makefile, flags):
     Sets Makefile['macosx'] if needed.
     Sets Makefile['windows'] if needed.
     
-    The value for these variables are either an empty string (meaning
-    false) or a non-empty string (meaning true).
+    The value for these variables are either 'true' or 'false'.
     
     Checks for the existence of various desktop environments.
     '''
@@ -490,9 +489,9 @@ def detect_desktop(Makefile, flags):
         if desktop not in Makefile:
             try:
                 os.listdir(mapping[desktop])
-                Makefile[desktop] = 'non-empty'
+                Makefile[desktop] = 'true'
             except OSError:
-                Makefile[desktop] = ''
+                Makefile[desktop] = 'false'
     return False
 
 def main():
