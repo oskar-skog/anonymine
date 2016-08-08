@@ -13,6 +13,7 @@
         * Makefile.static, configure.py, RELEASE-NOTES, INSTALL: Changed the
             values for freedesktop, macosx and windows to the unambiguous true
             or false.
+        *
 
 2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.22
