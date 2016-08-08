@@ -13,7 +13,7 @@ textfiles="BUGS ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
 # Already CRLF + shell scripts
 noconv="Windows.txt Windows-admin.bat Windows-user.bat configure check.sh \
     desktop/${NAME}.ico desktop/desktop.sh desktop/${NAME}-*.png \
-    desktop/${NAME}*.xcf mkenginecfg dist"
+    desktop/${NAME}*.xcf mkenginecfg mkdist"
 # LF to CRLF conversion for the zip
 files="${NAME}.py ${NAME}_engine.py ${NAME}_fields.py ${NAME}_solver.py \
     configure.py Makefile.static install-cfg enginecfg.default cursescfg \

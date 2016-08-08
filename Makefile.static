@@ -349,9 +349,9 @@ release : dist check
 PKG := $(NAME)-$(VERSION)
 
 tarballs : FORCE
-	@$(srcdir)dist "$(srcdir)" "$(builddir)" "$(PKG)" tar
+	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)" tar
 
 zip : FORCE
-	@$(srcdir)dist "$(srcdir)" "$(builddir)" "$(PKG)" zip
+	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)" zip
 
 FORCE:
