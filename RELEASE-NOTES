@@ -1,0 +1,3 @@
+0.2.23
+    - ./configure freedesktop= macosx= and windows= now take "true" or "false"
+      (CASE SENSITIVE) as value.

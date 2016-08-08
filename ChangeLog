@@ -1,11 +1,15 @@
 2016-08-08      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.23
-        *: New file: HACKING
+        *: New file: HACKING, RELEASE-NOTES
         * README: Moved file listing to HACKING.
         * Makefile.static: $$ doesn't work on FreeBSD's make, it needs to be
             $$$$ which doesn't work on gmake.
             - Created a small shellscript to be invoked from `make dist`.
             - Hard coded the icons sizes. Ugh.
+        * Makefile.static ($(MAIN_STAGE)): Depend on Makefile.static to
+            force the correct version number.
+        * Makefile.static (dist): Don't depend on zip and tarballs. Doing
+            that will cause issues with parallel make.
 
 2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.22

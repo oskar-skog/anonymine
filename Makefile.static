@@ -90,7 +90,7 @@ all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 		cd "$(builddir)" && make build-macosx > /dev/null; \
 	fi
 
-$(MAIN_STAGE) : $(MAIN_SRC)
+$(MAIN_STAGE) : $(MAIN_SRC) $(srcdir)Makefile.static
 	@$(info) 'Creating the appropriate shebang line'
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
 	@sed -e "$(MAIN_STAGE_SED1)" "$(MAIN_SRC)" \
@@ -303,41 +303,42 @@ print-destinations: FORCE
 	@echo "Solver module:        " $(SOLVER_DEST)
 	@echo "Fields module:        " $(FIELDS_DEST)
 	@$(NO_OTHERVER) || \
-		echo "Engine module symlink:" $(ENGINE_DEST_OTHERVER)
+		echo "Engine module symlink: $(ENGINE_DEST_OTHERVER)"
 	@$(NO_OTHERVER) || \
-		echo "Solver module symlink:" $(SOLVER_DEST_OTHERVER)
+		echo "Solver module symlink: $(SOLVER_DEST_OTHERVER)"
 	@$(NO_OTHERVER) || \
-		echo "Fields module symlink:" $(FIELDS_DEST_OTHERVER)
-	@echo "Configuration files:  " $(CFG_DIR) '(directory)'
-	@echo "Highscores file:      " $(HISCORE_FILE)
+		echo "Fields module symlink: $(FIELDS_DEST_OTHERVER)"
+	@echo "Configuration files:  " '$(CFG_DIR) (directory)'
+	@echo "Highscores file:      " "$(HISCORE_FILE)"
 	@if [ -n "$(freedesktop)" ]; then \
-		echo "[freedesktop.org] .desktop:" $(FD_DESKTOP_DEST); \
-		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST16); \
-		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST32); \
-		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST64); \
-		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST256); \
+		echo "[freedesktop.org] .desktop:" $(FD_DESKTOP_DEST)"; \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST16)"; \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST32)"; \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST64)"; \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST256)"; \
 	fi
 	@if [ -n "$(macosx)" ]; then \
 		echo "[Mac OS X] Bundle (App):" $(BUNDLE) '(directory)'; \
 	fi
 	@if [ -n "$(windows)" ]; then \
-		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT5X_ALL); \
-		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT5X_ME); \
-		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT6X_ALL); \
-		echo "[Windows] Shortcut:" $(CYG_STARTMENU_NT6X_ME); \
-		echo "[Windows] Shortcut:" $(CYG_DESKTOP_NT5X_ALL); \
-		echo "[Windows] Shortcut:" $(CYG_DESKTOP_NT6X_ALL); \
-		echo "[Windows] Shortcut:" $(CYG_DESKTOP_ME); \
-		echo "[Windows] Icon:    " $(CYG_ICO_DEST); \
+		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT5X_ALL)"; \
+		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT5X_ME)"; \
+		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT6X_ALL)"; \
+		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT6X_ME)"; \
+		echo "[Windows] Shortcut: $(CYG_DESKTOP_NT5X_ALL)"; \
+		echo "[Windows] Shortcut: $(CYG_DESKTOP_NT6X_ALL)"; \
+		echo "[Windows] Shortcut: $(CYG_DESKTOP_ME)"; \
+		echo "[Windows] Icon:     $(CYG_ICO_DEST)"; \
 	fi
 
 check: FORCE
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
-dist : tarballs zip check
-	@true
+dist : FORCE
+	@cd "$(builddir)" && make tarballs
+	@cd "$(builddir)" && make zip
 
-release : dist
+release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
 		|| echo You are not me.
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.xz" \

@@ -9,7 +9,7 @@ pkgdir=$builddir$pkgname
 NAME="anonymine"
 # Add .txt for Windows.
 textfiles="BUGS ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
-    desktop/README"
+    desktop/README RELEASE-NOTES"
 # Already CRLF + shell scripts
 noconv="Windows.txt Windows-admin.bat Windows-user.bat configure check.sh \
     desktop/${NAME}.ico desktop/desktop.sh desktop/${NAME}-*.png \
