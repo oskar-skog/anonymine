@@ -47,6 +47,5 @@ if [ $type = "zip" ] && [ -n "`which unix2dos`" ]; then
     done
     cd $builddir
     zip -rXq "$pkgname.zip" "$pkgname"
-    rm "$pkgdir.zip"
 fi
 rm -r "$pkgdir"
