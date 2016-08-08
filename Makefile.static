@@ -316,7 +316,6 @@ print-destinations: FORCE
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST32); \
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST64); \
 		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST256); \
-		done; \
 	fi
 	@if [ -n "$(macosx)" ]; then \
 		echo "[Mac OS X] Bundle (App):" $(BUNDLE) '(directory)'; \
