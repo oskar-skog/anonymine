@@ -139,10 +139,20 @@ FIELDS_DEST_OTHERVER := $(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_fields.py
 NO_OTHERVER := test "$(MODULES_OTHERVER)" "=" non-existent
 
 # See desktop/README
-FD_ICON_SRC := $(srcdir)desktop/$(NAME)-$$size.png
-FD_ICON_DESTDIR := $(DESTDIR)$(prefix)/share/icons/hicolor/$$size/apps
-FD_ICON_SIZES := 16x16 32x32 64x64 256x256
-FD_ICON_DEST := $(FD_ICON_DESTDIR)/$(NAME).png
+# $$size would work in gmake while $$$$size would work in BSD make.
+# Neither works in both.
+FD_ICON_SRC16 := $(srcdir)desktop/$(NAME)-16x16.png
+FD_ICON_DESTDIR16 := $(DESTDIR)$(prefix)/share/icons/hicolor/16x16/apps
+FD_ICON_DEST16 := $(FD_ICON_DESTDIR16)/$(NAME).png
+FD_ICON_SRC32 := $(srcdir)desktop/$(NAME)-32x32.png
+FD_ICON_DESTDIR32 := $(DESTDIR)$(prefix)/share/icons/hicolor/32x32/apps
+FD_ICON_DEST32 := $(FD_ICON_DESTDIR32)/$(NAME).png
+FD_ICON_SRC64 := $(srcdir)desktop/$(NAME)-64x64.png
+FD_ICON_DESTDIR64 := $(DESTDIR)$(prefix)/share/icons/hicolor/64x64/apps
+FD_ICON_DEST64 := $(FD_ICON_DESTDIR64)/$(NAME).png
+FD_ICON_SRC256 := $(srcdir)desktop/$(NAME)-256x256.png
+FD_ICON_DESTDIR256 := $(DESTDIR)$(prefix)/share/icons/hicolor/256x256/apps
+FD_ICON_DEST256 := $(FD_ICON_DESTDIR256)/$(NAME).png
 
 # See desktop/README
 BUNDLE := $(DESTDIR)/Applications/$(NAME_C).app
@@ -200,10 +210,14 @@ install : check-install-cfg install-dirs
 	@if [ -n "$(freedesktop)" ]; then \
 		$(info) 'Installing icons and .desktop (NORMAL_INSTALL)'; \
 		$(INSTALL) -m 644 "$(FD_DESKTOP_STAGE)" "$(FD_DESKTOP_DEST)"; \
-		for size in $(FD_ICON_SIZES); do \
-			$(INSTALL) -d "$(FD_ICON_DESTDIR)"; \
-			$(INSTALL) -m 644 "$(FD_ICON_SRC)" "$(FD_ICON_DEST)"; \
-		done; \
+		$(INSTALL) -d "$(FD_ICON_DESTDIR16)"; \
+		$(INSTALL) -m 644 "$(FD_ICON_SRC16)" "$(FD_ICON_DEST16)"; \
+		$(INSTALL) -d "$(FD_ICON_DESTDIR32)"; \
+		$(INSTALL) -m 644 "$(FD_ICON_SRC32)" "$(FD_ICON_DEST32)"; \
+		$(INSTALL) -d "$(FD_ICON_DESTDIR64)"; \
+		$(INSTALL) -m 644 "$(FD_ICON_SRC64)" "$(FD_ICON_DEST64)"; \
+		$(INSTALL) -d "$(FD_ICON_DESTDIR256)"; \
+		$(INSTALL) -m 644 "$(FD_ICON_SRC256)" "$(FD_ICON_DEST256)"; \
 	fi
 	@if [ -n "$(macosx)" ]; then \
 		$(info) 'Installing app/bundle'; \
@@ -298,8 +312,10 @@ print-destinations: FORCE
 	@echo "Highscores file:      " $(HISCORE_FILE)
 	@if [ -n "$(freedesktop)" ]; then \
 		echo "[freedesktop.org] .desktop:" $(FD_DESKTOP_DEST); \
-		for size in $(FD_ICON_SIZES); do \
-			echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST); \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST16); \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST32); \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST64); \
+		echo "[freedesktop.org] Icon:    " $(FD_ICON_DEST256); \
 		done; \
 	fi
 	@if [ -n "$(macosx)" ]; then \

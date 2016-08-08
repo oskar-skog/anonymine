@@ -1,9 +1,11 @@
-2016-08-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-08      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.23
         *: New file: HACKING
+        * README: Moved file listing to HACKING.
         * Makefile.static: $$ doesn't work on FreeBSD's make, it needs to be
-            $$$$ which doesn't work on gmake.  Created small shellscripts to
-            be invoked from make.
+            $$$$ which doesn't work on gmake.
+            - Created a small shellscript to be invoked from `make dist`.
+            - Hard coded the icons sizes. Ugh.
 
 2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.22
