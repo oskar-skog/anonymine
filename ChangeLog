@@ -1,3 +1,10 @@
+2016-08-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.24
+        * anonymine_solver.py: Removed deprecated functions.
+        * README: Dropped goal 0.5: statistics module. Rephrased 0.6(->0.5)
+        * test.py: Removed functions that depend on the deprecated statistics
+            functions.
+
 2016-08-08      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.23
         *: New file: HACKING, RELEASE-NOTES
@@ -13,7 +20,6 @@
         * Makefile.static, configure.py, RELEASE-NOTES, INSTALL: Changed the
             values for freedesktop, macosx and windows to the unambiguous true
             or false.
-        *
 
 2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.22

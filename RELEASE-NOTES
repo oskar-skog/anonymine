@@ -1,3 +1,6 @@
+0.2.24
+    - Deprecated functions have been removed from the solver algorithm.
+
 0.2.23
     - ./configure freedesktop= macosx= and windows= now take "true" or "false"
       (CASE SENSITIVE) as value.

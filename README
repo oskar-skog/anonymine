@@ -68,6 +68,5 @@ Goals
     0.2     Performance improvements, no nasty calibration of enginecfg.
     0.3     High-scores.
     0.4     Mouse support.
-    0.5     Create a statistics collection module.
-    0.6     Good documentation for the solver algorithm.
+    0.5     Illustrative documentation for the solver algorithm.
 

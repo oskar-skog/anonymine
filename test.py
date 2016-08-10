@@ -131,40 +131,6 @@ def runhex(x=39, y=18, m=112):
     solver.field = field
     print(solver.solve())
 
-def run10():
-    solver = anonymine_solver.solver()
-    field = anonymine_fields.generic_field([16, 16])
-    solver.field = field
-    
-    times = []
-    ttimes = []
-    
-    while solver.need_more_data(2, 2, 5, 12):
-        mines = field.all_cells()
-        random.shuffle(mines)
-        field.fill(mines[:40])
-        for mine in mines[40:]:
-            for neighbour in field.get_neighbours(mine):
-                if neighbour in mines[:40]:
-                    break
-            else:
-                field.reveal(mine)
-                break
-        
-        start = time.time()
-        solver.solve()
-        this_time = time.time() - start
-        
-        times.append(this_time)
-        if this_time < 3:
-            ttimes.append(this_time)
-        
-        field.clear()
-    print(solver.chance())
-    print(solver.cumulated_levels_total())
-    print(solver.cumulated_levels_success())
-    print(min(times), sum(times)/len(times), max(times), len(times))
-    print(min(ttimes), sum(ttimes)/len(ttimes), max(ttimes), len(ttimes))
 
 def bug1():
     # BUG:
