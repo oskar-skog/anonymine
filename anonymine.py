@@ -47,6 +47,7 @@ import curses
 import os
 import sys
 import errno
+import subprocess
 
 # Allow module names to be changed later.
 import anonymine_engine as game_engine
@@ -1256,15 +1257,18 @@ def highscores_display(title, headers, rows):
     for column in zip(*all_rows):
         column_width.append(max(list(map(len, column))) + 1)
     # Print
-    output(sys.stdout,'\n' + '_'*len(title) + '\n')
-    output(sys.stdout,title + '\n\n')
+    text = 'Arrow keys to scroll, "q" when done viewing highscores.\n'
+    text += '\n' + '_'*len(title) + '\n'
+    text += title + '\n\n'
     for row in all_rows:
         for index, width in enumerate(column_width):
-            output(sys.stdout, row[index])
-            output(sys.stdout, ' ' * (width - len(row[index])))
-            output(sys.stdout,'  ')
-        output(sys.stdout, '\n')
-    output(sys.stdout, '\n')
+            text += row[index]
+            text += ' ' * (width - len(row[index]))
+            text += '  '
+        text += '\n'
+    less = subprocess.Popen(['less', '-S'], stdin=subprocess.PIPE)
+    less.communicate(text)
+    less.wait()
 
 def play_game(parameters):
     '''Play a custom game of minesweeper.

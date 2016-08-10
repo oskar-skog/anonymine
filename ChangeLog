@@ -1,4 +1,9 @@
 2016-08-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.25
+        * anonymine.py (highscores_display): Use less(1).
+        * ChangeLog (0.2.24): 2016-08-09 UTC, 2016-08-10 local time.
+
+2016-08-09      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.24
         * anonymine_solver.py: Removed deprecated functions.
         * README: Dropped goal 0.5: statistics module. Rephrased 0.6(->0.5)

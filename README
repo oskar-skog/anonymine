@@ -33,6 +33,7 @@ Tested platforms
 
     The dependencies are:
     (Python 3.x || Python >= 2.6) && curses mod. && (unix || argparse mod.)
+    And less(1) is only needed for displaying the highscores.
     
     The argparse module is needed for Anonymine to take command line options.
     The configuration files can be specified with the -e and -c command line
