@@ -1,4 +1,8 @@
 2016-08-11      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.27
+        * Makefile.static (print-destinations): Fixed syntax error.
+        * Makefile.static (release): Added verbose messages, added new
+            target "test" as a synonym for "check".
     0.2.26
         * anonymine.py (highscores_display):
             - Add -# 1 as options to less.
