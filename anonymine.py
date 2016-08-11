@@ -1257,7 +1257,7 @@ def highscores_display(title, headers, rows):
     for column in zip(*all_rows):
         column_width.append(max(list(map(len, column))) + 1)
     # Print
-    text = 'Arrow keys to scroll, "q" when done viewing highscores.\n'
+    text = ''
     text += '\n' + '_'*len(title) + '\n'
     text += title + '\n\n'
     for row in all_rows:
@@ -1266,9 +1266,19 @@ def highscores_display(title, headers, rows):
             text += ' ' * (width - len(row[index]))
             text += '  '
         text += '\n'
-    less = subprocess.Popen(['less', '-S', '-#', '1'], stdin=subprocess.PIPE)
-    less.communicate(text)
-    less.wait()
+    try:
+        less = subprocess.Popen(
+            ['less', '-S', '-#', '1'],
+            stdin=subprocess.PIPE
+        )
+        less.communicate(
+            'Arrow keys to scroll, "q" when done viewing highscores.\n' + text
+        )
+        less.wait()
+    except:
+        output(sys.stderr, 'Failed to pipe to `less -S -# 1`!\n')
+        output(sys.stdout, text)
+    
 
 def play_game(parameters):
     '''Play a custom game of minesweeper.

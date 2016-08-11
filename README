@@ -53,12 +53,12 @@ Tested platforms
     FreeBSD 9.2 [Py 2]        
     FreeBSD 10 [Py 2]         http://anonymine-demo.oskog97.com:8080/
     Mac OS X [Py 2]           ICNS icon is untested
-    Minix 3.3 [Py 2]          $(prefix) is /usr/pkg
+    Minix 3.3 [Py 2]          Has once worked, but no longer does.
     NetBSD 6.1 [Py 2]         No color
-    OpenBSD 5.8               
+    OpenBSD 5.8 [Py 2, 3]     Failed to pipe to less on Python 3
     OpenSUSE 12.2 [Py 2, 3]   
     Trisquel 6.0 [Py 2, 3]    Old host system, old versions well tested
-    openindiana [Py 2.6]      /usr/ucb/install is buggy. GNOME terminal worse.
+    openindiana [Py 2.6]      Has once worked, but no longer does.
 
 
 Goals

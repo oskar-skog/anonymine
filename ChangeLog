@@ -1,3 +1,15 @@
+2016-08-11      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.26
+        * anonymine.py (highscores_display):
+            - Add -# 1 as options to less.
+            - Allow subprocess to fail.
+        * README: Added some notes about the tested platforms.
+            Minix 3 and openindiana no longer work.
+        * mkenginexfg:
+            - seq(1) is apparently a GNU specific utility.
+            - Added quotes around $nproc to let the Python script succeed
+              even if no method of counting processors worked.
+
 2016-08-10      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.25
         * anonymine.py (highscores_display): Use less(1).

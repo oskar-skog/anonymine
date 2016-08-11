@@ -75,11 +75,14 @@ _n2 () { sysctl -n kern.smp.cpus;                   } # BSD (Should I use this?)
 _n3 () { sysctl -n hw.logicalcpu;                   } # BSD
 _n4 () { sysctl -n hw.ncpu;                         } # BSD (fallback)
 _n5 () { psrinfo && psrinfo | wc -l;                } # (OpenSolaris)/openidiana
-for n in `seq 0 5`; do
+n=0; last=5
+while [ $n -le $last ]; do
     ncpus=`_n$n` 2> /dev/null && break
+    n=$(($n + 1))
 done
 
 oldpwd=`pwd`
 cd "$srcdir"
-python "$pyfile" $ncpus "$hiscorefile" > "$outfile" || cp "$defaultfile" "$outfile"
+python "$pyfile" "$ncpus" "$hiscorefile" > "$outfile" \
+    || cp "$defaultfile" "$outfile"
 cd "$oldpwd"
