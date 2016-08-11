@@ -1266,7 +1266,7 @@ def highscores_display(title, headers, rows):
             text += ' ' * (width - len(row[index]))
             text += '  '
         text += '\n'
-    less = subprocess.Popen(['less', '-S'], stdin=subprocess.PIPE)
+    less = subprocess.Popen(['less', '-S', '-#', '1'], stdin=subprocess.PIPE)
     less.communicate(text)
     less.wait()
 
