@@ -105,6 +105,8 @@ Game interface and fields module ("anonymine.py", "anonymine_fields.py")
         - A main function without fault handling (leave curses).
           (Fault handling is in the __name__ == '__main__' conditional.)
         - A `play_game` function.
+        - A function for retrieving nickname and a function for displaying
+          highscores with the help of less(1).
         - EINTR handling on IO due to a Python+curses bug.
 
 
