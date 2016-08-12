@@ -1,0 +1,17 @@
+I haven't yet figured out how to get it installed on Haiku, but it plays
+acceptably well.   The terminal unfortunately screws up the screen quite
+often, disabling color helps though.
+
+(Tested on Haiku nightly build hrev50483.)
+
+To "install it"
+$ git clone https://github.com/oskar-skog/anonymine.git
+$ cd anonymine
+$ touch highscores
+$ ./mkenginecfg ./ ./ highscores
+
+To play it
+$ cd anonymine
+$ TERM=vt100
+$ python anonymine.py -c cursescfg -e enginecfg.out
+$ TERM=xterm

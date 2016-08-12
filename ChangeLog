@@ -3,6 +3,8 @@
         * anonymine_engine.py (hiscores (_load)): Bugfix:
             The IO error table didn't work as hiscores was None rather than []
         * (All python modules): Allow running as root on Haiku.
+        *: New file INSTALL.Haiku.
+        *: Moved Windows.txt to INSTALL.Windows to match the new pattern.
 
 2016-08-11      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.27
