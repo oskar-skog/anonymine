@@ -174,6 +174,7 @@ class hiscores():
             f = open(self.hiscorefile, 'rb')
         except IOError as err:
             self.display_caption = 'IO error on read: ' + err.strerror
+            self.hiscores = []
             return
         filecontent = f.read().decode('utf-8')
         lines = list(filter(None, filecontent.split('\n')))
