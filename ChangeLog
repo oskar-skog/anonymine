@@ -1,5 +1,7 @@
     0.2.29
         * INSTALL: Windows notice removed. Added less(1) as a weak dependency.
+        * `make dist`: Include "testcfg" as it's needed by something in
+            test.py.
 
 2016-08-12      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.28

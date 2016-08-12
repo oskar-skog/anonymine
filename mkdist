@@ -17,7 +17,7 @@ noconv="Windows-admin.bat Windows-user.bat configure check.sh \
 # LF to CRLF conversion for the zip
 files="${NAME}.py ${NAME}_engine.py ${NAME}_fields.py ${NAME}_solver.py \
     configure.py Makefile.static install-cfg enginecfg.default cursescfg \
-    test.py desktop/Info.plist.py desktop/icon.icns.py"
+    test.py testcfg desktop/Info.plist.py desktop/icon.icns.py"
 subdirs="desktop"
 
 
