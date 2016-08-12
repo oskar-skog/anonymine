@@ -806,7 +806,7 @@ class game_engine():
         # NOTICE: This used to return game_won, delta_time
         return game_won, hs
 
-assert os.geteuid(), "Why the-fuck(7) are you playing games as root?"
+assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
 assert __name__ != '__main__', "I'm not a script."
 
 # Force InterruptedError to be defined.

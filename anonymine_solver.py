@@ -1141,5 +1141,6 @@ class solver():
         return ret
 
 import os
-assert os.geteuid(), "Why the-fuck(7) are you playing games as root?"
+import sys
+assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
 assert __name__ != '__main__', "I'm not a script."

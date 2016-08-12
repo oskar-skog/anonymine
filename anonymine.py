@@ -1421,7 +1421,7 @@ def main():
         play_game(parameters)
 
 
-assert os.geteuid(), "Why the-fuck(7) are you playing games as root?"
+assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
 if __name__ == '__main__':
     # Force InterruptedError to be defined
     try:
