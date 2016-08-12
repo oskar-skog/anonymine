@@ -1,9 +1,3 @@
-WINDOWS USERS
-=============
-
-    Read "Windows.txt" instead.
-
-
 DEPENDENCIES
 ============
 
@@ -12,8 +6,9 @@ DEPENDENCIES
     * A screen size of at least 10 columns by 8 rows.
         (7 by 4 for non-hexagonal gametypes.)
     * A unix-like operating system or the argparse module.
+    * less(1) for the passwords is recommended.
     
-    Normal installation will only work on unix-like operating
+    NOTICE: Normal installation will only work on unix-like operating
     systems.
     
     On unix-unlike systems you must specify the location of both
