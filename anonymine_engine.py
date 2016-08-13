@@ -124,6 +124,17 @@ class hiscores():
         "{mines}@{width}x{height}-{gametype}" + nfc*"+nocount" + ng*"+losable"
         
         <mines>"@"<width>"x"<height>"-"<gametype>["+nocount"]["+losable"]
+    
+    
+    Unicode
+    -------
+    
+        The highscores file is UTF-8 encoded.  The stings returned by
+        the methods in this class are a combination of ASCII only `str`
+        types on both Python versions, and Unicode strings (`unicode`
+        or `str`).   Notice that the callback for `add_entry` MUST
+        return an `str` instance on both Python versions.
+        
     '''
     def __init__(self, cfg, paramstring, delta_time):
         '''
@@ -202,6 +213,8 @@ class hiscores():
         
         `inputfunction` is a callback to the interface.
         string = inputfunction(titlebar, prompt)
+        
+        string MUST be of the `str` type on both Python versions.
         '''
         def load_split_add(self_reference, new_entry):
             '''
@@ -256,8 +269,8 @@ class hiscores():
                 while True:
                     nick = inputfunction(title, 'Nickname')
                     if sys.version_info[0] == 2:
-                        # Don't try decoding using other charsets, it'll just
-                        # blow up on output instead.
+                        # Don't try decoding using other charsets,
+                        # it'll just blow up on output instead.
                         nick = nick.decode(
                             locale.getpreferredencoding(), errors='ignore'
                         )

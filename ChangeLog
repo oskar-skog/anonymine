@@ -1,3 +1,4 @@
+2016-08-13      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.29
         * INSTALL: Windows notice removed. Added less(1) as a weak dependency.
         * `make dist`: Include "testcfg" as it's needed by something in
@@ -6,6 +7,7 @@
             UnicodeDecodeError on localized weekday abbreviations.
         * anonymine.py (highscores_display): Bugfix: Encode the text before
             sending to less(1).
+        * anonymine_engine.py (hiscores): Documented the Unicode thingies.
 
 2016-08-12      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.28
