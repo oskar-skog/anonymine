@@ -442,16 +442,16 @@ def find_MODULES_OTHERVER(Makefile, flags):
             )
     return False
 
-def find_INSTALL_CMD(Makefile, flags):
+def find_INSTALL(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
     
-    Sets Makefile['INSTALL_CMD'] if needed.
+    Sets Makefile['INSTALL'] if needed.
     
-    $(INSTALL_CMD) is normally "install", but on Solares it needs to be
+    $(INSTALL) is normally "install", but on Solares it needs to be
     "/usr/ucb/install".
     '''
-    if 'INSTALL_CMD' not in Makefile:
+    if 'INSTALL' not in Makefile:
         trywith = [
             '/usr/ucb/install'
         ]
@@ -462,9 +462,9 @@ def find_INSTALL_CMD(Makefile, flags):
                 continue
             if flags['v']:
                 sys.stdout.write('Using "' + install + '" as `install`\n.')
-            Makefile['INSTALL_CMD'] = install
+            Makefile['INSTALL'] = install
             return False
-        Makefile['INSTALL_CMD'] = 'install'
+        Makefile['INSTALL'] = 'install'
         return False
 
 def detect_desktop(Makefile, flags):
@@ -533,7 +533,7 @@ def main():
     error |= find_sysconfdir(Makefile, flags)
     error |= find_vargamesdir(Makefile, flags)
     # and the install tool.
-    error |= find_INSTALL_CMD(Makefile, flags)
+    error |= find_INSTALL(Makefile, flags)
     #
     error |= detect_desktop(Makefile, flags)
     
@@ -548,7 +548,7 @@ def main():
             'prefix',
             'EXECUTABLES',
             'MODULES', 'MODULES_OTHERVER',
-            'INSTALL_CMD',
+            'INSTALL',
             'freedesktop',
             'macosx',
             'windows',

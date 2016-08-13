@@ -1,4 +1,8 @@
 2016-08-13      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.30
+        * configure.py [openindiana]: INSTALL_CMD was changed to INSTALL in
+            Makefile.static at version 0.1.17.  I forgot to change it in
+            configure.py as well.
     0.2.29
         * INSTALL: Windows notice removed. Added less(1) as a weak dependency.
         * `make dist`: Include "testcfg" as it's needed by something in
