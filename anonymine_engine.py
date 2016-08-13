@@ -45,9 +45,14 @@ import time
 import signal
 import errno
 import sys
-import math
 import getpass
 import locale
+
+try:
+    import math
+except:
+    class math():
+        def ceil(x): return int(x)  # Just don't blow up on stupid platforms.
 
 # Allow module names to be changed later.
 import anonymine_solver as solver
