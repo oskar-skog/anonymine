@@ -1,8 +1,10 @@
 2016-08-13      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.30
+        * README: It works again on Minix 3.3 and openindiana.
         * configure.py [openindiana]: INSTALL_CMD was changed to INSTALL in
             Makefile.static at version 0.1.17.  I forgot to change it in
             configure.py as well.
+        * INSTALL: Added "INSTALL" as a recognized variable
         * anonymine_engine.py [Minix]: Guess what, Python 2.7 on Minix 3.3
             has no math module. Created a really dumb replacement.
         * anonymine.py [Minix]: Can't import subprocess either. Piping to

@@ -88,7 +88,7 @@ INSTALLATION
             ./configure --version
     
     
-    Recognised variables
+    Recognized variables
     ====================
     
         Variable                default and/or description
@@ -105,6 +105,9 @@ INSTALLATION
         EXECUTABLES             This program will be installed in $(gamesdir)
         MODULES                 See its own subsection
         MODULES_OTHERVER        See its own subsection
+        
+        INSTALL                 which install(8) utility to use.
+                                (/usr/ucb/install on Solares)
         
         DESTDIR                 Pretend the root is here
         srcdir                  The directory extracted from the tarball.

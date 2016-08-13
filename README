@@ -42,7 +42,7 @@ Tested platforms
     Note that Python 2.6, 3.0 and 3.1 are not expected to have the
     module "argparse".
     
-    CPython 2.6.6 is lowest version of Python that has been tested.
+    CPython 2.6.4 is lowest version of Python that has been tested.
     
     
     Platform                  Notes
@@ -53,13 +53,12 @@ Tested platforms
     FreeBSD 9.2 [Py 2]        
     FreeBSD 10 [Py 2]         http://anonymine-demo.oskog97.com:8080/
     Mac OS X [Py 2]           ICNS icon is untested
+    Minix 3.3 [Py 2]          Issues with the highscores: rounding, no pager
     NetBSD 6.1 [Py 2]         No color
     OpenBSD 5.8 [Py 2, 3]     Failed to pipe to less on Python 3
     OpenSUSE 12.2 [Py 2, 3]   
     Trisquel 6.0 [Py 2, 3]    Old host system, old versions well tested
-    
-    Minix 3.3 [Py 2]          Has once worked, but no longer does.
-    openindiana [Py 2.6]      Has once worked, but no longer does.
+    openindiana [Py 2.6]      0.1.17 to 0.2.29 won't work
 
 
 Goals
