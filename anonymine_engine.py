@@ -304,7 +304,20 @@ class hiscores():
         
         def format_deltatime(t):
             def tfmt(format, t):
-                return time.strftime(format, time.gmtime(t))
+                s = time.strftime(format, time.gmtime(t))
+                if sys.version_info[0] == 3:
+                    return s
+                else:
+                    encodings = [
+                        locale.getpreferredencoding(),
+                        'UTF-8',
+                        'ISO-8859-1',   # Fallback
+                    ]
+                    for encoding in encodings:
+                        try:
+                            return s.decode(encoding)
+                        except UnicodeDecodeError:
+                            continue
             if t <= 3559.999:
                 t = math.ceil(t * 1000.0) / 1000.0
                 subsec = int(math.ceil(t * 1000.0) % 1000)

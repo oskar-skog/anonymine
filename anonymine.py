@@ -48,6 +48,7 @@ import os
 import sys
 import errno
 import subprocess
+import locale
 
 # Allow module names to be changed later.
 import anonymine_engine as game_engine
@@ -1257,7 +1258,7 @@ def highscores_display(title, headers, rows):
     for column in zip(*all_rows):
         column_width.append(max(list(map(len, column))) + 1)
     # Print
-    text = ''
+    text = 'Arrow keys to scroll, "q" when done viewing highscores.\n'
     text += '\n' + '_'*len(title) + '\n'
     text += title + '\n\n'
     for row in all_rows:
@@ -1266,18 +1267,30 @@ def highscores_display(title, headers, rows):
             text += ' ' * (width - len(row[index]))
             text += '  '
         text += '\n'
+    encodings = [
+        locale.getpreferredencoding(),
+        'UTF-8',
+    ]
+    utext = text        # Needed for Python 3 if |less fails.
+    for encoding in encodings:
+        try:
+            text = text.encode(encoding)
+            break
+        except UnicodeEncodeError:
+            continue
     try:
         less = subprocess.Popen(
             ['less', '-S', '-#', '1'],
             stdin=subprocess.PIPE
         )
-        less.communicate(
-            'Arrow keys to scroll, "q" when done viewing highscores.\n' + text
-        )
+        less.communicate(text)
         less.wait()
     except:
         output(sys.stderr, 'Failed to pipe to `less -S -# 1`!\n')
-        output(sys.stdout, text)
+        if sys.version_info[0] == 3:
+            output(sys.stdout, utext)
+        else:
+            output(sys.stdout, text)
     
 
 def play_game(parameters):
