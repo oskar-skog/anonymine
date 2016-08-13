@@ -51,8 +51,10 @@ import locale
 try:
     import math
 except:
-    class math():
-        def ceil(x): return int(x)  # Just don't blow up on stupid platforms.
+    class mathclass(): # Just don't blow up on stupid platforms.
+        def __init__(self): return None
+        def ceil(self, x): return int(x)
+    math = mathclass()
 
 # Allow module names to be changed later.
 import anonymine_solver as solver
