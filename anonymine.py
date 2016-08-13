@@ -47,8 +47,13 @@ import curses
 import os
 import sys
 import errno
-import subprocess
 import locale
+
+try:
+    import subprocess
+except:
+    # Let piping to less(1) fail on Minix.
+    pass
 
 # Allow module names to be changed later.
 import anonymine_engine as game_engine

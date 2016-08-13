@@ -5,6 +5,8 @@
             configure.py as well.
         * anonymine_engine.py [Minix]: Guess what, Python 2.7 on Minix 3.3
             has no math module. Created a really dumb replacement.
+        * anonymine.py [Minix]: Can't import subprocess either. Piping to
+            less will fail, but that's a tolerable error.
     0.2.29
         * INSTALL: Windows notice removed. Added less(1) as a weak dependency.
         * `make dist`: Include "testcfg" as it's needed by something in
