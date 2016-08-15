@@ -1284,6 +1284,7 @@ def highscores_display(title, headers, rows):
         except UnicodeEncodeError:
             continue
     try:
+        os.environ['LESSSECURE'] = '1'          # LOL
         less = subprocess.Popen(
             ['less', '-S', '-#', '1'],
             stdin=subprocess.PIPE

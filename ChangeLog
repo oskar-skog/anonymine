@@ -1,3 +1,7 @@
+2016-08-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.31
+        * anonymine.py: Set LESSSECURE=1
+
 2016-08-13      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.2.30
         * README: It works again on Minix 3.3 and openindiana.
