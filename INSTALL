@@ -53,6 +53,8 @@ INSTALLATION
           by creating `$(builddir)enginecfg.user` as your own enginecfg.
         * You may need to "touch ./*" if you are remaking after a
           reconfiguration.
+        * System wide configuration files, even if altered, will be deleted
+          on uninstall.
     
     
     ./configure; make; make install
@@ -229,6 +231,7 @@ INSTALLATION
             This will remove the system-wide configuration files as well.
             To remove an installed version older than 0.0.31 you'll need
             to run ./configure with the -w option.
+            WARNING: This removes configuration files, even if altered.
         
         check
             Check that everything seems to work.
