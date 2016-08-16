@@ -21,34 +21,24 @@ What's new in 0.3.0 since 0.2.0?
         0.2.28: Haiku (BeOS clone) supported
         0.2.30: Working on openindiana again, broke in 0.1.17
         0.2.30: Work somewhat on Minix
+        0.2.23: `make dist` and installing freedesktop.org icons on *BSD
+        Generic portability fixes: 0.2.26
     
-    0.2.27
-        * Makefile.static (print-destinations): Fixed syntax error.
-        * Makefile.static (release): Added verbose messages, added new
-            target "test" as a synonym for "check".
-    0.2.26
-        * README: Added some notes about the tested platforms.
-            Minix 3 and openindiana no longer work.
-        * mkenginexfg:
-            - seq(1) is apparently a GNU specific utility.
-            - Added quotes around $nproc to let the Python script succeed
-              even if no method of counting processors worked.
+    Build system and package files:
+        HACKING         0.2.23
+        RELEASE-NOTES   0.2.23
+        make test       0.2.27
+    
     0.2.24
         * anonymine_solver.py: Removed deprecated functions.
         * README: Dropped goal 0.5: statistics module. Rephrased 0.6(->0.5)
         * test.py: Removed functions that depend on the deprecated statistics
             functions.
+    
     0.2.23
         *: New file: HACKING, RELEASE-NOTES
-        * README: Moved file listing to HACKING.
-        * Makefile.static: $$ doesn't work on FreeBSD's make, it needs to be
-            $$$$ which doesn't work on gmake.
-            - Created a small shellscript to be invoked from `make dist`.
-            - Hard coded the icons sizes. Ugh.
         * Makefile.static ($(MAIN_STAGE)): Depend on Makefile.static to
             force the correct version number.
-        * Makefile.static (dist): Don't depend on zip and tarballs. Doing
-            that will cause issues with parallel make.
         * Makefile.static, configure.py, RELEASE-NOTES, INSTALL: Changed the
             values for freedesktop, macosx and windows to the unambiguous true
             or false.
