@@ -1,3 +1,236 @@
+What's new in 0.3.0 since 0.2.0?
+================================
+
+    Highscores:
+        - Implemented: 0.2.3
+        - Usable since: 0.2.16
+        - With less(1): 0.2.26
+        - Security fix: 0.2.31, 0.2.25 to 0.2.30 are vulnerable.
+        - Latest update: 0.2.32
+        - Introduced a change to cursescfg and the interface's
+          display function.
+    
+    0.2.30
+        * README: It works again on Minix 3.3 and openindiana.
+        * configure.py [openindiana]: INSTALL_CMD was changed to INSTALL in
+            Makefile.static at version 0.1.17.  I forgot to change it in
+            configure.py as well.
+        * INSTALL: Added "INSTALL" as a recognized variable
+        * anonymine_engine.py [Minix]: Guess what, Python 2.7 on Minix 3.3
+            has no math module. Created a really dumb replacement.
+        * anonymine.py [Minix]: Can't import subprocess either. Piping to
+            less will fail, but that's a tolerable error.
+    0.2.28
+        * (All python modules): Allow running as root on Haiku.
+        *: New file INSTALL.Haiku.
+        *: Moved Windows.txt to INSTALL.Windows to match the new pattern.
+    0.2.27
+        * Makefile.static (print-destinations): Fixed syntax error.
+        * Makefile.static (release): Added verbose messages, added new
+            target "test" as a synonym for "check".
+    0.2.26
+        * anonymine.py (highscores_display):
+            - Add -# 1 as options to less.
+            - Allow subprocess to fail.
+        * README: Added some notes about the tested platforms.
+            Minix 3 and openindiana no longer work.
+        * mkenginexfg:
+            - seq(1) is apparently a GNU specific utility.
+            - Added quotes around $nproc to let the Python script succeed
+              even if no method of counting processors worked.
+    0.2.25
+        * anonymine.py (highscores_display): Use less(1).
+    0.2.24
+        * anonymine_solver.py: Removed deprecated functions.
+        * README: Dropped goal 0.5: statistics module. Rephrased 0.6(->0.5)
+        * test.py: Removed functions that depend on the deprecated statistics
+            functions.
+    0.2.23
+        *: New file: HACKING, RELEASE-NOTES
+        * README: Moved file listing to HACKING.
+        * Makefile.static: $$ doesn't work on FreeBSD's make, it needs to be
+            $$$$ which doesn't work on gmake.
+            - Created a small shellscript to be invoked from `make dist`.
+            - Hard coded the icons sizes. Ugh.
+        * Makefile.static ($(MAIN_STAGE)): Depend on Makefile.static to
+            force the correct version number.
+        * Makefile.static (dist): Don't depend on zip and tarballs. Doing
+            that will cause issues with parallel make.
+        * Makefile.static, configure.py, RELEASE-NOTES, INSTALL: Changed the
+            values for freedesktop, macosx and windows to the unambiguous true
+            or false.
+    0.2.22
+        * anonymine_engine.py (hiscores (display)): Www HH:MM goes back to
+            six days; Added "(Future)"
+        * configure.py, Makefile.static, anonymine.py, INSTALL: Allow
+            $(sysconfdir) to be anything.
+        * INSTALL: Modified.
+    0.2.21
+        * Makefile.static, anonymine.py, configure: Moved version numbering
+            into Makefile.static only to simplify version bumping.
+    0.2.20
+        * cursescfg:  Difficult to see anything in B&W mode: Change '?' to '.'
+            to increase the visual difference between flags and free cells.
+        * INSTALL: Updated to match these changes:
+        * Makefile.static: Disabled overwrite-cfg due to the new behavior
+            of check-install-cfg.
+        * install-cfg:
+            - Wrote docstrings
+            - Changed return values for `decide`
+            - Tell which configuration file is incompatible and refer to the
+              source file.
+        * install-cfg, Configuration files: Added support for a status quo
+            marker line.  If the magic line can be found in the destination
+            file, it will be overwritten.
+        * install-cfg, Makefile.static (check-install-cfg): Send the verbose
+            variable to ./install-cfg to make it shut up if it has nothing
+            exceptional to say.
+    0.2.19
+        * cursescfg: Hexagonal grid was still too bright -> set to A_DIM,
+            text does not need to be bright.
+        * anonymine.py (highscores_add_entry): Fixed double-prompt for nickname.
+    0.2.18
+        * anonymine.py, BUGS: Got away with only redrawing on the first click
+            (initialization).  This was previously a potential performance
+            issue.
+        * cursescfg: Bright/bold magenta was too bright for the hexagonal grid.
+    0.2.17
+        * BUGS, anonymine.py: #9, use a different fix.
+            - `ask` modified to handle EINTR
+            - New function `output` created as wrapper.
+            - Added 'str' as paramtype to `convert_param`
+        * anonymine_engine.py (game_engine.init_field2):
+            - Handle EINTR on os.wait, os.fork already does this
+              unintentionally.
+            - raise security_alert rather than Exception for the timeout alarm.
+              (except Exception caught lots of other stuff.)
+        * anonymine.py: Use str(game_engine.security_alert) rather than
+            game_engine.security_alert.message.
+        * BUGS: Added note about #3
+        * mkenginecfg, enginecfg.default: sec-maxtime: 90 -> 900
+    0.2.16
+        * anonymine_engine.py (hiscores), etc: Force UTF-8 on the file.
+            - Functions may return unicode objects as strings on Python 2, but
+              that's no problem as unicode and str can be combined as long as
+              the str only contains bytes in the ASCII range.
+            - add_entry, will decode the str object on Python 2 using
+              locale.getprefferedencoding() as encoding
+            - The maxsize key now refers to the number of bytes on both
+              Pythons.
+            - Added a nick-maxlen key to limit the length of nicknames.
+        * anonymine.py (highscores_add_entry): sys.stdin.readline may raise
+            UnicodeDecodeError on Python 3. Grr.
+        * anonymine_engine.py (init_field2): open(file, 'x') raised ValueError
+            on Python 3.2, **try** 'wx' and then 'x', and if both fail, 'w'.
+        * mkenginecfg, enginecfg.default: entries set to 16, previously: 10
+    0.2.15
+        * Makefile.static (print-destinations): \t doesn't work on FreeBSD;
+            indented manually with normal whitespace instead.
+    0.2.14
+        * Makefile.static: Undo change in 0.2.9 causing configuration files
+            to not be installed in clean environments:
+            - install-dirs now installs CFG_DIR and $(DESTDIR)$(vargamesdir)
+            Apparently, install
+    0.2.13
+        * configure.py: BUGFIX in many find_ functions:
+            Don't use Makefile[var] for checking the existence of directories,
+            use expand(var, Makefile) instead.  Detected on FreeBSD where
+            $(prefix)/var both exists and doesn't.
+    0.2.12
+        * INSTALL:
+            - Tidying.
+            - Wrote a section on srcdir, builddir and DESTDIR.
+        * Makefile.static (print-destinations):
+            - Highscores file
+            - Append (directory) on directory lines.
+    0.2.11
+        *: Tidied up lots of files.
+        * BUGS:
+            - Updated #6 to match current versions of Anonymine.
+            - Tidied
+            - Removed #0
+        * configure.py:  Wrote missing doc-strings.
+        * configure.py:  Moved default Makefile variables from getargs to main.
+    0.2.10
+        * anonymine_engine.py (init_field2):
+            - Use SIGTERM to kill children if SIGCONT is unavailable.
+            - Allow fork() to fail.
+            - Use signal.alarm() in a more elegant way.
+            - Add 64 bits of entropy to the tempfiles, just in case
+              open(file, 'wx') fails to do its trick.
+
+2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.9
+        * INSTALL: Updated
+        * enginecfg.default: Added the hiscores key.
+        * cygwin-sshd:
+            - Added "Things that will be done:" to avoid confusion.
+            - exit 0 instead of fatal if the user aborts.
+        * Makefile.static:
+            - Added DESTDIR to HISCORE_FILE
+            - install-dirs now installs CFG_DIR and $(DESTDIR)$(vargamesdir)
+    0.2.8
+        * configure.py: New functions: find_sysconfdir and find_vargamesdir.
+        * anonymine.py, configure.py, Makefile.static: Place configuration
+            files in $(sysconfdir)/anonymine
+        * Makefile.static: enginecfg calibration message updated.
+        * mkenginecfg, Makefile.static: Install highscore file.
+        * mkenginecfg: time and pprint modules are no longer needed.
+        * mkenginecfg: Write out the configuration file manually.
+    0.2.7
+        * anonymine_engine.py anonymine.py: Python 3 fixes:
+            - anonymine_engine.hiscores.display.format_deltatime formatted
+              the ms part as gibberish. [Fixed]
+            - anonymine.play_game, anonymine.highscores_add_entry did not
+              flush. [Fixed]
+        * anonymine_engine.py (hiscores (display)): "/\T" -> "/\T time"
+    0.2.6
+        * anonymine.py: New functions highscores_display and
+            highscores_add_entry.  Highscores are now displayed
+            almost properly.
+        * anonymine_engine.py (hiscores_dummy (display)): Title no longer empty.
+    0.2.5
+        * anonymine_engine.py (hiscores.add_entry): Reload the hiscores file
+            after retrieving the nickname to avoid overwriting potential
+            changes.
+    0.2.4
+        * anonymine_engine.py (hiscores):  Get the nickname only if the player
+            actually made it to the list.
+        * anonymine_engine.py (hiscores (add_entry)):  The input callback MUST
+            now take two arguments: title, prompt
+        * anonymine.py: Input callback updated.
+
+2016-07-13      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.3
+        * anonymine.py: Primitive highscores interface for debugging purposes.
+        * anonymine_engine.py: New classes: hiscores, hiscores_dummy
+        * anonymine_engine.py (game_engine (play_game)): Create a `hiscores`
+            object.
+            Second return argument is now a `hiscores` object, previously
+            it was a float representing the time it took to win or lose.
+        * anonymine_engine.py (game_engine (__init__)): Added self.dimensions
+            and self.flagcount to allow `play_game` to create a proper
+            paramstring for hiscores.__init__.
+
+
+2016-07-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.2.2
+        * mkenginecfg: Bugfix:
+            `nonexisting-cpulister | wc -l` returns 0 processors
+            and succeeds.
+            - Fixed the pipelines.
+            - Added a sanity check.
+        * configure.py: Fix verbosity setting for Makefile.
+            Give Makefile verbose=false as default and verbose=true
+            if the -v flag was used.
+        * Makefile.static (overwrite-cfg):
+            Use $(info) instead of echo.
+        * Makefile.static (dist, tarballs, zip):
+            Don't bother writing out the "Depends on tarballs and zip"
+            message as that itself depends on those two targets.
+            Messages are now printed by zip and tarballs.
+
+
 What's new in 0.2.0 since 0.1.0?
 ================================
 
