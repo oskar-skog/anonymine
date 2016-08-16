@@ -1250,10 +1250,20 @@ def highscores_add_entry(title, prompt):
         except UnicodeDecodeError:
             output(sys.stderr, 'Decoding error.\n')
 
-def highscores_display(title, headers, rows):
+def highscores_display(title, headers, rows, cfgfile):
     '''
     Output formatter function for `game_engine.hiscores.display`.
     '''
+    # Settings:
+    cfg = eval(open(cfgfile).read())
+    try:
+        hs_conf = cfg['highscores']
+    except KeyError:
+        hs_conf = {
+            'tabsize': 6,
+            'min_tabspace': 2,
+            'less_step': 3,
+        }
     # Create all rows to be displayed.
     header_underline = ['='*len(col) for col in headers]
     header_blankline = ['' for col in headers]
@@ -1261,16 +1271,20 @@ def highscores_display(title, headers, rows):
     # Calculate column widths.
     column_width = []
     for column in zip(*all_rows):
-        column_width.append(max(list(map(len, column))) + 1)
+        #column_width.append(max(list(map(len, column))) + 1)
+        column_width.append(max(list(map(len, column))))
     # Print
     text = 'Arrow keys to scroll, "q" when done viewing highscores.\n'
     text += '\n' + '_'*len(title) + '\n'
     text += title + '\n\n'
     for row in all_rows:
         for index, width in enumerate(column_width):
+            spacing = -(width) % hs_conf['tabsize']
+            if spacing < hs_conf['min_tabspace']:
+                spacing += hs_conf['tabsize']
             text += row[index]
             text += ' ' * (width - len(row[index]))
-            text += '  '
+            text += ' ' * spacing
         text += '\n'
     encodings = [
         locale.getpreferredencoding(),
@@ -1286,7 +1300,7 @@ def highscores_display(title, headers, rows):
     try:
         os.environ['LESSSECURE'] = '1'          # LOL
         less = subprocess.Popen(
-            ['less', '-S', '-#', '1'],
+            ['less', '-S', '-#', str(hs_conf['less_step'])],
             stdin=subprocess.PIPE
         )
         less.communicate(text)
@@ -1356,7 +1370,7 @@ def play_game(parameters):
     ask('Press enter to continue...', 'str', '')
     highscores.add_entry(highscores_add_entry)
     title, headers, rows = highscores.display()
-    highscores_display(title, headers, rows)
+    highscores_display(title, headers, rows, parameters['cursescfg'])
 
 
 def main():
