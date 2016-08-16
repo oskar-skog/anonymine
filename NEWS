@@ -10,6 +10,10 @@ Highscores:
     - Introduced changes to enginecfg, cursescfg and the interface's display
       function.
 
+Textics 0.2.20:
+    - Hexagonal field grid no longer as bright as it was.
+    - B&W fix: question marks were very distracting, use dots instead.
+
 Portability:
     0.2.28: Haiku (BeOS clone) supported
     0.2.30: Working on openindiana again, broke in 0.1.17
@@ -21,7 +25,7 @@ Build system and package files:
     - make test
     - RELEASE-NOTES and HACKING
     - windows, macosx and freedesktop are now "true" or "false"
-    - ./configure sysconfdir=
+    - ./configure sysconfdir= localstatedir= vargamesdir=
     - install-cfg will overwrite configuration files if at default, no
       more make overwrite-cfg
 
@@ -33,78 +37,11 @@ Fixes to the initializer in 0.2.10:
       fails to do its trick.
 
 Misc bugfixes:
-    
-
-Dropped the idea of a statistics module in 0.2.24
-    
-    0.2.20
-        * cursescfg:  Difficult to see anything in B&W mode: Change '?' to '.'
-            to increase the visual difference between flags and free cells.
-    0.2.19
-        * cursescfg: Hexagonal grid was still too bright -> set to A_DIM,
-            text does not need to be bright.
-    
-    0.2.18
-        * anonymine.py, BUGS: Got away with only redrawing on the first click
-            (initialization).  This was previously a potential performance
-            issue.
-        * cursescfg: Bright/bold magenta was too bright for the hexagonal grid.
-    0.2.17
-        * BUGS, anonymine.py: #9, use a different fix.
-            - `ask` modified to handle EINTR
-            - New function `output` created as wrapper.
-            - Added 'str' as paramtype to `convert_param`
-        * anonymine_engine.py (game_engine.init_field2):
-            - Handle EINTR on os.wait, os.fork already does this
-              unintentionally.
-            - raise security_alert rather than Exception for the timeout alarm.
-              (except Exception caught lots of other stuff.)
-        * anonymine.py: Use str(game_engine.security_alert) rather than
-            game_engine.security_alert.message.
-        * mkenginecfg, enginecfg.default: sec-maxtime: 90 -> 900
-    0.2.13
-        * configure.py: BUGFIX in many find_ functions:
-            Don't use Makefile[var] for checking the existence of directories,
-            use expand(var, Makefile) instead.  Detected on FreeBSD where
-            $(prefix)/var both exists and doesn't.
-    0.2.12
-        * INSTALL:
-            - Tidying.
-            - Wrote a section on srcdir, builddir and DESTDIR.
-        * Makefile.static (print-destinations):
-            - Highscores file
-            - Append (directory) on directory lines.
-    0.2.11
-        *: Tidied up lots of files.
-        * BUGS:
-            - Updated #6 to match current versions of Anonymine.
-            - Tidied
-            - Removed #0
-        * configure.py:  Wrote missing doc-strings.
-        * configure.py:  Moved default Makefile variables from getargs to main.
-    0.2.9
-        * INSTALL: Updated
-        * enginecfg.default: Added the hiscores key.
-        * cygwin-sshd:
-            - Added "Things that will be done:" to avoid confusion.
-            - exit 0 instead of fatal if the user aborts.
-        * Makefile.static:
-            - install-dirs now installs CFG_DIR and $(DESTDIR)$(vargamesdir)
-    0.2.8
-        * configure.py: New functions: find_sysconfdir and find_vargamesdir.
-        * anonymine.py, configure.py, Makefile.static: Place configuration
-            files in $(sysconfdir)/anonymine
-        * Makefile.static: enginecfg calibration message updated.
-        * mkenginecfg: Write out the configuration file manually.
-    0.2.2
-        * mkenginecfg: Bugfix:
-            `nonexisting-cpulister | wc -l` returns 0 processors
-            and succeeds.
-            - Fixed the pipelines.
-            - Added a sanity check.
-        * configure.py: Fix verbosity setting for Makefile.
-            Give Makefile verbose=false as default and verbose=true
-            if the -v flag was used.
+    0.2.2:  mkenginecfg could count to zero processors due to a bug.
+    0.2.13: ./configure: Expand directory variables before checking them.
+    0.2.17: New fix for #9, don't raise "Exception"
+    0.2.18: A performance issue was fixed.
+    0.2.24: Dropped the idea of a statistics module
 
 
 What's new in 0.2.0 since 0.1.0?
