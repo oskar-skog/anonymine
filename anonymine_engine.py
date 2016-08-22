@@ -155,9 +155,8 @@ class hiscores():
         This object is created by `game_engine.play_game` after
         the game has been won.
         
-        If `delta_time` is None, the `add_entry` method is neutralized.
-        Do this if the game has been lost and not won, or if you just
-        want to display the highscores.
+        If `delta_time` is None, the `add_entry` method is neutralized
+        for both won and lost games.
         
         `paramstring` selects the sublist (game settings/parameters).
         
@@ -170,9 +169,10 @@ class hiscores():
             - 'use-user'    bool; List and display user/login names
             - 'use-nick'    bool; List and display nicknames
         
-        `mines_left` is a self-explanatory integer.
+        `mines_left` (integer) is only used if the game was lost.
         
-        If the game was lost, either set `delta_time` to None,
+        If the game was lost, either set `delta_time` to None
+        (to prevent someone from entering the winners' highscores),
         or prepend "lost/" to `paramstring`.  The latter option
         will add a record the losers' highscores.
         '''
@@ -893,12 +893,12 @@ class game_engine():
                     mines_left += 1
             # Some cheating may still be possible if flagcount is disabled.
             if mines_left == 0:
-                mines_left = self.n_mines + 1
+                mines_left = self.n_mines * 42
             # Somehow missed more than 20% of all mines??
             if self.field.flags_left is not None:
                 fail = float(mines_left - self.field.flags_left)/self.n_mines
                 if fail > .20:
-                    mines_left = self.n_mines + 1
+                    mines_left = self.n_mines * 42
         # Allow old configuration files.
         if 'hiscores' in self.cfg:
             hs = hiscores(
