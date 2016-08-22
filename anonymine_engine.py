@@ -339,6 +339,8 @@ class hiscores():
             self.display_caption = "You didn't make it to the top {0}".format(
                 self.n_entries
             )
+        if self.paramstring.startswith('lost/'):
+            self.display_caption = "Losers' highscores"
         # Write back
         self.hiscores.extend(sublist)
         self._store()
@@ -883,13 +885,27 @@ class game_engine():
             paramstring += '+nocount'
         if not self.guessless:
             paramstring += '+losable'
+        mines_left = 0
+        if not game_won:
+            # Count the remaining mines. Flags != mines.
+            for cell in self.field.all_cells():
+                if self.field.get(cell) == 'X':
+                    mines_left += 1
+            # Some cheating may still be possible if flagcount is disabled.
+            if mines_left == 0:
+                mines_left = self.n_mines + 1
+            # Somehow missed more than 20% of all mines??
+            if self.field.flags_left is not None:
+                fail = float(mines_left - self.field.flags_left)/self.n_mines
+                if fail > .20:
+                    mines_left = self.n_mines + 1
         # Allow old configuration files.
         if 'hiscores' in self.cfg:
             hs = hiscores(
                 self.cfg['hiscores'],
                 paramstring,
                 delta_time,
-                self.field.flags_left
+                mines_left
             )
         else:
             hs = hiscores_dummy()
