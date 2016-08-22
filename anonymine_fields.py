@@ -242,6 +242,13 @@ class generic_field():
         self.field[index][self.K_VALUE] = internal_get()
     
     def _call(self, function_name):
+        if function_name == 'win':
+            # Double check that the game was won.
+            for cell in self.all_cells():
+                _a, flagged, is_mine, _d, _e, _f = self._get_raw(cell)
+                if flagged ^ is_mine:
+                    function_name = 'lose'
+                    break
         function, argument = self.callbacks[function_name]
         if function is not None:
             function(self, argument)
