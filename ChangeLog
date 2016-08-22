@@ -1,3 +1,8 @@
+2016-08-22      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.1
+        * anonymine_engine.py (hiscores, game_engine (play_game)):
+            Added highscores for lost games.
+
 2016-08-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.0
         * NEWS: Introduced 0.3

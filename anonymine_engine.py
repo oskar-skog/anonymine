@@ -101,13 +101,15 @@ class hiscores():
     
         line = <paramstring> ":" <delta_time> ":" <time> ":" <user> ":" <nick>
         
-        `paramsting` identifies in which list the item is.
+        `paramstring` identifies in which list the item is.
         
         `delta_time` is the time in seconds of how long it took to
         play.
         
         `time` is the Unix time when the `hiscores` instance was
         created.  (The time when the game was won.)
+        Or if the `paramstring` is for a lost game: `time` is
+        "{mines_left},{time}".
         
         `user` is the user name (login name) of the player.
         
@@ -131,6 +133,10 @@ class hiscores():
         "{mines}@{width}x{height}-{gametype}" + nfc*"+nocount" + ng*"+losable"
         
         <mines>"@"<width>"x"<height>"-"<gametype>["+nocount"]["+losable"]
+        
+        And for a lost game, "lost/" is prepended to the paramstring, ie:
+        
+        "lost/"<mines>"@"<width>"x"<height>"-"<gametype>["+nocount"]["+losable"]
     
     
     Unicode
@@ -143,7 +149,7 @@ class hiscores():
         return an `str` instance on both Python versions.
         
     '''
-    def __init__(self, cfg, paramstring, delta_time):
+    def __init__(self, cfg, paramstring, delta_time, mines_left=0):
         '''
         Create a `hiscores` object for the played game.
         This object is created by `game_engine.play_game` after
@@ -163,6 +169,12 @@ class hiscores():
             - 'entries'     int; Entries per sublist (paramstring)
             - 'use-user'    bool; List and display user/login names
             - 'use-nick'    bool; List and display nicknames
+        
+        `mines_left` is a self-explanatory integer.
+        
+        If the game was lost, either set `delta_time` to None,
+        or prepend "lost/" to `paramstring`.  The latter option
+        will add a record the losers' highscores.
         '''
         self.paramstring = paramstring
         if delta_time is None:
@@ -170,6 +182,7 @@ class hiscores():
         else:
             self.delta_time = str(delta_time)
         self.win_time = str(time.time())
+        self.mines_left = mines_left
         
         self.hiscorefile = cfg['file']
         self.maxsize = cfg['maxsize']
@@ -215,6 +228,29 @@ class hiscores():
         else:
             self.display_caption = "New highscore's filesize too large"
     
+    def _sort(self, sublist, game_lost):
+        '''
+        Sort a sublist.
+        
+        Function needed due to loser's highscores [0.3.1]
+        '''
+        if not game_lost:
+            sublist.sort(key=lambda entry: float(entry[1]))
+        else:
+            times = {}
+            for record in sublist:
+                mines_left = int(record[1].split(',')[0])
+                t = float(record[1].split(',')[1])
+                if mines_left not in times:
+                    times[mines_left] = t
+                if times[mines_left] > t:
+                    times[mines_left] = t
+            def rank(record):
+                mines_left = int(record[1].split(',')[0])
+                t = float(record[1].split(',')[1])
+                return t/times[mines_left] * mines_left
+            sublist.sort(key=rank)
+    
     def add_entry(self, inputfunction):
         '''Call this method to add yourself to the hiscores list.
         
@@ -242,7 +278,7 @@ class hiscores():
             ))
             # Add entry.
             sublist.append(new_entry)
-            sublist.sort(key = lambda entry: float(entry[1]))
+            self._sort(sublist, self.paramstring.startswith('lost/'))
             sublist = sublist[:self_reference.n_entries]
             return sublist
         # Display only mode:
@@ -258,9 +294,13 @@ class hiscores():
             user = ''
         user = user.replace('\\', '\\\\').replace(':', '\\x3a')
         # Prepare the new entry
+        if self.paramstring.startswith('lost/'):
+            delta_time = "{},{}".format(self.mines_left, self.delta_time)
+        else:
+            delta_time = self.delta_time
         new_entry = [
             self.paramstring,
-            self.delta_time,
+            delta_time,
             self.win_time,
             user,
             '',
@@ -363,6 +403,8 @@ class hiscores():
             else:
                 return time.strftime('%Y-%m-%d', time.localtime(t))
         
+        game_lost = self.paramstring.startswith('lost/')
+        
         # Load of not already loaded.
         if self.hiscores is None:
             self._load()
@@ -371,9 +413,13 @@ class hiscores():
             lambda entry: entry[0] == self.paramstring,
             self.hiscores
         ))
-        sublist.sort(key=lambda entry: float(entry[1]))
         
-        headers = ['Rank', '/\\T time', 'Won at']
+        self._sort(sublist, game_lost)
+        
+        if game_lost:
+            headers = ['Rank', 'Mines left', '/\\T time', 'Played']
+        else:
+            headers = ['Rank', '/\\T time', 'Won at']
         if self.use_user:
             headers.append('Login name')
         if self.use_nick:
@@ -381,11 +427,19 @@ class hiscores():
         
         rows = []
         for index, entry in enumerate(sublist):
-            row = [
-                '#' + str(index + 1),
-                format_deltatime(float(entry[1])),
-                format_wontime(float(entry[2])),
+            if game_lost:
+                row = [
+                    '#' + str(index + 1),
+                    str(int(entry[1].split(',')[0])),
+                    format_deltatime(float(entry[1].split(',')[1])),
+                    format_wontime(float(entry[2])),
             ]
+            else:
+                row = [
+                    '#' + str(index + 1),
+                    format_deltatime(float(entry[1])),
+                    format_wontime(float(entry[2])),
+                ]
             if self.use_user:
                 row.append(entry[3])
             if self.use_nick:
@@ -816,12 +870,10 @@ class game_engine():
         
         # Won? Time?
         game_won = self.game_status == 'game-won'
-        if game_won:
-            delta_time = time.time() - self.start
-        else:
-            delta_time = None
+        delta_time = time.time() - self.start
         # Create a proper paramstring for the hiscores object.
-        paramstring = '{0}@{1}x{2}-{3}'.format(
+        paramstring = '{0}{1}@{2}x{3}-{4}'.format(
+            {True: "", False: "lost/"}[game_won],
             self.n_mines,
             self.dimensions[0],
             self.dimensions[1],
@@ -833,7 +885,12 @@ class game_engine():
             paramstring += '+losable'
         # Allow old configuration files.
         if 'hiscores' in self.cfg:
-            hs = hiscores(self.cfg['hiscores'], paramstring, delta_time)
+            hs = hiscores(
+                self.cfg['hiscores'],
+                paramstring,
+                delta_time,
+                self.field.flags_left
+            )
         else:
             hs = hiscores_dummy()
         # NOTICE: This used to return game_won, delta_time
