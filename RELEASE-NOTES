@@ -1,3 +1,8 @@
+0.3.1
+    - Introduced losers' highscores: anonymine_engine.hiscores.__init__
+      takes one optional argument now.
+      Existing highscores file is usable.
+
 0.2.32
     - cursescfg contains a new key "highscores".
     - Function `highscores_display` in "anonymine.py" now takes different
