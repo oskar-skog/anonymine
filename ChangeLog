@@ -5,6 +5,7 @@
         * anonymine_fields.py (generic_field (_call)): Check that won games
             really are won, any defect will automatically turn
             'win' into 'lose'.
+        * anonymine.py (output): Do no more than 10 000 000 attempts.
 
 2016-08-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.0

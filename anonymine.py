@@ -714,13 +714,19 @@ def output(stream, content):
     def flush():
         stream.flush()
     for function in (write, flush):
+        i = 0
         while True:
+            i += 1
             try:
                 function()
             except InterruptedError:
+                if i > 10**7:
+                    raise
                 continue
             except IOError as e:
                 if 'EINTR' in dir(errno):
+                    if i > 10**7:
+                        raise
                     if e.errno == errno.EINTR:
                         continue
                 raise
