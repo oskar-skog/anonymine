@@ -880,13 +880,19 @@ def ask(question, paramtype, default):
         try:
             # Due to BUG #9 syscalls may fail with EINTR after leaving
             # curses mode.
+            i = 0
             while True:
+                i += 1
                 try:
                     answer = sys.stdin.readline().strip()
                 except InterruptedError:
+                    if i > 10*7:
+                        raise
                     continue
                 except IOError as e:
                     if 'EINTR' in dir(errno):
+                        if i > 10*7:
+                            raise
                         if e.errno == errno.EINTR:
                             continue
                     raise

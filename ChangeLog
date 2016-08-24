@@ -1,3 +1,8 @@
+2016-13-42      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.2
+        * anonymine.py (ask): Do no more than 10 000 000 attempts on EINTR
+            handling.
+
 2016-08-22      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.1
         * anonymine_engine.py (hiscores, game_engine (play_game)):
