@@ -346,11 +346,11 @@ class hiscores():
                             self.n_entries
                         )
                     )
+                # Write back
+                self.hiscores.extend(sublist)
+                self._store()
         if self.paramstring.startswith('lost/'):
             self.display_caption = "Losers' highscores"
-        # Write back
-        self.hiscores.extend(sublist)
-        self._store()
     
     def display(self):
         '''
