@@ -330,18 +330,22 @@ class hiscores():
                         )
                     else:
                         break
-        # Load the list again (inputfunction may take a very long time)
-        # and add the nickname to the entry.
-        new_entry[4] = nick
-        sublist = load_split_add(self, new_entry)
-        # Position message.
-        if new_entry in sublist:
-            position = sublist.index(new_entry)
-            self.display_caption = 'You made it to #{0}'.format(position + 1)
-        else:
-            self.display_caption = "You didn't make it to the top {0}".format(
-                self.n_entries
-            )
+                new_entry[4] = nick
+                # Load the list again (inputfunction may take a very long time)
+                # and add the nickname to the entry.
+                sublist = load_split_add(self, new_entry)
+                # Position message.
+                if new_entry in sublist:
+                    position = sublist.index(new_entry)
+                    self.display_caption = 'You made it to #{0}'.format(
+                        position + 1
+                    )
+                else:
+                    self.display_caption = (
+                        "You didn't make it to the top {0}".format(
+                            self.n_entries
+                        )
+                    )
         if self.paramstring.startswith('lost/'):
             self.display_caption = "Losers' highscores"
         # Write back
