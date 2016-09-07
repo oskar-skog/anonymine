@@ -309,7 +309,10 @@ class hiscores():
         # Get the nickname only if the player actually made it to the list.
         # The entry will actually be added twice, but only the latter will
         # be stored.
-        position = load_split_add(self, new_entry).index(new_entry)
+        try:
+            position = load_split_add(self, new_entry).index(new_entry)
+        except ValueError:
+            position = None
         if position is not None:
             if self.use_nick:
                 title = 'You made it to #{0}'.format(position + 1)
@@ -332,8 +335,8 @@ class hiscores():
         new_entry[4] = nick
         sublist = load_split_add(self, new_entry)
         # Position message.
-        position = sublist.index(new_entry)
-        if position is not None:
+        if new_entry in sublist:
+            position = sublist.index(new_entry)
             self.display_caption = 'You made it to #{0}'.format(position + 1)
         else:
             self.display_caption = "You didn't make it to the top {0}".format(
