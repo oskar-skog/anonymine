@@ -1,7 +1,8 @@
 2016-09-07      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.3
         * anonymine_engine.py (hiscores (add_entry)): list.index does not
-            return None, but raises ValueError.
+            return None, but raises ValueError. Plus various changes for
+            the fix.
 
 2016-08-27      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.2
