@@ -414,9 +414,7 @@ class hiscores():
         
         game_lost = self.paramstring.startswith('lost/')
         
-        # Load of not already loaded.
-        if self.hiscores is None:
-            self._load()
+        self._load()
         # Use only the relevant sublist.
         sublist = list(filter(
             lambda entry: entry[0] == self.paramstring,
