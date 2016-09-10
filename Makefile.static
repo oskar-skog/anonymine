@@ -12,7 +12,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := pre-0.3.4
+VERSION := 0.3.4
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -118,6 +118,9 @@ clean : FORCE
 	@: # Remove the bytecode files.
 	@rm -- "$(srcdir)"*.pyc 2> /dev/null || true
 	@rm -r -- "$(srcdir)"__pycache__/ 2> /dev/null || true
+
+distclean : clean
+	@rm $(builddir)Makefile
 
 # configure.py will choose /usr/ucb/install on Solares.
 INSTALL ?= install

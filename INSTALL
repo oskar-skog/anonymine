@@ -218,6 +218,10 @@ INSTALLATION
         clean
             Remove stage files and bytecode.
         
+        distclean
+            Like clean, but also remove the Makefile.
+            rm $(builddir)Makefile
+        
         print-destinations
             Print where things will be installed.
         
