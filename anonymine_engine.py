@@ -313,7 +313,7 @@ class hiscores():
             position = load_split_add(self, new_entry).index(new_entry)
         except ValueError:
             position = None
-            self.diplay_caption = "You didn't make it to the top {}".format(
+            self.display_caption = "You didn't make it to the top {}".format(
                 self.n_entries
             )
         if position is not None:
