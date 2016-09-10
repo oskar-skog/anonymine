@@ -1,3 +1,8 @@
+2016-09-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.4
+        * cursescfg: Use reverse video for the flags to make them more
+            distinguishable on monochrome terminals.
+
 2016-09-07      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.3
         * anonymine_engine.py (hiscores (add_entry)): list.index does not

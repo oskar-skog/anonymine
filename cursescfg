@@ -139,7 +139,7 @@
         
        #                  pair      foreground           attributes
        #key                   character        background
-        'flag':           (1, 'F',  "BLACK",   "YELLOW", curses.A_NORMAL),
+        'flag':           (1, 'F',  "YELLOW",  "BLACK",  curses.A_REVERSE),
         'free':           (2, '.',  "BLACK",   "BLACK",  curses.A_NORMAL),
         'number':         (3, None, "GREEN",   "BLACK",  curses.A_BOLD),
         'zero':           (3, '-',  "GREEN",   "BLACK",  curses.A_BOLD),
@@ -147,8 +147,8 @@
         'grid':           (5, None, "MAGENTA", "BLACK",  curses.A_DIM),
         'cursor-l':       (6, '(',  "CYAN",    "BLACK",  curses.A_BOLD),
         'cursor-r':       (6, ')',  "CYAN",    "BLACK",  curses.A_BOLD),
-        'text':           (7, None, "YELLOW",  "BLACK",  curses.A_NORMAL),
-        'background':     (8, ' ',  "BLUE",    "BLUE",   curses.A_NORMAL),
+        'text':           (1, None, "YELLOW",  "BLACK",  curses.A_NORMAL),
+        'background':     (7, ' ',  "BLUE",    "BLUE",   curses.A_NORMAL),
         'background:hex': (2, ' ',  "BLACK",   "BLACK",  curses.A_NORMAL),
     },
     'highscores': {
