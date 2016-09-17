@@ -324,9 +324,12 @@ class hiscores():
                     if sys.version_info[0] == 2:
                         # Don't try decoding using other charsets,
                         # it'll just blow up on output instead.
-                        nick = nick.decode(
-                            locale.getpreferredencoding(), errors='ignore'
-                        )
+                        if sys.version_info[1] == 7:
+                            nick = nick.decode(
+                                locale.getpreferredencoding(), errors='ignore'
+                            )
+                        else:
+                            nick = nick.decode(locale.getpreferredencoding())
                     if len(nick) > self.nick_maxlen:
                         title = 'No more than {0} characters allowed'.format(
                             self.nick_maxlen
