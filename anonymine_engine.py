@@ -295,7 +295,7 @@ class hiscores():
         user = user.replace('\\', '\\\\').replace(':', '\\x3a')
         # Prepare the new entry
         if self.paramstring.startswith('lost/'):
-            delta_time = "{},{}".format(self.mines_left, self.delta_time)
+            delta_time = "{0},{1}".format(self.mines_left, self.delta_time)
         else:
             delta_time = self.delta_time
         new_entry = [
@@ -313,7 +313,7 @@ class hiscores():
             position = load_split_add(self, new_entry).index(new_entry)
         except ValueError:
             position = None
-            self.display_caption = "You didn't make it to the top {}".format(
+            self.display_caption = "You didn't make it to the top {0}".format(
                 self.n_entries
             )
         if position is not None:
