@@ -112,17 +112,14 @@
         # ------
         #
         # The values are tuples of:
-        # [0]:  color pair; Each unique combination of foreground and
-        #       background color MUST have its own pair.  The pair MUST
-        #       be a positive integer.
-        # [1]:  character (Required by all keys except 'number', 'grid'
+        # [0]:  character (Required by all keys except 'number', 'grid'
         #       and 'text'. For these three, the character will be
         #       ignored.  'background' will also be ignored due to BUG #7)
-        # [2]:  foreground color; valid colors are: "BLACK", "BLUE",
+        # [1]:  foreground color; valid colors are: "BLACK", "BLUE",
         #       "GREEN", "CYAN", "RED", "MAGENTA", "YELLOW" and
         #       "WHITE".
-        # [3]:  background color; (same valid colors as for foreground)
-        # [4]:  attributes; this is curses attributes or'ed together,
+        # [2]:  background color; (same valid colors as for foreground)
+        # [3]:  attributes; this is curses attributes or'ed together,
         #       see link below for a table of common attributes:
         # https://docs.python.org/3/howto/curses.html#attributes-and-color
         #       To or together blinking and bright/bold text use:
@@ -137,27 +134,27 @@
         #               the Linux virtual consoles (tty1 to tty6) it does
         #               something with the color.
         
-       #                   pair     foreground           attributes
-       # key                  character        background
-        'text':           (1, None, "BLACK",   "WHITE",  curses.A_NORMAL),
-        'flag':           (2, 'F',  "GREEN",   "BLUE",   curses.A_REVERSE),
-        'free':           (3, '.',  "BLUE",    "BLUE",   curses.A_NORMAL),
-        'number':         (4, None, "WHITE",   "BLUE",   curses.A_BOLD),
-        'zero':           (4, '-',  "WHITE",   "BLUE",   curses.A_BOLD),
-        'mine':           (5, 'X',  "WHITE",   "RED",    curses.A_BOLD),
-        'cursor-l':       (4, '>',  "WHITE",   "BLUE",   curses.A_BOLD),
-        'cursor-r':       (4, '<',  "WHITE",   "BLUE",   curses.A_BOLD),
-        'grid':           (4, ' ',  "WHITE",   "BLUE",   curses.A_NORMAL),
-        'background':     (6, ' ',  "BLACK",   "BLACK",  curses.A_NORMAL),
-        'flag:hex':       (7, 'F',  "YELLOW",  "GREEN",  curses.A_REVERSE|curses.A_BOLD),
-        'free:hex':       (8, '.',  "GREEN",   "GREEN",  curses.A_NORMAL),
-        'number:hex':     (9, None, "WHITE",   "GREEN",  curses.A_BOLD),
-        'zero:hex':       (9, '-',  "WHITE",   "GREEN",  curses.A_BOLD),
-        'mine:hex':       (10,'X',  "BLACK",   "GREEN",  curses.A_NORMAL),
-        'cursor-l:hex':   (9, '*',  "WHITE",   "GREEN",  curses.A_BOLD),
-        'cursor-r:hex':   (9, '*',  "WHITE",   "GREEN",  curses.A_BOLD),
-        'grid:hex':       (10,None, "BLACK",   "GREEN",  curses.A_NORMAL),
-        'background:hex': (10,' ',  "BLACK",   "GREEN",  curses.A_NORMAL),
+       #                         foreground           attributes
+       #key                character        background
+        'text':           (None, "BLACK",   "WHITE",  curses.A_NORMAL),
+        'flag':           ('F',  "GREEN",   "BLUE",   curses.A_REVERSE),
+        'free':           ('.',  "BLUE",    "BLUE",   curses.A_NORMAL),
+        'number':         (None, "WHITE",   "BLUE",   curses.A_BOLD),
+        'zero':           ('-',  "WHITE",   "BLUE",   curses.A_BOLD),
+        'mine':           ('X',  "WHITE",   "RED",    curses.A_BOLD),
+        'cursor-l':       ('>',  "WHITE",   "BLUE",   curses.A_BOLD),
+        'cursor-r':       ('<',  "WHITE",   "BLUE",   curses.A_BOLD),
+        'grid':           (' ',  "WHITE",   "BLUE",   curses.A_NORMAL),
+        'background':     (None, "BLACK",   "BLACK",  curses.A_NORMAL),
+        'flag:hex':       ('F',  "YELLOW",  "GREEN",  curses.A_REVERSE|curses.A_BOLD),
+        'free:hex':       ('.',  "GREEN",   "GREEN",  curses.A_NORMAL),
+        'number:hex':     (None, "WHITE",   "GREEN",  curses.A_BOLD),
+        'zero:hex':       ('-',  "WHITE",   "GREEN",  curses.A_BOLD),
+        'mine:hex':       ('X',  "BLACK",   "GREEN",  curses.A_NORMAL),
+        'cursor-l:hex':   ('*',  "WHITE",   "GREEN",  curses.A_BOLD),
+        'cursor-r:hex':   ('*',  "WHITE",   "GREEN",  curses.A_BOLD),
+        'grid:hex':       (None, "BLACK",   "GREEN",  curses.A_NORMAL),
+        'background:hex': (None, "BLACK",   "GREEN",  curses.A_NORMAL),
     },
     'highscores': {
         'tabsize':      6,      # Tab size for the highscores

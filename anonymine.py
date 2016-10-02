@@ -314,16 +314,22 @@ class curses_game():
                 if isinstance(value, str):
                     self.cfg['curses-input'][key][index] = ord(value)
         # Initialize the color pairs.
+        self.color_pairs = []
         if curses.has_colors():
             self.use_color = True
             # TODO: Check that enough pairs are available.
             curses.start_color()
             for key in self.cfg['curses-output']:
                 value = self.cfg['curses-output'][key]
-                pair, ch, foreground, background, attr = value
-                foreground = eval('curses.COLOR_' + foreground)
-                background = eval('curses.COLOR_' + background)
-                curses.init_pair(pair, foreground, background)
+                ch, foreground, background, attr = value
+                # Only add new pairs.
+                if (foreground, background) not in self.color_pairs:
+                    self.color_pairs.append((foreground, background))
+                    curses.init_pair(
+                        len(self.color_pairs),
+                        eval('curses.COLOR_' + foreground),
+                        eval('curses.COLOR_' + background)
+                    )
         else:
             self.use_color = False
     
@@ -382,9 +388,11 @@ class curses_game():
             elif key + ':square' in cfg:
                 key += ':square'
         # Translate the key into (char, attributes)
-        pair, char, ign1, ign2, attributes = cfg[key]
+        char, foreground, background, attributes = cfg[key]
         if self.use_color:
-            attributes |= curses.color_pair(pair)
+            attributes |= curses.color_pair(
+                self.color_pairs.index((foreground, background)) + 1
+            )
         return char, attributes
     
     def message(self, msg):

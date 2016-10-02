@@ -1,3 +1,8 @@
+0.3.6
+    - cursescfg: color pair number are calculated automatically.
+      The textics tuples are now (char, foreground, background, attributes)
+      instead of (pair, char, foreground, background, attributes).
+
 0.3.1
     - Introduced losers' highscores: anonymine_engine.hiscores.__init__
       takes one optional argument now.
