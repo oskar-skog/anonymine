@@ -1,4 +1,6 @@
 2016-10-02      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.7
+        * cursescfg: flag:hex green on black to black on green
     0.3.6
         * cursescfg: New textics
         * anonymine.py, cursescfg: Calculate pair numbers automatically.

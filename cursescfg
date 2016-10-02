@@ -146,7 +146,7 @@
         'cursor-r':       ('<',  "WHITE",   "BLUE",   curses.A_BOLD),
         'grid':           (' ',  "WHITE",   "BLUE",   curses.A_NORMAL),
         'background':     (None, "BLACK",   "BLACK",  curses.A_NORMAL),
-        'flag:hex':       ('F',  "BLACK",   "GREEN",  curses.A_REVERSE),
+        'flag:hex':       ('F',  "GREEN",   "BLACK",  curses.A_REVERSE),
         'free:hex':       ('.',  "GREEN",   "GREEN",  curses.A_NORMAL),
         'number:hex':     (None, "WHITE",   "GREEN",  curses.A_BOLD),
         'zero:hex':       ('-',  "WHITE",   "GREEN",  curses.A_BOLD),
