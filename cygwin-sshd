@@ -58,6 +58,8 @@ Things that will be done:
     - Start the SSH daemon
 
 NOTICE: This MUST be run as administrator.
+
+NOTICE: There is no automated "uninstaller".
 __EOF__
     ask Continue || exit 0
     
