@@ -1,6 +1,7 @@
 2016-10-20      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.8
-        * cygwin-sshd, Makefile.static: Cygwin uninstaller.
+        *: Removed Windows support.  (Going to create that in a different
+            repo.)
 
 2016-10-02      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.7

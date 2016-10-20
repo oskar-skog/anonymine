@@ -22,7 +22,6 @@ VERSION := pre-0.3.8
 # script.
 
 # freedesktop == "" if not freedesktop.org DE.
-# windows == "" if not on Windows.
 # macosx == "" if not on Mac OS X.
 
 # See "INSTALL".
@@ -37,14 +36,14 @@ POST_UNINSTALL = true
 
 ##############################################################################
 
+
 verbose ?= true
 info := test "$(verbose)" != true || echo '//'
+
 
 # Desktop specific prefixes:
 # FD_	freedesktop.org
 # OSX_	Mac OS X
-# CYG_	Cygwin
-# W_	Cygwin, "temporary" variables
 
 MAIN_SRC := $(srcdir)$(NAME).py
 MAIN_STAGE := $(builddir)$(NAME)
@@ -71,15 +70,12 @@ OSX_MK_INFO_PLIST := $(srcdir)desktop/Info.plist.py
 OSX_ICON := $(builddir)icon.icns
 OSX_MK_ICON := $(srcdir)desktop/icon.icns.py
 
-# Windows/Cygwin, see desktop/README
-CYG_ICO_SRC := $(srcdir)desktop/$(NAME).ico
-CYG_ICO_DIR := $(DESTDIR)$(prefix)/share/pixmaps
-CYG_ICO_DEST := $(CYG_ICO_DIR)/$(NAME).ico
 
 # make clean
 ALL_STAGE := "$(MAIN_STAGE)" "$(OSX_WRAPPER)" "$(OSX_INFO_PLIST)" \
 	"$(OSX_ICON)" "$(builddir)check.py" "$(FD_DESKTOP_STAGE)" \
 	"$(ENGINECFG_STAGE)" "$(builddir)mkenginecfg.py"
+
 
 all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 	@$(info) 'Maybe building .desktop and app/bundle'
@@ -90,20 +86,24 @@ all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
 		cd "$(builddir)" && make build-macosx > /dev/null; \
 	fi
 
+
 $(MAIN_STAGE) : $(MAIN_SRC) $(srcdir)Makefile.static
 	@$(info) 'Creating the appropriate shebang line'
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
 	@sed -e "$(MAIN_STAGE_SED1)" "$(MAIN_SRC)" \
 		| sed -e "$(MAIN_STAGE_SED2)" >> "$(MAIN_STAGE)"
 
+
 $(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
 	@$(info) 'Making enginecfg: mostly counting processors'
 	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
+
 
 build-freedesktop : FORCE
 	@: # Refer to desktop/README for information about the following.
 	@"$(FD_MK_DESKTOP)" "$(FD_DESKTOP_STAGE)" $(NAME) "$(NAME_C)" \
 		"$(DESCRIPTION) -- version $(VERSION)"
+
 
 build-macosx : FORCE
 	@: # Refer to desktop/README for information about the following.
@@ -113,14 +113,17 @@ build-macosx : FORCE
 		"$(NAME_C) - $(DESCRIPTION)" $(VERSION) $(NAME)
 	@python "$(OSX_MK_ICON)" "$(OSX_ICON)" "$(srcdir)desktop/$(NAME)"
 
+
 clean : FORCE
 	@rm $(ALL_STAGE) 2> /dev/null || true
 	@: # Remove the bytecode files.
 	@rm -- "$(srcdir)"*.pyc 2> /dev/null || true
 	@rm -r -- "$(srcdir)"__pycache__/ 2> /dev/null || true
 
+
 distclean : clean
 	@rm $(builddir)Makefile
+
 
 # configure.py will choose /usr/ucb/install on Solares.
 INSTALL ?= install
@@ -171,6 +174,7 @@ check-install-cfg : FORCE
 	@$(INSTALL_CFG) "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg" $(verbose)
 	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg" $(verbose)
 
+
 overwrite-cfg: FORCE
 	@echo "overwrite-cfg has been disabled" >/dev/stderr && false
 	@false
@@ -178,6 +182,7 @@ overwrite-cfg: FORCE
 	@$(INSTALL) -m 644 "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
 	@$(info) "Configuration has been overwritten"
 	@$(info) "All (if any) system-wide modifications are lost"
+
 
 install-dirs : FORCE
 	@$(info) 'Installing directories'
@@ -197,6 +202,7 @@ install-dirs : FORCE
 		$(INSTALL) -d "$(BUNDLE)/Contents/MacOS"; \
 		$(INSTALL) -d "$(BUNDLE)/Contents/Resources"; \
 	fi
+
 
 install : check-install-cfg install-dirs
 	@$(NORMAL_INSTALL)
@@ -241,45 +247,7 @@ install : check-install-cfg install-dirs
 		xdg-desktop-menu install --novendor --mode system \
 			"$(FD_DESKTOP_DEST)" || true; \
 	fi
-	@if "$(windows)"; then \
-		$(info) 'Installing shortcuts'; \
-		$(INSTALL) "$(CYG_ICO_SRC)" "$(CYG_ICO_DEST)"; \
-		mkshortcut -A -P -a '-lc $(NAME)' -n "$(NAME_C)" \
-			-i "$(CYG_ICO_DEST)" /bin/bash.exe || \
-		mkshortcut -P -a '-lc $(NAME)' -n "$(NAME_C)" \
-			-i "$(CYG_ICO_DEST)" /bin/bash.exe; \
-		\
-		mkshortcut -A -D -a '-lc $(NAME)' -n "$(NAME_C)" \
-			-i "$(CYG_ICO_DEST)" /bin/bash.exe || \
-		mkshortcut -D -a '-lc $(NAME)' -n "$(NAME_C)" \
-			-i "$(CYG_ICO_DEST)" /bin/bash.exe; \
-		\
-		mkshortcut -A -P -n "Uninstall $(NAME_C)" \
-			-a '-lc "make uninstall && (./rmssh || true) && cd .. \
-			&& rm -r ./$(NAME)*/" && /setup.exe' \
-			-w "`pwd`" /bin/bash.exe || \
-		mkshortcut -P -n "Uninstall $(NAME_C)" \
-			-a '-lc "make uninstall && (./rmssh || true) && cd .. \
-			&& rm -r ./$(NAME)*/" && /setup.exe' \
-			-w "`pwd`" /bin/bash.exe; \
-	fi
 
-# http://superuser.com/questions/86078/where-do-start-menu-all-programs-shortcuts-reside
-W_C := $(DESTDIR)/cygdrive/c
-W_U := $(DESTDIR)`cygpath --unix '$(USERPROFILE)'`
-# Ugh: use $(NAME_C)*.lnk to get the uninstall .lnk removed as well.
-W_F := Anonymine*.lnk
-W_M := /Start Menu/Programs/
-# W_C is the C drive, W_U is the users real home directory,
-# W_F is the filename and W_M is a part of the path to the start menu
-# common for both NT 5 and 6.
-CYG_STARTMENU_NT5X_ALL := $(W_C)/Documents and Settings/All Users$(W_M)$(W_F)
-CYG_STARTMENU_NT5X_ME := $(W_U)$(W_M)$(W_F)
-CYG_STARTMENU_NT6X_ALL := $(W_C)/ProgramData/Microsoft/Windows$(W_M)$(W_F)
-CYG_STARTMENU_NT6X_ME := $(W_U)/AppData/Roaming/Microsoft/Windows$(W_M)$(W_F)
-CYG_DESKTOP_NT5X_ALL := $(W_C)/Documents and Settings/All Users/Desktop$(W_F)
-CYG_DESKTOP_NT6X_ALL := $(W_C)/Users/Public/Desktop/$(W_F)
-CYG_DESKTOP_ME := $(W_U)/Desktop/$(W_F)
 
 uninstall: FORCE
 	@$(PRE_UNINSTALL)
@@ -301,15 +269,7 @@ uninstall: FORCE
 	@if "$(macosx)"; then \
 		rm -r "$(BUNDLE)" || true; \
 	fi
-	@if "$(windows)"; then \
-		rm "$(CYG_STARTMENU_NT5X_ALL)" || true; \
-		rm "$(CYG_STARTMENU_NT5X_ME)" || true; \
-		rm "$(CYG_STARTMENU_NT6X_ALL)" || true; \
-		rm "$(CYG_STARTMENU_NT6X_ME)" || true; \
-		rm "$(CYG_DESKTOP_NT5X_ALL)" || true; \
-		rm "$(CYG_DESKTOP_NT6X_ALL)" || true; \
-		rm "$(CYG_DESKTOP_ME)" || true; \
-	fi
+
 
 print-destinations: FORCE
 	@echo "Main program:          $(MAIN_DEST)"
@@ -334,29 +294,21 @@ print-destinations: FORCE
 	@if "$(macosx)"; then \
 		echo "[Mac OS X] Bundle (App): $(BUNDLE) (directory)"; \
 	fi
-	@if "$(windows)"; then \
-		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT5X_ALL)"; \
-		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT5X_ME)"; \
-		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT6X_ALL)"; \
-		echo "[Windows] Shortcut: $(CYG_STARTMENU_NT6X_ME)"; \
-		echo "[Windows] Shortcut: $(CYG_DESKTOP_NT5X_ALL)"; \
-		echo "[Windows] Shortcut: $(CYG_DESKTOP_NT6X_ALL)"; \
-		echo "[Windows] Shortcut: $(CYG_DESKTOP_ME)"; \
-		echo "[Windows] Icon:     $(CYG_ICO_DEST)"; \
-	fi
+
 
 test : check
 	@true
+
 
 check: FORCE
 	@$(info) "Checking that it works on both snakes... May take a while!"
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
+
 dist : FORCE
 	@$(info) "Building tarballs..."
 	@cd "$(builddir)" && make tarballs > /dev/null
-	@$(info) "Maybe building a zip for Windrugs users..."
-	@cd "$(builddir)" && make zip > /dev/null
+
 
 release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
@@ -366,12 +318,11 @@ release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).zip" \
 		|| echo You are not me.
 
+
 PKG := $(NAME)-$(VERSION)
 
 tarballs : FORCE
 	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)" tar
 
-zip : FORCE
-	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)" zip
 
 FORCE:

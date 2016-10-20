@@ -1,4 +1,7 @@
 #!/bin/sh
+
+# TODO: This was created to simplify Windows support, it's no longer needed.
+
 # Usage: ./dist srcdir builddir pkgname {zip|tar}
 srcdir=$1
 builddir=$2

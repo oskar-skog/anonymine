@@ -473,7 +473,6 @@ def detect_desktop(Makefile, flags):
     
     Sets Makefile['freedesktop'] if needed.
     Sets Makefile['macosx'] if needed.
-    Sets Makefile['windows'] if needed.
     
     The value for these variables are either 'true' or 'false'.
     
@@ -483,7 +482,6 @@ def detect_desktop(Makefile, flags):
     mapping = {
         'freedesktop': '/usr/share/applications',
         'macosx': '/Applications',
-        'windows': '/cygdrive',
     }
     for desktop in mapping:
         if desktop not in Makefile:
@@ -551,7 +549,6 @@ def main():
             'INSTALL',
             'freedesktop',
             'macosx',
-            'windows',
             'sysconfdir',
             'vargamesdir',
         )

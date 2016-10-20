@@ -45,33 +45,14 @@ The Makefile will create the Bundle structure on installation.
 
 
 
-Cygwin
-======
-
-The game does not run on native Windows.  The windoze installer will
-automatically fetch and install Cygwin.
-
-`anonymine.ico.xcf` is a GIMP image where all the PNGs have been imported
-as layers.  This file shall be exported to `anonymine.ico` if the icons get
-changed.
-
-
-
 Editing the icons
 =================
 
--   `*.xcf` are the GIMP images of all the icons.
+-   `*.xcf` are the GIMP sources of all the icons.
 -   The large (256x256) is required for supporting older versions of Mac OS X.
 -   PNG is the preferred format for freedesktop.org.
 -   The set of icons is rather static.
 -   `anonymine.*` can be changed from the Makefile.
-
-1.  Edit all of `anonymine-16x16.xcf`, `anonymine-32x32.xcf`,
-    `anonymine-64x64.xcf` and `anonymine-256x256.xcf` and export them
-    as PNGs.
-
-2.  Recreate 'anonymine.ico.xcf' by importing all the PNGs as layers,
-    and export as *.ico.
 
 NOTE: If you change the set of icons, you must also modify
 '../Makefile.static' and 'icon.icns.py' to support the new list of sizes.

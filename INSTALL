@@ -117,7 +117,6 @@ INSTALLATION
         
         freedesktop             'true' or 'false'; "Linux" desktop
         macosx                  'true' or 'false'; Mac OS X
-        windows                 'true' or 'false'; Windows (Cygwin)
         
 
         NOTE 1
@@ -242,13 +241,6 @@ INSTALLATION
         
         tarballs
             make tarballs
-        
-        zip
-            NOTE: Requires unix2dos(1) and zip(1).
-            Generate an archive suitable for Windrugs users.
-                - zip
-                - CRLF line endings
-                - .txt
         
         release
             (You are me.)
