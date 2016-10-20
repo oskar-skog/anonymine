@@ -30,13 +30,17 @@ Asterisk marks that the file will be created during building.
   configure             See "INSTALL"
   configure.py          Used internally by configure
   cursescfg             The configuration file for the curses interface
-  enginecfg             The configuration file for the game's engine
+  cygwin-sshd           Cygwin specific stuff to install and configure SSHd.
+  enginecfg.default
+* enginecfg.out         The configuration file for the game's engine
+? enginecfg.user        Create this yourself if you want to
   install-cfg           Script for installing configuration files
+  mkenginecfg           Create enginecfg.out
   test.py               Misc small unnecessary functions: demos, etc
   desktop/              Non-essential files for the graphical environments:
     FILES               List of files.
     README              Overview of the contents of the desktop directory.
-  perkele/              Abandoned stuff
+* rmssh                 File created by cygwin-sshd
 
 
 Game construction
