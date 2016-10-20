@@ -12,10 +12,9 @@ pkgdir=$builddir$pkgname
 NAME="anonymine"
 # Add .txt for Windows.
 textfiles="BUGS ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
-    desktop/README RELEASE-NOTES INSTALL.Haiku INSTALL.Windows"
+    desktop/README RELEASE-NOTES INSTALL.Haiku"
 # Already CRLF + shell scripts
-noconv="Windows-admin.bat Windows-user.bat configure check.sh \
-    desktop/${NAME}.ico desktop/desktop.sh desktop/${NAME}-*.png \
+noconv="configure check.sh desktop/desktop.sh desktop/${NAME}-*.png \
     desktop/${NAME}*.xcf mkenginecfg mkdist"
 # LF to CRLF conversion for the zip
 files="${NAME}.py ${NAME}_engine.py ${NAME}_fields.py ${NAME}_solver.py \
