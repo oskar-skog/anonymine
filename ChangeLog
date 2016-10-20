@@ -1,3 +1,7 @@
+2016-10-20      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.8
+        * cygwin-sshd, Makefile.static: Cygwin uninstaller.
+
 2016-10-02      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.7
         * cursescfg: flag:hex green on black to black on green

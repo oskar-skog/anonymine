@@ -3,6 +3,10 @@
 # Automatically set up an Anonymine server on Windows.
 # This requires Administrator privileges.
 
+# ssh-host-config
+# -u cyg_server         # << username
+# -N cygwin-sshd        # << username, servicename
+
 # Self-explanatory
 error ()
 {
@@ -22,10 +26,11 @@ fatal ()
     exit 1
 }
 
+
 # Yes/no
 ask ()
 {
-    while : ; do
+    while true ; do
         read -p "<<< $1? (yes/no): " answer
         if [ -n "`echo $answer | grep -E '^[Yy]([Ee][Ss])?$'`" ]; then
             return 0
@@ -36,9 +41,230 @@ ask ()
     done
 }
 
+
+get_username ()
+{
+    # NOTICE: All output MUST go to stderr,
+    # because this will be used as a function.
+    while true ; do
+        read -p 'Enter username for Anonymine account: ' username
+        if [ -n "$(echo "$username" | tr -d [:alnum:]._-)" ]; then
+            error "Invalid username: Allowed characters are:"
+            error "    lowercase letter" "    uppercase letters"
+            error "    digits"           "    dot, hyphen and underscore"
+            continue
+        fi
+        if [ -n "$(echo "$username" | grep -E '^[0-9._-].*')" ]; then
+            error "Invalid username: Must begin with a letter"
+            continue
+        fi
+        if [ -z "$username" ]; then
+            error "You can't have an empty user name"
+            continue
+        fi
+        occupied=0
+        for existing in $@; do
+            [ $username = $existing ] && { occupied=1; break; }
+        done
+        if [ $occupied -ne 0 ]; then
+            error "You have already added this user"
+            continue
+        fi
+        break
+    done
+    echo $username
+}
+
+
+mk_uninstall_file ()
+{
+    filename=$1
+    shift
+    all_users=$@
+    
+    which_anonymine="$(which anonymine)"
+    cat > "$filename" << __EOF__
+#!/bin/bash
+
+ask ()
+{
+    while true ; do
+        read -p "<<< \$1? (yes/no): " answer
+        if [ -n "\$(echo \$answer | grep -E '^[Yy]([Ee][Ss])?\$')" ]; then
+            return 0
+        fi
+        if [ -n "\$(echo \$answer | grep -E '^[Nn][Oo]?\$')" ]; then
+            return 1
+        fi
+    done
+}
+
+rm_users_passwd ()
+{
+    echo "About to remove added users from /etc/passwd"
+    if ask "Allow"; then
+        cp /etc/passwd /etc/passwd.old.cygwin-sshd
+        grep -v ":${which_anonymine}"'\$' /etc/passwd.old.cygwin-sshd \
+            > /etc/passwd
+    fi
+}
+
+rm_sshd_conf ()
+{
+    echo "About to remove all AllowUsers lines from /etc/sshd_config"
+    echo "Only allow this if you haven't modified it manually"
+    if ask "Allow"; then
+        cp /etc/sshd_config /etc/sshd_config.old.cygwin-sshd
+        grep -v '^AllowUsers ' /etc/sshd_config.old.cygwin-sshd \
+            > /etc/sshd_config
+    fi
+}
+
+rm_sshd ()
+{
+    cygrunsrv --stop cygwin-sshd
+    cygrunsrv --remove cygwin-sshd
+    net user cygwin-sshd /delete
+    ask "Delete user cyg_server too" && net user cyg_server /delete
+    /setup.exe -R "\$(cygpath --windows /)" -x openssh
+}
+
+rm_users ()
+{
+__EOF__
+    for username in $all_users; do
+        echo "    net user $username /delete" >> "$filename"
+    done
+    cat >> "$filename" << __EOF__
+}
+
+main ()
+{
+    if ask "Remove Anonymine SSH users"; then
+        rm_users
+        rm_users_passwd
+        rm_sshd_conf
+    fi
+    ask "Remove the SSH daemon" && rm_sshd
+}
+
+main
+__EOF__
+}
+
+
+get_password ()
+{
+    # NOTICE: All output MUST go to stderr,
+    # because this will be used as a function.
+    username=$1
+    while true ; do
+        read -p "Enter (weak) password for $1: " password
+        if [ -z "$password" ]; then
+            error "You can't have an empty password"
+            continue
+        fi
+        break
+    done
+    echo "$password"
+}
+
+
+add_user ()
+{
+    username=$1
+    password="$2"
+    
+    # Add the user to Windows.
+    # (Should be obvious due to the ass-backward syntax for commands.)
+    net user $username "$password" /add /active:yes \
+        /comment:"Account for Anonymine over SSH ($username)" \
+        || fatal "Failed to add user $username"
+    
+    # Add to /etc/passwd manually and replace the shell.
+    # (mkpasswd(1) can't handle non standard shells.)
+    line="$(mkpasswd -l -u $username | cut -f 1-6 -d :)"
+    echo "$line:$(which anonymine)" >> /etc/passwd
+    
+    # Not created by default.
+    # NOTICE: I don't remember why I put these here. Why are they needed?
+    #mkdir /home/$username
+    #chmod 777 /home/$username
+}
+
+
 install ()
 {
-    # WARNING
+    uninstall_file="$1"
+    
+    # Install the SSH daemon
+    if ! ask 'Is the SSH daemon installed'; then
+        /setup.exe --wait -q -R `cygpath --windows /` -P openssh -P cygrunsrv \
+            || fatal "setup.exe is not /setup.exe from within Cygwin"
+        ssh-host-config -c ntsec -u cyg_server -N cygwin-sshd -y \
+            || fatal "ssh-host-config failed"
+    fi
+    
+    # Add Anonymine as a shell.
+    echo `which anonymine` >> /etc/shells
+    
+    # Add users.
+    all_users=""
+    while true ; do
+        username=$(get_username $all_users)
+        password=$(get_password $username)
+        all_users="$all_users $username"
+        add_user $username "$password"
+        
+        ask "Add another user" || break
+    done
+    
+    # Needs to be done before the script gets a chance to exit.
+    mk_uninstall_file "$uninstall_file" $all_users
+    
+    # Allow login only to the specified user names.
+    if [ "$(grep -Ec '^ *AllowUsers .*' /etc/sshd_config)" -eq 0 ]; then
+        echo "AllowUsers $all_users" >> /etc/sshd_config
+    else
+        error 'The SSH server seems to be configured already.'
+        error "The AllowUsers key was found in /etc/sshd_config"
+        ask "Configure manually" || fatal "Can't configure the SSH daemon."
+        echo "This is a new shell"
+        echo "exit when /etc/sshd_config has been configured"
+        bash
+        ask "Continue" || exit 0
+    fi
+    
+    # Launch SSH daemon
+    echo 'Launching the SSH daemon, this may take a while...'
+    net start cygwin-sshd || fatal "Can't start the server"
+    
+    cat << __EOF__
+You can now play Anonymine on mobile platforms with an SSH client.
+    Host:     Your IP address (local address)
+    Port:     22
+    User:     $username    (All: $allusers)
+    Password: $password    (+ other)
+It might not work outside the wifi depending on how the network is configured.
+__EOF__
+}
+
+
+main ()
+{
+    uninstall_file="$1"
+    
+    test -d /cygdrive || fatal "This is not Cygwin"
+    
+    cat << __EOF__
+Anonymine won't work on mobile devices, but there are workarounds.  This host
+is capable of running Anonymine and an SSH server, which will allow you to
+play on this computer from a remote terminal (your phone for instance).
+
+https://github.com/oskar-skog/anonymine/wiki/Anonymine-on-mobile-platforms
+
+__EOF__
+    ask "Install Anonymine server" || exit 0
     cat > /dev/stderr << __EOF__
 You're about to install an SSH daemon and add a user that can only play
 Anonymine.
@@ -61,119 +287,16 @@ NOTICE: This MUST be run as administrator.
 
 NOTICE: There is no automated "uninstaller".
 __EOF__
-    ask Continue || exit 0
-    
-    # Install the SSH daemon
-    if ! ask 'Is the SSH daemon installed'; then
-        /setup.exe --wait -q -R `cygpath --windows /` -P openssh -P cygrunsrv \
-            || fatal "setup.exe is not /setup.exe from within Cygwin"
-        ssh-host-config -c ntsec -N cygwin-sshd -y \
-            || fatal "ssh-host-config failed"
-    fi
-    # Add Anonymine as a shell.
-    echo `which anonymine` >> /etc/shells
-    
-    # $allusers will be appended to.
-    allusers=""
-    while : ; do
-        # TODO: Which field is the home directory, I want it changed.
-        # TODO: Think about the permissions.
-        # username
-        while : ; do
-            read -p 'Enter username for Anonymine account: ' username
-            if [ -n "`echo $username | tr -d [:alnum:]._-`" ]; then
-                error "Invalid username: Allowed characters are:"
-                error "    lowercase letter" "    uppercase letters"
-                error "    digits"           "    dot, hyphen and underscore"
-                continue
-            fi
-            if [ -n "`echo $username | grep -E '^[0-9._-].*'`" ]; then
-                error "Invalid username: Must begin with a letter"
-                continue
-            fi
-            if [ -z "$username" ]; then
-                error "You can't have an empty user name"
-                continue
-            fi
-            occupied=0
-            for existing in $allusers; do
-                if [ $username = $existing ]; then occupied=1; fi
-            done
-            if [ $occupied -ne 0 ]; then
-                error "You have already added this user"
-                continue
-            fi
-            break
-        done
-        # password
-        while : ; do
-            read -p "Enter (weak) password for $username: " password
-            if [ -z "password" ]; then
-                error "You can't have an empty password"
-                continue
-            fi
-            break
-        done
-        # Add the user to Windows.
-        # (Should be obvious due to the ass-backward syntax for commands.)
-        net user $username "$password" /add /active:yes \
-            /comment:"Account for Anonymine over SSH ($username)" \
-                || fatal "Failed to add user $username"
-        # Add to /etc/passwd manually and replace the shell.
-        line="`mkpasswd -l -u $username | cut -f 1-6 -d :`"
-        echo "$line:`which anonymine`" >> /etc/passwd
-        # Not created by default.
-        mkdir /home/$username
-        chmod 777 /home/$username
-        # Append
-        allusers="$allusers $username"
-        # Loop?
-        ask "Add another user" || break
-    done
-    # Allow login only to the specified user names.
-    if [ "`grep -Ec '^ *AllowUsers .*' /etc/sshd_config`" -eq 0 ]; then
-        echo "AllowUsers $allusers" >> /etc/sshd_config
-    else
-        error 'The SSH server seems to be configured already.'
-        error "The AllowUsers key was found in /etc/sshd_config"
-        ask "Configure manually" || fatal "Can't configure the SSH daemon."
-        ask "Continue installation" || exit 0
-    fi
-    
-    # Launch SSH daemon
-    echo 'Launching the SSH daemon, this may take a while...'
-    net start cygwin-sshd || fatal "Can't start the server"
-    
-    cat << __EOF__
-You can now play Anonymine on mobile platforms with an SSH client.
-    Host:     Your IP address (local address)
-    Port:     22
-    User:     $username    (All: $allusers)
-    Password: $password    (+ other)
-It might not work outside the wifi depending on how the network is configured.
-__EOF__
+    ask Continue && install "$uninstall_file"
 }
 
 
-test -d /cygdrive || fatal "This is not Cygwin"
-
-cat << __EOF__
-Anonymine won't work on mobile devices, but there are workarounds.  This host
-is capable of running Anonymine and an SSH server, which will allow you to
-play on this computer from a remote terminal (your phone for instance).
-
-https://github.com/oskar-skog/anonymine/wiki/Anonymine-on-mobile-platforms
-
-__EOF__
-ask "Install Anonymine server" && install
-
-# To uninstall SSH to reinstall it with this script:
-# cygrunsrv --stop cygwin-sshd
-# cygrunsrv --remove cygwin-sshd
-# nano /etc/passwd
-# net user anonymine /delete
-# net user sshd /delete
-# net user cyg_server /delete
-# /setup.exe -R `cygpath --windows /` -x openssh
-
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 uninstall-file" > /dev/stderr
+    echo "uninstall-file will be a script to uninstall SSH" > /dev/stderr
+else
+    # TODO: Check if $1 exists?
+    echo "WARNING: UNTESTED"
+    ask "Go ahead" && main $1
+fi
 
