@@ -169,33 +169,6 @@ Installation procedure
     Most of the installation stuff happens in Makefile.static.
 
 
-Windows stuff
--------------
-
-    Windows-admin.bat, Windows-user.bat, cygwin-sshd
-
-    The bitch files can probably be reused for some other project,
-    but Windows-admin.bat runs cygwin-sshd.
-    
-    The batch language is AWFUL, I had some trouble setting variables
-    inside conditional blocks (recursive perhaps?) and "Silence is golden"
-    has been severely misunderstood by Micro$oft.
-    
-    There are some issues that I won't fix:
-    - The Cygwin installer is being downloaded in background.
-    - The tool being used is deprecated.  It exists in NT 6.1, but I don't
-      know if it'll work at all in newer versions.
-    As if the language itself isn't terrible, using the BITSADMIN tool is
-    difficult. (It would be that even in Bourne shell!)
-    
-    cygwin-sshd, however, is much more hackable.
-    TODO: Make it create an uninstall script.  Currently, there's only some
-    comment in the bottom of the script.
-    
-    Cygwin's /bin/sh can't handle CRLF line endings, so those files will not
-    get Windows line endings when making the zip.
-
-
 configure.py
 ------------
 

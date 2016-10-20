@@ -68,6 +68,7 @@ def expand(variable_name, all_variables, been_at=None):
             raise ValueError('Unrecognised character after dollar sign.')
     return ''.join(chunks)
 
+
 def getargs(flag_chars):
     '''Parse arguments.
     
@@ -141,6 +142,7 @@ def getargs(flag_chars):
     
     return Makefile, flags
 
+
 def check_variables(Makefile, flags):
     '''
     Check user specified variables. No infinite loops allowed, etc.
@@ -184,6 +186,7 @@ def check_variables(Makefile, flags):
         )
     return error
 
+
 def chk_deps():
     ''' Check dependencies.  Return True if there was an error '''
     error = False
@@ -207,6 +210,7 @@ def chk_deps():
         error = True
         sys.stderr.write('Python 2.6 or newer required. (Works with 3.x.)\n')
     return error
+
 
 def find_prefix(Makefile, flags):
     '''
@@ -255,6 +259,7 @@ def find_prefix(Makefile, flags):
             return True
     return False
 
+
 def find_EXECUTABLES(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
@@ -274,6 +279,7 @@ def find_EXECUTABLES(Makefile, flags):
     else:
         return False
 
+
 def find_sysconfdir(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
@@ -292,6 +298,7 @@ def find_sysconfdir(Makefile, flags):
             pass
         Makefile['sysconfdir'] = '/etc'
         return False
+
 
 def find_vargamesdir(Makefile, flags):
     '''
@@ -323,6 +330,7 @@ def find_vargamesdir(Makefile, flags):
             return True
     else:
         return False
+
 
 def get_module_dir(libdir, acceptable, major, minor):
     '''
@@ -373,6 +381,7 @@ def get_module_dir(libdir, acceptable, major, minor):
             )
             return False
 
+
 def find_MODULES(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
@@ -402,6 +411,7 @@ def find_MODULES(Makefile, flags):
             return False
     else:
         return False
+
 
 def find_MODULES_OTHERVER(Makefile, flags):
     '''
@@ -442,6 +452,7 @@ def find_MODULES_OTHERVER(Makefile, flags):
             )
     return False
 
+
 def find_INSTALL(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
@@ -467,6 +478,7 @@ def find_INSTALL(Makefile, flags):
         Makefile['INSTALL'] = 'install'
         return False
 
+
 def detect_desktop(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
@@ -491,6 +503,7 @@ def detect_desktop(Makefile, flags):
             except OSError:
                 Makefile[desktop] = 'false'
     return False
+
 
 def main():
     '''
@@ -580,6 +593,7 @@ def main():
     outf.write(inf.read())
     outf.close()
     inf.close()
+
 
 if __name__ == '__main__':
     main()

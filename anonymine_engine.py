@@ -24,6 +24,7 @@
 # arising in any way out of the use of this software, even if advised of the
 # possibility of such damage.
 
+
 '''This module provides the engine of Anonymine
 
 Copyright (c) Oskar Skog, 2016
@@ -39,6 +40,7 @@ The engine of Anonymine
     it, and the actual gluing of engine and interface.
 
 '''
+
 
 import os
 import time
@@ -56,12 +58,15 @@ except:
         def ceil(self, x): return int(x)
     math = mathclass()
 
+
 # Allow module names to be changed later.
 import anonymine_solver as solver
 import anonymine_fields as fields
 
+
 class security_alert(Exception):
     pass
+
 
 class hiscores_dummy():
     '''
@@ -77,6 +82,7 @@ class hiscores_dummy():
         pass
     def display(self):
         return 'Higscores unavailable', (), []
+
 
 class hiscores():
     '''
@@ -919,6 +925,7 @@ class game_engine():
             hs = hiscores_dummy()
         # NOTICE: This used to return game_won, delta_time
         return game_won, hs
+
 
 assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
 assert __name__ != '__main__', "I'm not a script."

@@ -125,9 +125,6 @@ BUG #9 (old)
         Accept that `IOError`s and `InterrputedError`s may be raised
         by IO functions.
 
-BUG #10
-    There is no uninstaller for what cygwin-sshd does.
-
 
 Problematic platforms
 =====================

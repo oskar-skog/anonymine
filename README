@@ -23,7 +23,6 @@ You can find screenshots and more at https://oskog97.com/projects/anonymine/
 See also
 ========
 
-    - Windows.txt for installation instructions for Windows.
     - INSTALL for installation instructions. ./configure; make; make install
     - FILES to get a hint of all files in the package.
 

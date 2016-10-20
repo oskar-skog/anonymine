@@ -614,6 +614,7 @@ class hexagonal_field(generic_field):
         
         return out
 
+
 import os
 import sys
 assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
