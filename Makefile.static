@@ -261,7 +261,7 @@ install : check-install-cfg install-dirs
 		mkshortcut -P -n "Uninstall $(NAME_C)" \
 			-a '-lc "make uninstall && (./rmssh || true) && cd .. \
 			&& rm -r ./$(NAME)*/" && /setup.exe' \
-			-w "`pwd`" /bin/bash.exe \
+			-w "`pwd`" /bin/bash.exe; \
 	fi
 
 # http://superuser.com/questions/86078/where-do-start-menu-all-programs-shortcuts-reside
