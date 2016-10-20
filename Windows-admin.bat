@@ -59,5 +59,5 @@ echo Installing %python_pkg% and the game
 :: Then you'll need to go back to $OLDPWD.
 %cygwin_dir%\bin\bash -lc 'echo "(Workaround): Do not remove!"'
 %cygwin_dir%\bin\bash -lc ^
-    'cd $OLDPWD; ./configure -v && make && make install && ./cygwin-sshd'
+    'cd $OLDPWD; ./configure -v && make && make install && ./cygwin-sshd rmssh'
 

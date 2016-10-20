@@ -246,18 +246,29 @@ install : check-install-cfg install-dirs
 		$(INSTALL) "$(CYG_ICO_SRC)" "$(CYG_ICO_DEST)"; \
 		mkshortcut -A -P -a '-lc $(NAME)' -n "$(NAME_C)" \
 			-i "$(CYG_ICO_DEST)" /bin/bash.exe || \
-			mkshortcut -P -a '-lc $(NAME)' -n "$(NAME_C)" \
+		mkshortcut -P -a '-lc $(NAME)' -n "$(NAME_C)" \
 			-i "$(CYG_ICO_DEST)" /bin/bash.exe; \
+		\
 		mkshortcut -A -D -a '-lc $(NAME)' -n "$(NAME_C)" \
 			-i "$(CYG_ICO_DEST)" /bin/bash.exe || \
-			mkshortcut -D -a '-lc $(NAME)' -n "$(NAME_C)" \
+		mkshortcut -D -a '-lc $(NAME)' -n "$(NAME_C)" \
 			-i "$(CYG_ICO_DEST)" /bin/bash.exe; \
+		\
+		mkshortcut -A -P -n "Uninstall $(NAME_C)" \
+			-a '-lc "make uninstall && ./rmssh && cd .. \
+			&& rm -r ./$(NAME)*/"' \
+			-w "`pwd`" /bin/bash.exe || \
+		mkshortcut -P -n "Uninstall $(NAME_C)" \
+			-a '-lc "make uninstall && ./rmssh && cd .. \
+			&& rm -r ./$(NAME)*/"' \
+			-w "`pwd`" /bin/bash.exe \
 	fi
 
 # http://superuser.com/questions/86078/where-do-start-menu-all-programs-shortcuts-reside
 W_C := $(DESTDIR)/cygdrive/c
 W_U := $(DESTDIR)`cygpath --unix '$(USERPROFILE)'`
-W_F := $(NAME_C).lnk
+# Ugh: use $(NAME_C)*.lnk to get the uninstall .lnk removed as well.
+W_F := Anonymine*.lnk
 W_M := /Start Menu/Programs/
 # W_C is the C drive, W_U is the users real home directory,
 # W_F is the filename and W_M is a part of the path to the start menu
