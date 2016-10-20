@@ -315,8 +315,6 @@ release : dist check
 		|| echo You are not me.
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.xz" \
 		|| echo You are not me.
-	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).zip" \
-		|| echo You are not me.
 
 
 PKG := $(NAME)-$(VERSION)
