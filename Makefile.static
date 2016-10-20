@@ -255,12 +255,12 @@ install : check-install-cfg install-dirs
 			-i "$(CYG_ICO_DEST)" /bin/bash.exe; \
 		\
 		mkshortcut -A -P -n "Uninstall $(NAME_C)" \
-			-a '-lc "make uninstall && ./rmssh && cd .. \
-			&& rm -r ./$(NAME)*/"' \
+			-a '-lc "make uninstall && (./rmssh || true) && cd .. \
+			&& rm -r ./$(NAME)*/" && /setup.exe' \
 			-w "`pwd`" /bin/bash.exe || \
 		mkshortcut -P -n "Uninstall $(NAME_C)" \
-			-a '-lc "make uninstall && ./rmssh && cd .. \
-			&& rm -r ./$(NAME)*/"' \
+			-a '-lc "make uninstall && (./rmssh || true) && cd .. \
+			&& rm -r ./$(NAME)*/" && /setup.exe' \
 			-w "`pwd`" /bin/bash.exe \
 	fi
 
