@@ -239,9 +239,6 @@ INSTALLATION
         check
             Check that everything seems to work.
         
-        tarballs
-            make tarballs
-        
         release
             (You are me.)
         

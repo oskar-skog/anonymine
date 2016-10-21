@@ -15,7 +15,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := pre-0.3.10
+VERSION := 0.3.10
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -331,9 +331,8 @@ check: FORCE
 
 dist : FORCE
 	@$(info) "Building tarballs..."
-	@cd "$(builddir)" && make tarballs > /dev/null
-tarballs : FORCE
 	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)"
+
 
 release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
