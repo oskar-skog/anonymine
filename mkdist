@@ -2,11 +2,10 @@
 
 # TODO: This was created to simplify Windows support, it's no longer needed.
 
-# Usage: ./dist srcdir builddir pkgname {zip|tar}
+# Usage: ./dist srcdir builddir pkgname
 srcdir=$1
 builddir=$2
 pkgname=$3
-type=$4
 pkgdir=$builddir$pkgname
 
 NAME="anonymine"
@@ -27,7 +26,7 @@ mkdir $pkgdir
 for subdir in $subdirs; do
     mkdir "$pkgdir/$subdir"
 done
-if [ $type = "tar" ]; then
+
     for f in $textfiles $noconv $files; do
         cp "$srcdir$f" "$pkgdir/$f"
     done
@@ -36,18 +35,5 @@ if [ $type = "tar" ]; then
     gzip -9 -k "$pkgname.tar" || echo no gzip
     xz -9e -k "$pkgname.tar" || echo no xz
     rm "$pkgdir.tar"
-fi
-if [ $type = "zip" ] && [ -n "`which unix2dos`" ]; then
-    for f in $textfiles; do
-        unix2dos -q -n "$srcdir$f" "$pkgdir/$f.txt"
-    done
-    for f in $files; do
-        unix2dos -q -n "$srcdir$f" "$pkgdir/$f"
-    done
-    for f in $noconv; do
-        cp "$srcdir$f" "$pkgdir/$f"
-    done
-    cd $builddir
-    zip -rXq "$pkgname.zip" "$pkgname"
-fi
+
 rm -r "$pkgdir"

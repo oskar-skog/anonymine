@@ -1,8 +1,11 @@
 
 ##############################################################################
+#                                                                            #
+#                                  Makefile                                  #
+#                                  ========                                  #
+#                                                                            #
+##############################################################################
 
-# If you have a suggestion for a name, tell me about it:
-# <oskar.skog.finland@gmail.com>
 
 # No quotes for these four:
 # NAME = [technical] name
@@ -34,6 +37,11 @@ PRE_UNINSTALL = true
 NORMAL_UNINSTALL = true
 POST_UNINSTALL = true
 
+
+##############################################################################
+#                                                                            #
+#                          all (build) & clean                               #
+#                                                                            #
 ##############################################################################
 
 
@@ -114,6 +122,7 @@ build-macosx : FORCE
 	@python "$(OSX_MK_ICON)" "$(OSX_ICON)" "$(srcdir)desktop/$(NAME)"
 
 
+
 clean : FORCE
 	@rm $(ALL_STAGE) 2> /dev/null || true
 	@: # Remove the bytecode files.
@@ -123,6 +132,13 @@ clean : FORCE
 
 distclean : clean
 	@rm $(builddir)Makefile
+
+
+##############################################################################
+#                                                                            #
+#                install, unininstall & print-destinations                   #
+#                                                                            #
+##############################################################################
 
 
 # configure.py will choose /usr/ucb/install on Solares.
@@ -296,10 +312,18 @@ print-destinations: FORCE
 	fi
 
 
+##############################################################################
+#                                                                            #
+#                          check, dist & release                             #
+#                                                                            #
+##############################################################################
+
+
+PKG := $(NAME)-$(VERSION)
+
+
 test : check
 	@true
-
-
 check: FORCE
 	@$(info) "Checking that it works on both snakes... May take a while!"
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
@@ -308,7 +332,8 @@ check: FORCE
 dist : FORCE
 	@$(info) "Building tarballs..."
 	@cd "$(builddir)" && make tarballs > /dev/null
-
+tarballs : FORCE
+	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)"
 
 release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
@@ -317,10 +342,8 @@ release : dist check
 		|| echo You are not me.
 
 
-PKG := $(NAME)-$(VERSION)
-
-tarballs : FORCE
-	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)" tar
-
+##############################################################################
+##############################################################################
 
 FORCE:
+
