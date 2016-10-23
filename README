@@ -49,7 +49,7 @@ Tested platforms
     Debian 7                  
     Debian 8 [Py 2, 3]        Host system, well tested
     FreeBSD 9.2 [Py 2]        
-    FreeBSD 10 [Py 2]         http://anonymine-demo.oskog97.com:8080/
+    FreeBSD 10 [Py 2]         ssh anonymine-demo.oskog97.com:2222
     Mac OS X [Py 2]           ICNS icon is untested
     Minix 3.3 [Py 2]          Issues with the highscores: rounding, no pager
     NetBSD 6.1 [Py 2]         No color
