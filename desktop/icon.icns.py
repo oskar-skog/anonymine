@@ -1,9 +1,21 @@
 #!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
-# icon.icns.py icons.icns basename
+'''
+Build the Mac OS X icon from a bunch of PNGs.
+
+$(srcdir)desktop/icon.icns.py <icons.icns> <png_name_root>
+
+${png_name_root}-16x16.png
+${png_name_root}-32x32.png
+${png_name_root}-64x64.png
+${png_name_root}-256x256.png
+'''
 
 import sys
+
+outfile = sys.argv[1]
+basename = sys.argv[2]
 
 def be32(x):
     s = bytes()
@@ -15,8 +27,6 @@ def be32(x):
         x //= 256
     return s
 
-outfile = sys.argv[1]
-basename = sys.argv[2]
 
 PNGs = [
     ('icp4', '-16x16.png'),     #    Since Mac OS X 10.7

@@ -12,6 +12,5 @@ anonymine-32x32.png     "Linux", Mac OS X       Medium icon
 anonymine-32x32.xcf     src                     Medium icon source
 anonymine-64x64.png     "Linux", Mac OS X       Large icon
 anonymine-64x64.xcf     src                     Large icon source
-anonymine.v0.xcf        info                    Old icon
 desktop.sh              "Linux"                 Generate anonymine.desktop
 icon.icns.py            Mac OS X                Puts all PNGs in a Mac OS X icon

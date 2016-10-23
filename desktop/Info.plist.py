@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+# Build Info.plist for Mac OS X.
+
 # Info.plist.py outfile human_name description_name version tech_name
 
 import sys
