@@ -501,13 +501,15 @@ class curses_game():
         if command == 'flag':
             engine.flag(self.cursor)
         elif command == 'reveal':
-            if engine.game_status == 'pre-game':
+            pre_game = engine.game_status == 'pre-game'
+            if pre_game:
                 self.message('Initializing field...   This may take a while.')
             curses.reset_shell_mode()   # BUG #3 (See the file "BUGS".)
             engine.reveal(self.cursor)
             curses.reset_prog_mode()    # BUG #3 (See the file "BUGS".)
-            if engine.game_status == 'pre-game':
-                self.window.redrawwin()     # BUG #3 (See the file "BUGS".)
+            if pre_game:
+                # Clear junk that gets on the screen from impatient players.
+                self.window.redrawwin()
         elif command in direction_keys:
             self.travel(engine.field, command)
         else:
