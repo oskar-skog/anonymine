@@ -4,6 +4,7 @@
         * anonymine.py (curses_game.input): The redrawing of the screen after
             initialization never worked as the game status got changed.
             Junk on the screen from impatient players will now be cleared.
+        * INSTALL.Haiku: Use env(1) instead of setting and resetting $TERM.
 
 2016-10-21      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.10
