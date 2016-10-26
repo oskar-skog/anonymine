@@ -1,3 +1,8 @@
+2016-10-26      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.12
+        * configure.py: Use `sys.exit` instead of `os._exit` as the latter
+            caused weird issues with stream redirection.
+
 2016-10-23      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.11
         * README: http://anonymine-demo.oskog97.com:8080/ link removed.
