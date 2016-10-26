@@ -581,7 +581,7 @@ def main():
         else:
             sys.stderr.write(
                 'There were errors; no Makefile will be written.\n')
-            os._exit(1)
+            sys.exit(1)
 
     inname = Makefile['srcdir'] + 'Makefile.static'
     outname = Makefile['builddir'] + 'Makefile'
@@ -597,4 +597,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    os._exit(0)
+    sys.exit(0)
