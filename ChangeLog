@@ -1,3 +1,8 @@
+
+    0.3.13
+        * README: Anonymine is it's name now.  Name suggestions are no
+            longer welcome.
+
 2016-10-26      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.12
         * configure.py: Use `sys.exit` instead of `os._exit` as the latter
