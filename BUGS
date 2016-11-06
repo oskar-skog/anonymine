@@ -130,7 +130,6 @@ Problematic platforms
 =====================
 
     #1  Minor: Debian 7 with CPython 2.6.7
-    #2  Major: openindiana
     #3  Fatal: PyPy
     #4  Minor: Cygwin
     
@@ -142,18 +141,6 @@ Problematic platforms
         severity:       minor/potentially medium
         symptoms:       Terminal resizing doesn't work.
     
-    #2
-        OS:             openindiana
-        kernel:         illumos
-        arch:           x86-32 (VirtualBox)
-        Python:         CPython 2.6.4
-        terminal:       GNOME Terminal 2.30.2
-        severity:       bad
-        symptoms:       * Manual installation required:
-                            Incompatible install(1M)
-                        * Crashes the terminal window on the second game.
-                        * Crashes ALL terminal windows when the window is
-                            shrunk too much.
     #3
         Python:         PyPy
         severity:       severe

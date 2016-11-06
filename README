@@ -1,11 +1,12 @@
 Anonymine is a curses mode minesweeper that checks if the fields actually are
 solvable without guessing and has a few other features.
 
-Apart from being solvable without guessing, anonymine:
-    - can use traditional Moore neighbourhoods (8 neighbours per cell),
-    - a hexagonal field (6 neighbours per cell)
-    - or von Neumann neighbourhoods (4 neighbours per cell).
-    
+Apart from being solvable without guessing, Anonymine has a few other features:
+    - Three different field types
+        - von Neumann (4 neighbors)
+        - hexagonal (6 neighbors)
+        - traditional (8 neighbors)
+    - There's a highscores table for the losers too.
     - The anonymine_solver module can also be used to "measure the difficulty"
       of a field.
 
@@ -20,8 +21,7 @@ You can find screenshots and more at https://oskog97.com/projects/anonymine/
 See also
 ========
 
-    - INSTALL for installation instructions. ./configure; make; make install
-    - FILES to get a hint of all files in the package.
+    - INSTALL for installation instructions. (./configure; make; make install)
 
 
 Tested platforms
@@ -64,6 +64,7 @@ Goals
     ------- ------
     0.2     Performance improvements, no nasty calibration of enginecfg.
     0.3     High-scores.
-    0.4     Mouse support.
-    0.5     Illustrative documentation for the solver algorithm.
+    0.4     Meta file clean ups (eg. README)
+    0.5     Mouse support.
+    0.6     Illustrative documentation for the solver algorithm.
 

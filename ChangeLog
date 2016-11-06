@@ -1,7 +1,16 @@
-
+2016-11-06
     0.3.13
-        * README: Anonymine is it's name now.  Name suggestions are no
-            longer welcome.
+        * BUGS: Removed problematic platform #2 (openindiana)
+        * README:
+            - Anonymine is it's name now.  Name suggestions are no
+              longer welcome
+            - Delayed mouse support to 0.5.z
+            - Edited the features list
+        * HACKING:
+            - Updates to file list
+            - Removed Windows stuff section
+            - Added note about make uninstall
+            - Documented enginecfg.default
 
 2016-10-26      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.12
