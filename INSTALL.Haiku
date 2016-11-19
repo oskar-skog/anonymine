@@ -1,8 +1,10 @@
 I haven't yet figured out how to get it installed on Haiku, but it plays
-acceptably well.   The terminal unfortunately screws up the screen quite
-often, disabling color helps though.
+acceptably well.
 
-(Tested on Haiku nightly build hrev50483.)
+On Haiku nighlty hrev < 50662, the screen may look like gibberish.  Use
+TERM=vt100 on Haiku versions older than 50662.
+
+(Tested on Haiku nightly build hrev50483 and hrev50700.)
 
 To "install" it
 $ git clone https://github.com/oskar-skog/anonymine.git
@@ -12,5 +14,5 @@ $ ./mkenginecfg ./ ./ highscores
 
 To play it
 $ cd anonymine
-$ env TERM=vt100 python anonymine.py -c cursescfg -e enginecfg.out
+$ python anonymine.py -c cursescfg -e enginecfg.out
 

@@ -48,13 +48,14 @@ Tested platforms
     Debian 8 [Py 2, 3]        Host system, well tested
     FreeBSD 9.2 [Py 2]        
     FreeBSD 10 [Py 2]         ssh anonymine-demo.oskog97.com:2222
+    Haiku nightly             Terminal bug fixed in 50662
     Mac OS X [Py 2]           ICNS icon is untested
     Minix 3.3 [Py 2]          Issues with the highscores: rounding, no pager
-    NetBSD 6.1 [Py 2]         No color
+    NetBSD 6.1 [Py 2]         TERM=xterm almost works, vt100 is default by sys
     OpenBSD 5.8 [Py 2, 3]     Failed to pipe to less on Python 3
     OpenSUSE 12.2 [Py 2, 3]   
     Trisquel 6.0 [Py 2, 3]    Old host system, old versions well tested
-    openindiana [Py 2.6]      0.1.17 to 0.2.29 won't work
+    openindiana [Py 2.6]      Anonymine 0.1.17 to 0.2.29 won't work
 
 
 Goals
