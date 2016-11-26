@@ -1,3 +1,8 @@
+2016-11-26      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.15 (TESTING)
+        * configure.py: Exiting properly on both Cygwin and NetBSD.
+            See https://github.com/oskar-skog/anonymine/issues/7
+
 2016-11-20      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.14
         * INSTALL.Haiku: Terminal bug has been fixed.

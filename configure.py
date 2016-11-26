@@ -27,6 +27,29 @@
 import sys
 import os
 
+def myexit(code):
+    '''
+    Substitute for sys.exit.  MUST be used at EOF.
+    
+    This wrapper flushes output and calls `os._exit`.
+    
+    Python 2.7.10 on NetBSD 6.1 x86-32 has a bug that causes the
+    interpreter to hang after the program has finished if it has ever
+    called `subprocess.Popen`.  All of `exit`, `sys.exit`, `quit` and
+    end of file are affected.
+    
+    Using `os._exit` won't work either because output is buffered and
+    not flushed on exit.
+    
+    https://github.com/oskar-skog/anonymine/issues/7
+    http://bugs.python.org/issue28807
+    http://gnats.netbsd.org/cgi-bin/query-pr-single.pl?number=51657
+    '''
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(code)
+
+
 def expand(variable_name, all_variables, been_at=None):
     '''Do Makefile variable macro-expansion.
     
@@ -138,7 +161,7 @@ def getargs(flag_chars):
         sys.stderr.write('At "' + arg + '":\n')
         sys.stderr.write(str(sys.exc_info()[1]) + '\n')
         sys.stderr.write('There may be more errors.\n')
-        sys.exit(1)
+        myexit(1)
     
     return Makefile, flags
 
@@ -581,7 +604,7 @@ def main():
         else:
             sys.stderr.write(
                 'There were errors; no Makefile will be written.\n')
-            sys.exit(1)
+            myexit(1)
 
     inname = Makefile['srcdir'] + 'Makefile.static'
     outname = Makefile['builddir'] + 'Makefile'
@@ -597,4 +620,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    sys.exit(0)
+    myexit(0)
