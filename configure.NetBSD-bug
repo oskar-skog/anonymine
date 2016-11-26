@@ -1,4 +1,0 @@
-import sys
-import subprocess
-subprocess.check_output(['echo', 'test'])
-sys.exit(0)  # Hangs
