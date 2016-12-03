@@ -22,24 +22,36 @@ See also
 ========
 
     - INSTALL for installation instructions. (./configure; make; make install)
+      (There may exist platform specific versions of INSTALL.)
+    - https://github.com/oskar-skog/anonymine-windows for Windows support
+
+
+Software & hardware requirements
+================================
+
+    Required software
+        - Python 2.6, 2.7 or 3.x
+        - The "curses" module (Python)
+        - The "argparse" module (Python) or a unix-like operating system *1 *2
+    
+    *1 The argparse module is needed for Anonymine to take commandline options.
+    The configuration files can be specified with the -e and -c command line
+    options to override the default locations which happen to be unix paths.
+    
+    *2 Note that Python 2.6, 3.0 and 3.1 are not expected to have the
+    module "argparse".
+    
+    Hardware requirements
+        - Fast CPU and fast RAM (Multiple cores can be used by Anonymine.)
+        - Fan for cooling the CPU
+        - Disk: About a megabyte
+        - RAM: 12 MiB plus 12 MiB per logical CPU (core)
 
 
 Tested platforms
 ================
 
-    The dependencies are:
-    (Python 3.x || Python >= 2.6) && curses mod. && (unix || argparse mod.)
-    less(1) is recommended.
-    
-    The argparse module is needed for Anonymine to take command line options.
-    The configuration files can be specified with the -e and -c command line
-    options to override the default locations which happen to be unix paths.
-    
-    Note that Python 2.6, 3.0 and 3.1 are not expected to have the
-    module "argparse".
-    
     CPython 2.6.4 is lowest version of Python that has been tested.
-    
     
     Platform                  Notes
     --------                  -----
