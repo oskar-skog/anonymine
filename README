@@ -32,7 +32,7 @@ Software & hardware requirements
     Required software
         - Python 2.6, 2.7 or 3.x
         - The "curses" module (Python)
-        - The "argparse" module (Python) or a unix-like operating system *1 *2
+        - The "argparse" module (Python) or a unix-like operating system [*1,2]
     
     *1 The argparse module is needed for Anonymine to take commandline options.
     The configuration files can be specified with the -e and -c command line
@@ -41,11 +41,17 @@ Software & hardware requirements
     *2 Note that Python 2.6, 3.0 and 3.1 are not expected to have the
     module "argparse".
     
+    Software recommendations
+        - unix-like operating system or compatibility layer. fork(2) is
+          required for utilizing multiple CPU cores.
+        - The less(1) pager, for displaying the highscores table.
+    
     Hardware requirements
         - Fast CPU and fast RAM (Multiple cores can be used by Anonymine.)
         - Fan for cooling the CPU
         - Disk: About a megabyte
         - RAM: 12 MiB plus 12 MiB per logical CPU (core)
+        - Networking not required
 
 
 Tested platforms
@@ -60,7 +66,7 @@ Tested platforms
     Debian 8 [Py 2, 3]        Host system, well tested
     FreeBSD 9.2 [Py 2]        
     FreeBSD 10 [Py 2]         ssh anonymine-demo.oskog97.com:2222
-    Haiku nightly             Terminal bug fixed in 50662
+    Haiku nightly             Terminal bug fixed in hrev50662
     Mac OS X [Py 2]           ICNS icon is untested
     Minix 3.3 [Py 2]          Issues with the highscores: rounding, no pager
     NetBSD 6.1 [Py 2]         TERM=xterm almost works, vt100 is default by sys
@@ -75,9 +81,9 @@ Goals
 
     Version Change
     ------- ------
-    0.2     Performance improvements, no nasty calibration of enginecfg.
-    0.3     High-scores.
+    0.2     Performance improvements, no nasty calibration of enginecfg
+    0.3     High-scores
     0.4     Meta file clean ups (eg. README)
-    0.5     Mouse support.
-    0.6     Illustrative documentation for the solver algorithm.
+    0.5     Mouse support
+    0.6     Illustrative documentation for the solver algorithm
 
