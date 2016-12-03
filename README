@@ -1,5 +1,5 @@
-Anonymine is a curses mode minesweeper that checks if the fields actually are
-solvable without guessing and has a few other features.
+Anonymine is a curses mode (text based) minesweeper that checks if the fields
+actually are solvable without guessing and has a few other features.
 
 Apart from being solvable without guessing, Anonymine has a few other features:
     - Three different field types

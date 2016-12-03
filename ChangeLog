@@ -6,6 +6,11 @@
             - Added some HW requirements and reformatted the SW requirements.
             - Added link to the anonymine-windows Github repo.
             - Some tiny changes
+            - Added "text based" as a synonym for "curses mode".
+        * FAQ:
+            - New question: Question about the losers' highscores.
+            - Rearranged
+            - Removed Windows specific details.
 
 2016-11-26      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.15
