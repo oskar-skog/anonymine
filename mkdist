@@ -16,7 +16,7 @@ subdirs="desktop"
 files="${NAME}.py ${NAME}_engine.py ${NAME}_fields.py ${NAME}_solver.py \
     configure.py Makefile.static install-cfg enginecfg.fallback cursescfg \
     test.py testcfg desktop/Info.plist.py desktop/icon.icns.py \
-    BUGS ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
+    ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
     desktop/README RELEASE-NOTES INSTALL.Haiku \
     configure check.sh desktop/desktop.sh desktop/${NAME}-*.png \
     desktop/${NAME}*.xcf mkenginecfg mkdist"
