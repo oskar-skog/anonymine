@@ -132,7 +132,7 @@ What's new in 0.1.0 since 0.0.0?
     0.0.1:   FreeBSD (`make dist` works since 0.0.21)
     0.0.8:   Python 3
     0.0.15:  Python 2.6
-    0.0.27:  Fixed https://gitgub.com/oskar-skog/anonymine/issues/14
+    0.0.27:  Fixed https://github.com/oskar-skog/anonymine/issues/14
     0.0.31:  Minix 3 and openindiana (illumos (OpenSolaris))
     0.0.36:  NetBSD works properly
     0.0.41+: Windows (auto-fetch Cygwin) (lack of testing)
