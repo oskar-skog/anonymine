@@ -1,3 +1,12 @@
+2016-12-04      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.17
+        *: enginecfg.default -> enginecfg.fallback to avoid confusion.
+        * mkenginecfg: renamed enginecfg.default -> enginecfg.fallback;
+            removed possibly outdated TODO
+        * mkdist: Various changes.
+        * HACKING: Fixed the TODO for mkdist. Updated about enginecfg stuff.
+        * ChangeLog [0.2.26]: Fixed typo.
+
 2016-12-03      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.3.16
         * README:
@@ -164,7 +173,7 @@
             - Allow subprocess to fail.
         * README: Added some notes about the tested platforms.
             Minix 3 and openindiana no longer work.
-        * mkenginexfg:
+        * mkenginecfg:
             - seq(1) is apparently a GNU specific utility.
             - Added quotes around $nproc to let the Python script succeed
               even if no method of counting processors worked.

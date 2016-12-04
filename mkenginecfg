@@ -2,8 +2,6 @@
 
 # ./mkenginecfg srcdir builddir hiscorefile
 
-# TODO: measure time by the time it takes to solve some known fields.
-
 # This shell script is a wrapper around a Python script that will be spit
 # out.
 
@@ -12,7 +10,7 @@ builddir=$2
 hiscorefile=$3
 
 userfile="${builddir}enginecfg.user"
-defaultfile="${srcdir}enginecfg.default"
+fallbackfile="${srcdir}enginecfg.fallback"
 outfile="${builddir}enginecfg.out"
 
 pyfile="${builddir}mkenginecfg.py"
@@ -84,5 +82,5 @@ done
 oldpwd=`pwd`
 cd "$srcdir"
 python "$pyfile" "$ncpus" "$hiscorefile" > "$outfile" \
-    || cp "$defaultfile" "$outfile"
+    || cp "$fallbackfile" "$outfile"
 cd "$oldpwd"
