@@ -10,38 +10,26 @@ What's new in 0.4.0 since 0.3.0?
     - Dropped Windows support in version 0.3.8. Windows support can be found
       at https://github.com/oskar-skog/anonymine-windows
     
-    - Introduced the losers' highscores in version 0.3.1
+    - Introduced the losers' highscores in version 0.3.1 (bugfix in 0.3.3)
     
     - New textics since version 0.3.6 (small fix in 0.3.7)
-
-    0.3.15
+    
+    - The format of cursescfg was changed in 0.3.6: the pair numbers have
+      been removed as they are now calculated automatically.
+      Older cursescfg's are incompatible.
+    
+    - Bugfixes
+    
+    0.3.15 + 0.3.12
         * configure.py: Exiting properly on both Cygwin and NetBSD.
             See https://github.com/oskar-skog/anonymine/issues/7
-    0.3.12
-        * configure.py: Use `sys.exit` instead of `os._exit` as the latter
-            caused weird issues with stream redirection.
     0.3.11
         * anonymine.py (curses_game.input): The redrawing of the screen after
             initialization never worked as the game status got changed.
             Junk on the screen from impatient players will now be cleared.
-    0.3.6
-        * anonymine.py, cursescfg: Calculate pair numbers automatically.
-    0.3.5
-        * anonymine_engine.py (hiscores): Python 2.6 incompatibilities fixed:
-            - str.format can't handle empty field names ('{}')
-            - str.decode takes no keyword arguments
     0.3.4
         * cursescfg: Use reverse video for the flags to make them more
             distinguishable on monochrome terminals.
-        * anonymine_engine.py (hiscores (add_entry)): Failed to set
-            display_caption when the player didn't make it to highscores.
-    0.3.3
-        * anonymine_engine.py (hiscores (add_entry)): list.index does not
-            return None, but raises ValueError. Plus various changes for
-            the fix.
-    0.3.1
-        * anonymine_engine.py (hiscores, game_engine (play_game)):
-            Added highscores for lost games.
         * anonymine_fields.py (generic_field (_call)): Check that won games
             really are won, any defect will automatically turn
             'win' into 'lose'.
