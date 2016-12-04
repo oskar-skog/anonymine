@@ -1,61 +1,30 @@
 What's new in 0.4.0 since 0.3.0?
 ================================
-
-    - Several changes to INSTALL, README and HACKING
-    - Removed BUGS.  Issues have been created on Github and the workarounds
-      have been documented.
-    - Added a new question to and reordered FAQ.
+    
+    - Tidied up
+        - Several changes to INSTALL, README and HACKING
+        - Removed BUGS.  Issues have been created on Github and the workarounds
+          have been documented.
+        - Added a new question to and reordered FAQ.
     
     - Dropped Windows support in version 0.3.8. Windows support can be found
       at https://github.com/oskar-skog/anonymine-windows
+    
+    - Introduced the losers' highscores in version 0.3.1
+    
+    - New textics since version 0.3.6 (small fix in 0.3.7)
 
     0.3.15
         * configure.py: Exiting properly on both Cygwin and NetBSD.
             See https://github.com/oskar-skog/anonymine/issues/7
-    0.3.14
-        * INSTALL.Haiku: Terminal bug has been fixed.
-        * README:
-            - Added Haiku as a tested platform.
-            - Added note about $TERM on NetBSD.
-    0.3.13
-        * BUGS: Removed problematic platform #2 (openindiana)
-        * README:
-            - Anonymine is it's name now.  Name suggestions are no
-              longer welcome
-            - Delayed mouse support to 0.5.z
-            - Edited the features list
-        * HACKING:
-            - Updates to file list
-            - Removed Windows stuff section
-            - Added note about make uninstall
-            - Documented enginecfg.default
     0.3.12
         * configure.py: Use `sys.exit` instead of `os._exit` as the latter
             caused weird issues with stream redirection.
     0.3.11
-        * README: http://anonymine-demo.oskog97.com:8080/ link removed.
         * anonymine.py (curses_game.input): The redrawing of the screen after
             initialization never worked as the game status got changed.
             Junk on the screen from impatient players will now be cleared.
-        * INSTALL.Haiku: Use env(1) instead of setting and resetting $TERM.
-        * desktop/*: Brief descriptions.
-    0.3.10
-        * desktop/anonymine.v0.xcf: Gone.
-        * Makefile.static:
-            - Was still looking for name suggestions...
-            - Sections are now clearer.
-        * mkdist, Makefile.static: Simplify code now when Windows support is
-            gone.
-    0.3.9
-        * Forgotten Windows stuff, minor style fixes.
-    0.3.8
-        *: Removed Windows support.  (Going to create that in a different
-            repo.)
-    0.3.7
-        * cursescfg: flag:hex green on black to black on green
-        * cygwin-sshd, BUGS: No uninstaller for cygwin-sshd.
     0.3.6
-        * cursescfg: New textics
         * anonymine.py, cursescfg: Calculate pair numbers automatically.
     0.3.5
         * anonymine_engine.py (hiscores): Python 2.6 incompatibilities fixed:
@@ -66,20 +35,13 @@ What's new in 0.4.0 since 0.3.0?
             distinguishable on monochrome terminals.
         * anonymine_engine.py (hiscores (add_entry)): Failed to set
             display_caption when the player didn't make it to highscores.
-        * Makefile.static: Added distclean.
     0.3.3
         * anonymine_engine.py (hiscores (add_entry)): list.index does not
             return None, but raises ValueError. Plus various changes for
             the fix.
-    0.3.2
-        * anonymine.py (ask): Do no more than 10 000 000 attempts on EINTR
-            handling.
     0.3.1
         * anonymine_engine.py (hiscores, game_engine (play_game)):
             Added highscores for lost games.
         * anonymine_fields.py (generic_field (_call)): Check that won games
             really are won, any defect will automatically turn
             'win' into 'lose'.
-        * anonymine.py (output): Do no more than 10 000 000 attempts.
-    0.3.0
-        * INSTALL: Warn of the removal of configuration files.
