@@ -13,8 +13,6 @@
 `run623` is a generic field of 6x6x6 with 22 mines.
 
 `run10` appears to be collecting some statistics of a 16x16 with 40 mines.
-
-`bug1` should be explained in the file "BUGS".
 '''
 
 import time
