@@ -2,6 +2,8 @@
     0.3.19
         * HACKING: Mention that only versions 0.1.15 and above are in Github.
         * INSTALL: Many small changes.
+        * NEWS: Added NEWS for 0.4.  Will bump the version to 0.4.0 if there's
+            nothing else to do on 0.3.z.
     0.3.18
         *: Got rid of BUGS.  BUG descriptions have been moved into comments
             at relevant locations in the source and to Github issues.
