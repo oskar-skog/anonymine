@@ -2,6 +2,8 @@
     0.3.18
         *: Got rid of BUGS.  BUG descriptions have been moved into comments
             at relevant locations in the source and to Github issues.
+        * anonymine_engine.py: Removed weird FIXME from play_game:
+            self.start = time.time()
     0.3.17
         *: enginecfg.default -> enginecfg.fallback to avoid confusion.
         * mkenginecfg: renamed enginecfg.default -> enginecfg.fallback;

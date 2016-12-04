@@ -112,9 +112,9 @@
         # ------
         #
         # The values are tuples of:
-        # [0]:  character (Required by all keys except 'number', 'grid'
-        #       and 'text'. For these three, the character will be
-        #       ignored.  'background' will also be ignored due to BUG #7)
+        # [0]:  character (Required by all keys except 'number', 'grid',
+        #       'text' and 'background'. For these three, the character
+        #       will be ignored. ('background' is ignored due to a bug.))
         # [1]:  foreground color; valid colors are: "BLACK", "BLUE",
         #       "GREEN", "CYAN", "RED", "MAGENTA", "YELLOW" and
         #       "WHITE".

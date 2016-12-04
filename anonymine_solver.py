@@ -977,8 +977,7 @@ class solver():
         '''
         Return True if the field can be solved according to rule 9.
         '''
-#(SOLVED) BUG 2016-01-07
-#    Solved in 0.0.25, bug is available in 0.0.24 and below:
+# Solved in 0.0.25, BUG is available in 0.0.24 and below:
 #        A bug in anonymine_solver.py (solver.rule9bf) has been fixed,
 #        the symptoms of this bug haven't occured since the fix.
 #        (At least 717708 fields (30x16 with 99 mines) have been tested.)
@@ -1032,6 +1031,7 @@ class solver():
                     # 0.0.25
                     # The BUG WAS here. The 'else' statement belonged to the
                     # 'if' statement rather than to the 'for' statement.
+                    # Check the comment at the top of this function.
                     deserted_cells.append(cell)
         
         # Check that there are deserted cells. (Late sanity checking)

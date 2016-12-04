@@ -230,11 +230,12 @@ class curses_game():
             textics properties.
     '''
     
-#(WORKAROUND) BUG#3 2016-01-08, severe
+# BUG: This is referenced from various lines in the class.
 #    More or less platform specific.
-#    OS: Debian 8 (Linux 3.16) (x86-64)
-#    curses.version: 2.2
-#    Library: ncurses5.9
+#    Detected on:
+#       OS: Debian 8 (Linux 3.16) (x86-64)
+#       curses.version: 2.2
+#       Library: ncurses5.9
 #    Description:
 #        After forking, it appears, when the field is being initialized, the
 #        curses mode stops working.
@@ -742,7 +743,7 @@ class curses_game():
 
 def output(stream, content):
     '''
-    Due to BUG #9 syscalls may fail with EINTR after leaving curses mode.
+    Due to a bug syscalls may fail with EINTR after leaving curses mode.
     
     Write `content` to `stream` and flush() without crashing.
     
@@ -750,8 +751,8 @@ def output(stream, content):
     output(sys.stdout, 'Hello world!\n')
     
     
-    BUG #9 (old)
-    ============
+    The bug
+    =======
     
         sys.stdin.readline() in `ask` dies with IOError and
         errno=EINTR when the terminal gets resized after curses has
@@ -768,7 +769,7 @@ def output(stream, content):
         PEP 0457: https://www.python.org/dev/peps/pep-0475/
     SIMULATION:
         Function `bug1` in 'test.py'.
-    FIX #1 (caused new BUG: Can't resize on later games/SIGWICH not reset):
+    FIX #1 (caused new bug: Can't resize on later games/SIGWICH not reset):
         Set signal handling of SIGWINCH to ignore.
         SIGWINCH:       Fixed by the solution.
         SIGINT:         Properly handled by Python. (Well tested.)
@@ -949,8 +950,9 @@ def ask(question, paramtype, default):
     while True:
         output(sys.stdout, '{0} [{1}]: '.format(question, default))
         try:
-            # Due to BUG #9 syscalls may fail with EINTR after leaving
-            # curses mode.
+            # Due to a bug, syscalls may fail with EINTR after leaving
+            # curses mode. See the docstring of `output` for info about
+            # the bug.
             i = 0
             while True:
                 i += 1

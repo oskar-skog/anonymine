@@ -669,7 +669,7 @@ class game_engine():
                 self.field.all_cells()
             ))
             # Set up handler for kill signal.
-            # (SOLVED) BUG#6 2016-02-03
+            # Solved bug:
             #   There was a small possibility that another slave would
             #   finish before getting killed by the master, causing os.kill
             #   to fail. Because of this, the slaves will from now on be
@@ -798,7 +798,7 @@ class game_engine():
                 except OSError:
                     # File does not exist, process has not finished.
                     try:
-                        os.kill(child, killsig)      # See BUG#6
+                        os.kill(child, killsig)
                         os.waitpid(child, 0)    # Destroy the zombie.
                         os.remove(filename.format(child))
                     except OSError:
@@ -881,7 +881,7 @@ class game_engine():
         
         self.field.clear()
         # Enter the main loop.
-        self.start = time.time()        # FIXME
+        self.start = time.time()
         self.field.set_callback('win', win, self)
         self.field.set_callback('lose', lose, self)
         while self.game_status in ('pre-game', 'play-game'):
