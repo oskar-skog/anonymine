@@ -1,4 +1,6 @@
 2016-12-04      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.19
+        * HACKING: Mention that only versions 0.1.15 and above are in Github.
     0.3.18
         *: Got rid of BUGS.  BUG descriptions have been moved into comments
             at relevant locations in the source and to Github issues.

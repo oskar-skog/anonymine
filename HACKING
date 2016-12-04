@@ -1,8 +1,10 @@
 This file is intended as a brief overview for those who are interested in
 hacking Anonymine, and as a maintenance manual for me.
 
-Undocumented: test.py
-
+Versions 0.1.15 and above are in my Github repo:
+    git clone https://github.com/oskar-skog/anonymine.git
+Older versions are only available from my downloads archive:
+    https://oskog97.com/archive/anonymine/
 
 Files in this package
 =====================
