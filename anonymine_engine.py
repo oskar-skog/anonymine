@@ -669,7 +669,19 @@ class game_engine():
                 self.field.all_cells()
             ))
             # Set up handler for kill signal.
-            # see BUG#6
+            # (SOLVED) BUG#6 2016-02-03
+            #   There was a small possibility that another slave would
+            #   finish before getting killed by the master, causing os.kill
+            #   to fail. Because of this, the slaves will from now on be
+            #   killed with SIGCONT rather than SIGTERM, as SIGCONT will be
+            #   ignored by an innocent process that might start after a
+            #   second slave finishes but before the slave gets killed by
+            #   the master.
+            #   Update 2016-07-15:  Processes will only be killed if their
+            #   tempfiles can't be deleted (most likely because they don't
+            #   exist yet);
+            #   Update 2016-07-15:  SIGTERM will be used if SIGCONT does not
+            #   exist.
             def die(ignore1, ignore2):
                 os._exit(0)
             if 'SIGCONT' in dir(signal):

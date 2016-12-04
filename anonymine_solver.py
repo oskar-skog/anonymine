@@ -977,8 +977,34 @@ class solver():
         '''
         Return True if the field can be solved according to rule 9.
         '''
-        # -B-U-G-: Of some reason, this function might reveal a mine.
-        # (FIXED) 0.0.25
+#(SOLVED) BUG 2016-01-07
+#    Solved in 0.0.25, bug is available in 0.0.24 and below:
+#        A bug in anonymine_solver.py (solver.rule9bf) has been fixed,
+#        the symptoms of this bug haven't occured since the fix.
+#        (At least 717708 fields (30x16 with 99 mines) have been tested.)
+#    Symptoms:
+#        Of some reason, this function might reveal a mine.
+#    Traceback:
+#        Traceback (most recent call last):
+#          File "<stdin>", line 1, in <module>
+#          File "/usr/lib/python2.7/cProfile.py", line 29, in run
+#            prof = prof.run(statement)
+#          File "/usr/lib/python2.7/cProfile.py", line 135, in run
+#            return self.runctx(cmd, dict, dict)
+#          File "/usr/lib/python2.7/cProfile.py", line 140, in runctx
+#            exec cmd in globals, locals
+#          File "<string>", line 1, in <module>
+#          File "test.py", line 39, in run_prof
+#            won, levels = solver.solve()
+#          File "anonymine_solver.py", line 1105, in solve
+#            success, update_difficulty = self.solver_loop()
+#          File "anonymine_solver.py", line 957, in solver_loop
+#            unsolved_cells.append((cell, rank_cell([cell], i)))
+#          File "anonymine_solver.py", line 934, in rank_cell
+#            more_cells = cells + self.number_neighbours(cells)
+#          File "anonymine_solver.py", line 638, in number_neighbours
+#            assert self.field.get(neighbour) != 'X'
+#        AssertionError
         
         # Sanity checking.
         if self.field.flags_left is None:
@@ -1004,7 +1030,7 @@ class solver():
                         break # Fix another bug as well. # 0.0.25
                 else:
                     # 0.0.25
-                    # The bug WAS here. The 'else' statement belonged to the
+                    # The BUG WAS here. The 'else' statement belonged to the
                     # 'if' statement rather than to the 'for' statement.
                     deserted_cells.append(cell)
         

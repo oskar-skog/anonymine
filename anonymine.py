@@ -229,6 +229,35 @@ class curses_game():
             This dictionary maps the special return values into
             textics properties.
     '''
+    
+#(WORKAROUND) BUG#3 2016-01-08, severe
+#    More or less platform specific.
+#    OS: Debian 8 (Linux 3.16) (x86-64)
+#    curses.version: 2.2
+#    Library: ncurses5.9
+#    Description:
+#        After forking, it appears, when the field is being initialized, the
+#        curses mode stops working.
+#    Solution:
+#        Define a program mode and temporarily reset to shell mode while
+#        initializing the field.
+#            The cursor can still not be hidden, so it will be moved to an
+#        unimportant place.
+#            The screen requires one complete redrawal of the screen, so that
+#        will also be done.
+#    NOTICE:
+#        FOR THE LOVE OF KEN, DO NOT REMOVE WORKAROUND!!
+#    NOTICE:
+#        DO NOT REMOVE.
+#        This is referenced from the source.
+#    NOTICE: WEIRD:
+#        Of some reason: This must be done whenever a cell is clicked on,
+#        not just around initialization.
+#    Update 2016-07-17:
+#        The windows only needs to be redrawn on initialization, not on every
+#        click.
+#        Trying to leave and re-enter curses mode was no good.
+    
     def __init__(self, cfgfile, gametype):
         '''Create interface object and enter curses mode.
         
@@ -289,7 +318,7 @@ class curses_game():
             self.old_cursor = curses.curs_set(0)
         except:
             pass
-        curses.def_prog_mode()  # BUG #3 (See the file "BUGS".)
+        curses.def_prog_mode()  # BUG: see comments above __init__
         # Check that we have a reasonable size on the window.
         height, width = self.window.getmaxyx()
         
@@ -439,7 +468,7 @@ class curses_game():
         # Set the appropriate background.
         char, attributes = self.curses_output_cfg('background')
         self.window.bkgdset(32, attributes)     # 32 instead of `char`.
-        # BUG #7: window.bkgdset causes a nasty issue when the background
+        # BUG: window.bkgdset causes a nasty issue when the background
         # character is not ' ' and color is unavailable.
         
         # Print the screen.
@@ -472,7 +501,7 @@ class curses_game():
         else:
             self.print_square(engine.field)
         # Remember that self.height has already been decremented by one.
-        self.window.move(self.height, 0)    # BUG #3 (See the file "BUGS".)
+        self.window.move(self.height, 0)  # BUG: see comments above __init__
         self.window.refresh()
 
     def input(self, engine):
@@ -504,9 +533,9 @@ class curses_game():
             pre_game = engine.game_status == 'pre-game'
             if pre_game:
                 self.message('Initializing field...   This may take a while.')
-            curses.reset_shell_mode()   # BUG #3 (See the file "BUGS".)
+            curses.reset_shell_mode()   # BUG: see comments above __init__
             engine.reveal(self.cursor)
-            curses.reset_prog_mode()    # BUG #3 (See the file "BUGS".)
+            curses.reset_prog_mode()    # BUG: see comments above __init__
             if pre_game:
                 # Clear junk that gets on the screen from impatient players.
                 self.window.redrawwin()
@@ -710,6 +739,7 @@ class curses_game():
         self.print_char(fx(x, y) - 1, fy(x, y), 'cursor-l')
         self.print_char(fx(x, y) + 1, fy(x, y), 'cursor-r')
 
+
 def output(stream, content):
     '''
     Due to BUG #9 syscalls may fail with EINTR after leaving curses mode.
@@ -718,6 +748,36 @@ def output(stream, content):
     
     Example:
     output(sys.stdout, 'Hello world!\n')
+    
+    
+    BUG #9 (old)
+    ============
+    
+        sys.stdin.readline() in `ask` dies with IOError and
+        errno=EINTR when the terminal gets resized after curses has
+        been de-initialized.
+        1: SIGWINCH is sent by the terminal when the screen has been
+            resized.
+        2: curses forgot to restore the signal handling of SIGWINCH
+            to the default of ignoring the signal.
+            NOTE: signal.getsignal(signal.SIGWINCH) incorrectly
+                returns signal.SIG_DFL. (Default is to be ignored.)
+        3: Python fails to handle EINTR when reading from stdin.
+    REFERENCES:
+        Issue 3949: https://bugs.python.org/issue3949
+        PEP 0457: https://www.python.org/dev/peps/pep-0475/
+    SIMULATION:
+        Function `bug1` in 'test.py'.
+    FIX #1 (caused new BUG: Can't resize on later games/SIGWICH not reset):
+        Set signal handling of SIGWINCH to ignore.
+        SIGWINCH:       Fixed by the solution.
+        SIGINT:         Properly handled by Python. (Well tested.)
+        SIGTSTP:        Default is STOP, seems to be at default.
+        Any other signal will probably not be caught and
+        IOError with errno=EINTR will therefore never be returned.
+    FIX #2 (0.2.17)
+        Accept that `IOError`s and `InterrputedError`s may be raised
+        by IO functions.
     '''
     def write():
         stream.write(content)
@@ -741,6 +801,7 @@ def output(stream, content):
                         continue
                 raise
             break
+
 
 def convert_param(paramtype, s):
     '''Convert user input (potentially incorrect text) to the proper type.

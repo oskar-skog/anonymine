@@ -1,4 +1,7 @@
 2016-12-04      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.3.18
+        *: Got rid of BUGS.  BUG descriptions have been moved into comments
+            at relevant locations in the source and to Github issues.
     0.3.17
         *: enginecfg.default -> enginecfg.fallback to avoid confusion.
         * mkenginecfg: renamed enginecfg.default -> enginecfg.fallback;
