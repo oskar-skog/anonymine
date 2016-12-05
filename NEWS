@@ -71,7 +71,8 @@ Fixes to the initializer in 0.2.10:
 Misc bugfixes:
     0.2.2:  mkenginecfg could count to zero processors due to a bug.
     0.2.13: ./configure: Expand directory variables before checking them.
-    0.2.17: New fix for #9, don't raise "Exception"
+    0.2.17: New fix for <https://github.com/oskar-skog/anonymine/issues/13>,
+            don't raise "Exception"
     0.2.18: A performance issue was fixed.
     0.2.24: Dropped the idea of a statistics module
 
