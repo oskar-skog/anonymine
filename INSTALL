@@ -32,6 +32,8 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
     If you still don't understand, ask the nearest Linux user to help you
     and create a wiki page about the topic on my Github repo.
     
+    You can't skip the second stage (`make`).
+    
     Use "./configure -v" to make the whole installation process verbose.
 
     NOTICE:
