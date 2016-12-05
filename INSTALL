@@ -199,6 +199,10 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
             
             $(major) and $(minor) are pre-expanded and do NOT exist in the
             Makefile.
+            
+            There's a known bug with combining having both Python versions
+            and using the DESTDIR variable.  The symlinks may not be pointing
+            where you expected them to.
     
     
     srcdir, builddir and DESTDIR
@@ -228,7 +232,10 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         While if you send builddir=foo to make rather than ./configure, you'll
         have to run `make builddir=foo && sudo make builddir=foo install`
         in the current directory.
-    
+        
+        NOTICE: There's a known bug with combining having both Python versions
+        and using the DESTDIR variable.  The symlinks may not be pointing
+        where you expected them to.
     
     Targets in the Makefile
     =======================

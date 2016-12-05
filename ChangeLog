@@ -1,7 +1,8 @@
 2016-12-05      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.0
         * NEWS: gitgub.com does not resolve; converted a reference to BUGS
-        * INSTALL: MUST run `make` before `make install`.
+        * INSTALL: MUST run `make` before `make install`; mentioned bug with
+            symlinks when DESTDIR is set.
         * Makefile.static (uninstall), INSTALL: Delete the highscores file.
 
 2016-12-04      Oskar Skog      <oskar.skog.finland@gmail.com>
