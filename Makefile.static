@@ -276,6 +276,7 @@ uninstall: FORCE
 	@-rm "$(ENGINE_DEST)" "$(SOLVER_DEST)" "$(FIELDS_DEST)" "$(MAIN_DEST)"
 	@$(NO_OTHERVER) || rm "$(ENGINE_DEST_OTHERVER)" \
 		"$(SOLVER_DEST_OTHERVER)" "$(FIELDS_DEST_OTHERVER)" || true
+	@-rm "$(HISCORE_FILE)"
 	@if "$(freedesktop)"; then \
 		rm "$(FD_DESKTOP_DEST)" || true; \
 		for size in $(FD_ICON_SIZES); do \
