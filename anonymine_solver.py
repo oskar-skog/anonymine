@@ -618,6 +618,8 @@ class solver():
                 if self.field.get(neighbour) not in (None, 'F'):
                     if neighbour not in neighbours:
                         neighbours.append(neighbour)
+        #print(neighbours)
+        # BUG This function behaves differently in PyPy and CPython
         return neighbours
     
     def conflict(self, new_flags, exact=False):

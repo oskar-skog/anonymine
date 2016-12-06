@@ -30,6 +30,19 @@ def output(field, argument):
     print(field)
     time.sleep(.04)     # 25 Hz
 
+def pypybug():
+    size = [5, 5]
+    start = (1, 1)
+    mines = [(3, 4), (4, 4), (4, 0)]
+    field = anonymine_fields.generic_field(size, True, True)
+    solver = anonymine_solver.solver()
+    solver.field = field
+    field.fill(mines)
+    field.reveal(start)
+    field.set_callback('input', output, None)
+    print(field)
+    print(solver.solve())
+
 def slomobug():
     print('A')
     mines = [(28,5),(4,8),(16,3),(0,1),(25,4),(5,13),(12,6),(22,2),(15,6),
