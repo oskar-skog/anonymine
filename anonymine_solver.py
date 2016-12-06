@@ -819,6 +819,7 @@ class solver():
             assert len(possibilities) > 1, """
                 Cell already solved?? {}
             """.format(possibilities)
+            
             # Find constant cells.
             # Find all neighbours.
             # Values
@@ -962,6 +963,7 @@ class solver():
                                     difficulty_levels[4*i + j] = 0
                                 difficulty_levels[4*i + j] += 1
                                 confirmed = True
+                                fail = False
                                 break
                     # Double break when confirmed.
                     if confirmed:
