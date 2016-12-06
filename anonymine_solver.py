@@ -920,8 +920,6 @@ class solver():
         
         difficulty_levels = {}
         
-        #highest_fail = 0        # PROFILING
-        
         while True:
             i = -1      # The increment is in the beginning of the loop
                         # for readability.
@@ -939,19 +937,11 @@ class solver():
                 unsolved_cells.sort(key=lambda x: x[1], reverse=True)
                 # Check for success right here.
                 if not unsolved_cells:
-                    ## PROFILING {
-                    #if highest_fail not in difficulty_levels:
-                        #difficulty_levels[highest_fail] = -1
-                    ## }
                     return True, difficulty_levels
                 # If nothing succeeds before the j loop finishes,
                 # the function will return False.
                 fail = True
                 for j in range(4):
-                    ## PROFILING {
-                    #if 4*i + j > highest_fail:
-                        #highest_fail = 4*i + j
-                    ## }
                     for cell, ignored in unsolved_cells:
                         # It may have been solved already.
                         if self.unsolved(cell):
@@ -969,10 +959,6 @@ class solver():
                     if confirmed:
                         break
                 if fail:
-                    ## PROFILING {
-                    #if highest_fail not in difficulty_levels:
-                        #difficulty_levels[highest_fail] = -1
-                    ## }
                     return False, difficulty_levels
     
     def rule9bf(self):
