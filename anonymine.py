@@ -251,13 +251,13 @@ class curses_game():
 #    NOTICE:
 #        DO NOT REMOVE.
 #        This is referenced from the source.
-#    NOTICE: WEIRD:
-#        Of some reason: This must be done whenever a cell is clicked on,
-#        not just around initialization.
 #    Update 2016-07-17:
 #        The windows only needs to be redrawn on initialization, not on every
 #        click.
 #        Trying to leave and re-enter curses mode was no good.
+#    Update 2016-12-10 (pre 0.4.2):
+#        No need to temporarily reset to shell mode every time a cell is
+#        revealed.  The issue was that game_status changed. Fixed in 0.3.11
     
     def __init__(self, cfgfile, gametype):
         '''Create interface object and enter curses mode.
@@ -534,10 +534,10 @@ class curses_game():
             pre_game = engine.game_status == 'pre-game'
             if pre_game:
                 self.message('Initializing field...   This may take a while.')
-            curses.reset_shell_mode()   # BUG: see comments above __init__
+                curses.reset_shell_mode()   # BUG: see comments above __init__
             engine.reveal(self.cursor)
-            curses.reset_prog_mode()    # BUG: see comments above __init__
             if pre_game:
+                curses.reset_prog_mode()    # BUG: see comments above __init__
                 # Clear junk that gets on the screen from impatient players.
                 self.window.redrawwin()
         elif command in direction_keys:

@@ -1,3 +1,8 @@
+2016-12-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.4.2
+        * anonymine.py: Updated status of
+            https://github.com/oskar-skog/anonymine/issues/14
+
 2016-12-06      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.1
         * anonymine_solver.py (solver_loop): Found a potential bug:
