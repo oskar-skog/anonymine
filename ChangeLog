@@ -3,6 +3,7 @@
         * anonymine_solver.py: The PyPy bug has been tracked down to the
             `possibilities` function.   Bug fixed: used `is` instead of `==`
             when comparing a variable against a string literal.
+        * test.py: Use `profile` instead of `cProfile`.
     0.4.2
         * anonymine.py: Updated status of
             https://github.com/oskar-skog/anonymine/issues/14

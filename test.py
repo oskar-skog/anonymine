@@ -23,7 +23,7 @@ import anonymine_engine
 import random
 import signal
 import pprint
-import cProfile
+import profile
 import os
 
 def output(field, argument):
