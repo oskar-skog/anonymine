@@ -1,3 +1,6 @@
+    0.4.3
+        * anonymine_solver.py: The PyPy bug has been tracked down to the
+            `possibilities` function.
 2016-12-10      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.2
         * anonymine.py: Updated status of
@@ -11,9 +14,9 @@
         * anonymine_solver.py (solver_loop): Found a potential bug:
             `fail` was not set to False if a solvable cell was found.
         * anonymine_solver.py: Removed commented out profiling code.
-        * anonymine_solver.py: Tracked down the PyPy bug to the
+        * anonymine_solver.py: (WRONG>>) Tracked down the PyPy bug to the
             number_neighbours function.  Uncomment the print and
-            run pypybug() in test.py.
+            run pypybug() in test.py. (<<WRONG)
 
 2016-12-05      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.0

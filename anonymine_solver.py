@@ -618,8 +618,6 @@ class solver():
                 if self.field.get(neighbour) not in (None, 'F'):
                     if neighbour not in neighbours:
                         neighbours.append(neighbour)
-        #print(neighbours)
-        # BUG This function behaves differently in PyPy and CPython
         return neighbours
     
     def conflict(self, new_flags, exact=False):
@@ -669,6 +667,8 @@ class solver():
         If `count_flags` is True, any possibility with too many mines
         will be eliminated.
         '''
+        # BUG: This function behaves differently in PyPy
+        #print(cell, parent_possibility, count_flags)
         neighbours = []
         flags = 0
         for neighbour in self.field.get_neighbours(cell):
@@ -700,6 +700,7 @@ class solver():
                     lambda x: len(parent_possibility + x) <= self.field.flags_left,
                     filtered
                 ))
+        #print(filtered)        # Differs
         return filtered
     
     def bad_consequences(self, parent_cell, parent_possibility, i, count_flags):
