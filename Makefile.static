@@ -15,7 +15,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := pre-0.4.2
+VERSION := test-0.4.2
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -192,8 +192,6 @@ check-install-cfg : FORCE
 
 
 overwrite-cfg: FORCE
-	@echo "overwrite-cfg has been disabled" >/dev/stderr && false
-	@false
 	@$(INSTALL) -m 644 "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL) -m 644 "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
 	@$(info) "Configuration has been overwritten"

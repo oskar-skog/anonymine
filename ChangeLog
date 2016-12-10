@@ -2,6 +2,9 @@
     0.4.2
         * anonymine.py: Updated status of
             https://github.com/oskar-skog/anonymine/issues/14
+        * Makefile.static: Re-enabled overwrite-cfg.
+        * anonymine.py: Warn of the opendiana bug:
+            https://github.com/oskar-skog/anonymine/issues/4
 
 2016-12-06      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.1

@@ -1533,6 +1533,11 @@ def main():
     parameters.update(cfgfiles)
     play_game(parameters)
     
+    if sys.platform == 'sunos5':
+        output(sys.stdout,
+            'Due to a bug in at least openindiana, the entire terminal window\n'
+            'will go poof if you choose to play again.\n'
+        )
     while ask('Play again?', 'yesno', 'Yes'):
         parameters = user_input(default, cfgfiles['cursescfg'])
         parameters.update(cfgfiles)
