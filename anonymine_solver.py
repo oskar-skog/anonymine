@@ -667,18 +667,19 @@ class solver():
         If `count_flags` is True, any possibility with too many mines
         will be eliminated.
         '''
-        # BUG: This function behaves differently in PyPy
-        #print(cell, parent_possibility, count_flags)
         neighbours = []
         flags = 0
         for neighbour in self.field.get_neighbours(cell):
             if neighbour in parent_possibility:
                 flags += 1
             else:
-                if self.field.get(neighbour) is None:
+                neighbour_value = self.field.get(neighbour)
+                if neighbour_value is None:
                     neighbours.append(neighbour)
-                if self.field.get(neighbour) is 'F':
+                if neighbour_value == 'F':      # The bug was here!!!!!!!11
                     flags += 1
+                    # Do NEVER use the `is` operator like I used it here.
+        
         # How many are needed?
         needed = self.field.get(cell) - flags
         if needed:
