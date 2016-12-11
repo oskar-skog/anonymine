@@ -1160,5 +1160,9 @@ class solver():
 
 import os
 import sys
-assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
 assert __name__ != '__main__', "I'm not a script."
+
+try:
+    assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
+except AttributeError:
+    pass

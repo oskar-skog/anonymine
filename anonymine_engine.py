@@ -939,7 +939,11 @@ class game_engine():
         return game_won, hs
 
 
-assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
+try:
+    assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
+except AttributeError:
+    pass
+
 assert __name__ != '__main__', "I'm not a script."
 
 # Force InterruptedError to be defined.

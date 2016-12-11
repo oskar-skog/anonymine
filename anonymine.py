@@ -1544,8 +1544,11 @@ def main():
         parameters.update(cfgfiles)
         play_game(parameters)
 
+try:
+    assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
+except AttributeError:
+    pass
 
-assert os.geteuid() or sys.platform.startswith('haiku'), "Gaming as root!"
 if __name__ == '__main__':
     # Force InterruptedError to be defined
     try:
