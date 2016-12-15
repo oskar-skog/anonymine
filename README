@@ -45,12 +45,16 @@ Software & hardware requirements
         - unix-like operating system or compatibility layer. fork(2) is
           required for utilizing multiple CPU cores.
         - The less(1) pager, for displaying the highscores table.
+        - PyPy (You'll need to set MODULES_DIR manually at ./configure)
     
     Hardware requirements
         - Fast CPU and fast RAM (Multiple cores can be used by Anonymine.)
+          (PyPy is 2.5 times as fast.)
         - Fan for cooling the CPU
         - Disk: About a megabyte
-        - RAM: 12 MiB plus 12 MiB per logical CPU (core)
+        - RAM:
+            12 MiB plus 12 MiB per logical CPU (core) for CPython
+            128 MiB plus 128 MiB per logical CPU (core) for PyPy
         - Networking not required
 
 
@@ -73,7 +77,8 @@ Tested platforms
     OpenBSD 5.8 [Py 2, 3]     Failed to pipe to less on Python 3
     OpenSUSE 12.2 [Py 2, 3]   
     Trisquel 6.0 [Py 2, 3]    Old host system, old versions well tested
-    openindiana [Py 2.6]      Anonymine 0.1.17 to 0.2.29 won't work
+    OpenIndiana dev [Py 2.6]  Anonymine 0.1.17 to 0.2.29 won't work
+    OpenIndiana Hipster       Works great [Py 2.7]
 
 
 Goals

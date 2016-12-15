@@ -1,7 +1,8 @@
-2016-12-11      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.4
         * anonymine.py, anonymine_engine.py, anonymine_fields.py, anonymine_solver.py:
             Not all operating systems have os.geteuid.
+        * anonymine.py (main): OpenIndiana had fixed the issue long ago.
 
 2016-12-10      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.3
