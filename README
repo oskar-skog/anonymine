@@ -51,10 +51,12 @@ Software & hardware requirements
         - Fast CPU and fast RAM (Multiple cores can be used by Anonymine.)
           (PyPy is 2.5 times as fast.)
         - Fan for cooling the CPU
-        - Disk: About a megabyte
-        - RAM:
-            12 MiB plus 12 MiB per logical CPU (core) for CPython
-            128 MiB plus 128 MiB per logical CPU (core) for PyPy
+        - Disk: Two megabytes
+        - Worst case RAM usage:
+            16 MiB plus 24 MiB per logical CPU (core) for CPython
+            96 MiB plus 128 MiB per logical CPU (core) for PyPy
+        - 96 MiB for the whole computer is known to be sufficient for
+          Anonymine with CPython 2.7 on FreeBSD 10.
         - Networking not required
 
 

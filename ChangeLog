@@ -1,3 +1,5 @@
+    0.4.5
+        * README: Corrected RAM usage.
 2016-12-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.4
         * anonymine.py, anonymine_engine.py, anonymine_fields.py, anonymine_solver.py:
