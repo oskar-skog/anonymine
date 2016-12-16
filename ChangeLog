@@ -1,4 +1,6 @@
 2016-12-16
+    0.4.6
+        *: The fix for #17 didn't work, make kept running the old Makefile.
     0.4.5
         * README: Corrected RAM usage.
         * Makefile.static: "install" depends on "all", Makefile will be

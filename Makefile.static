@@ -15,7 +15,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.4.5
+VERSION := pre-0.4.6
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -46,7 +46,7 @@ POST_UNINSTALL = true
 
 
 verbose ?= true
-info := test "$(verbose)" != true || echo '//'
+info := test "$(verbose)" != true || >&2 echo '//'
 
 
 # Desktop specific prefixes:
@@ -84,13 +84,15 @@ ALL_STAGE := "$(MAIN_STAGE)" "$(OSX_WRAPPER)" "$(OSX_INFO_PLIST)" \
 	"$(OSX_ICON)" "$(builddir)check.py" "$(FD_DESKTOP_STAGE)" \
 	"$(ENGINECFG_STAGE)" "$(builddir)mkenginecfg.py"
 
-all : $(MAIN_STAGE) $(ENGINECFG_STAGE)
+all : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _all >/dev/null
+_all : $(MAIN_STAGE) $(ENGINECFG_STAGE) $(srcdir)Makefile.static
 	@$(info) 'Maybe building .desktop and app/bundle'
 	@if "$(freedesktop)"; then \
-		cd "$(builddir)" && make build-freedesktop > /dev/null; \
+		cd "$(builddir)" && make build-freedesktop >/dev/null; \
 	fi
 	@if "$(macosx)"; then \
-		cd "$(builddir)" && make build-macosx > /dev/null; \
+		cd "$(builddir)" && make build-macosx >/dev/null; \
 	fi
 
 
@@ -104,25 +106,24 @@ $(builddir)Makefile.vars : $(srcdir)configure $(srcdir)configure.py
 	@cd "$(builddir)" && ./reconfigure
 
 
-$(MAIN_STAGE) : $(MAIN_SRC) $(srcdir)Makefile.static $(builddir)Makefile
+$(MAIN_STAGE) : $(MAIN_SRC) $(srcdir)Makefile.static
 	@$(info) 'Creating the appropriate shebang line'
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
 	@sed -e "$(MAIN_STAGE_SED1)" "$(MAIN_SRC)" \
 		| sed -e "$(MAIN_STAGE_SED2)" >> "$(MAIN_STAGE)"
 
 
-$(ENGINECFG_STAGE) : $(srcdir)mkenginecfg $(builddir)Makefile
+$(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
 	@$(info) 'Making enginecfg: mostly counting processors'
 	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
 
 
-build-freedesktop : FORCE $(builddir)Makefile
+build-freedesktop : FORCE
 	@: # Refer to desktop/README for information about the following.
 	@"$(FD_MK_DESKTOP)" "$(FD_DESKTOP_STAGE)" $(NAME) "$(NAME_C)" \
 		"$(DESCRIPTION) -- version $(VERSION)"
 
-
-build-macosx : FORCE $(builddir)Makefile
+build-macosx : FORCE
 	@: # Refer to desktop/README for information about the following.
 	@echo '#!/bin/sh' > "$(OSX_WRAPPER)"
 	@echo 'open -b com.apple.terminal' "$(MAIN_DEST)" >> "$(OSX_WRAPPER)"
@@ -132,15 +133,21 @@ build-macosx : FORCE $(builddir)Makefile
 
 
 
-clean : FORCE $(builddir)Makefile
+clean : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _clean >/dev/null
+_clean : FORCE
 	@rm $(ALL_STAGE) 2> /dev/null || true
 	@: # Remove the bytecode files.
 	@rm -- "$(srcdir)"*.pyc 2> /dev/null || true
 	@rm -r -- "$(srcdir)"__pycache__/ 2> /dev/null || true
 
 
-distclean : clean $(builddir)Makefile
+distclean : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _distclean >/dev/null
+_distclean : _clean
 	@rm $(builddir)Makefile
+	@rm $(builddir)Makefile.vars
+	@rm $(builddir)reconfigure
 
 
 ##############################################################################
@@ -188,8 +195,7 @@ FD_ICON_DEST256 := $(FD_ICON_DESTDIR256)/$(NAME).png
 # See desktop/README
 BUNDLE := $(DESTDIR)/Applications/$(NAME_C).app
 
-
-check-install-cfg : FORCE $(builddir)Makefile
+check-install-cfg : FORCE
 	@$(PRE_INSTALL)
 	@: # Cause installation to fail if the configuration is incompatible.
 	@$(info) 'Installing or checking configuration'
@@ -199,15 +205,18 @@ check-install-cfg : FORCE $(builddir)Makefile
 	@$(INSTALL_CFG) "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg" $(verbose)
 	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg" $(verbose)
 
-
-overwrite-cfg: FORCE $(builddir)Makefile
+overwrite-cfg : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _overwrite-cfg >/dev/null
+_overwrite-cfg: FORCE
 	@$(INSTALL) -m 644 "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL) -m 644 "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
 	@$(info) "Configuration has been overwritten"
 	@$(info) "All (if any) system-wide modifications are lost"
 
 
-install-dirs : FORCE $(builddir)Makefile
+install-dirs : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _install-dirs >/dev/null
+_install-dirs : FORCE
 	@$(info) 'Installing directories'
 	@mkdir -p "$(CFG_DIR)" || true
 	@mkdir -p "$(DESTDIR)$(vargamesdir)" || true
@@ -226,8 +235,9 @@ install-dirs : FORCE $(builddir)Makefile
 		$(INSTALL) -d "$(BUNDLE)/Contents/Resources"; \
 	fi
 
-
-install : all check-install-cfg install-dirs $(builddir)Makefile
+install : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _install >/dev/null
+_install : all check-install-cfg install-dirs
 	@$(NORMAL_INSTALL)
 	@: # When the configuration has been installed, install the main
 	@: # program, and then the modules for both versions of Python.
@@ -271,8 +281,9 @@ install : all check-install-cfg install-dirs $(builddir)Makefile
 			"$(FD_DESKTOP_DEST)" || true; \
 	fi
 
-
-uninstall: FORCE $(builddir)Makefile
+uninstall: $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _uninstall >/dev/null
+_uninstall: FORCE
 	@$(PRE_UNINSTALL)
 	@if "$(freedesktop)"; then \
 		xdg-desktop-menu uninstall --novendor --mode system \
@@ -294,8 +305,9 @@ uninstall: FORCE $(builddir)Makefile
 		rm -r "$(BUNDLE)" || true; \
 	fi
 
-
-print-destinations : FORCE $(builddir)Makefile
+print-destinations : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _print-destinations >/dev/null
+_print-destinations : FORCE
 	@echo "Main program:          $(MAIN_DEST)"
 	@echo "Engine module:         $(ENGINE_DEST)"
 	@echo "Solver module:         $(SOLVER_DEST)"
@@ -330,19 +342,23 @@ print-destinations : FORCE $(builddir)Makefile
 PKG := $(NAME)-$(VERSION)
 
 
-test : check
-	@true
-check : FORCE $(builddir)Makefile
+test : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _check >/dev/null
+check : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _check >/dev/null
+_check : FORCE
 	@$(info) "Checking that it works on both snakes... May take a while!"
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
-
-dist : FORCE $(builddir)Makefile
+dist : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _dist >/dev/null
+_dist : FORCE
 	@$(info) "Building tarballs..."
 	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)"
 
-
-release : dist check $(builddir)Makefile
+release : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && make _release >/dev/null
+_release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
 		|| echo You are not me.
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.xz" \

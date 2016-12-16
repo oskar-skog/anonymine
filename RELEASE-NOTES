@@ -1,4 +1,4 @@
-0.4.5
+0.4.6
     - `make` makes Makefile, you should only have to run `./configure` once.
     - Do not send 'srcdir' and 'builddir' to `make`.
     - `make install` depends on `make all`.

@@ -68,8 +68,8 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
           modules to be installed for both versions.
         * enginecfg is auto-generated since 0.1.19, you can override the file
           by creating `$(builddir)enginecfg.user` as your own enginecfg.
-        * You may need to "touch ./*" if you are remaking after a
-          reconfiguration.
+        * Do not make any target that is not listed in the list of Makefile
+          targets.
     
     
     ./configure; make; make install
@@ -237,6 +237,8 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
     Targets in the Makefile
     =======================
     
+        NOTICE:  DO NOT make any other target than what is listed here.
+        
         all (default)
             Fix the shebang line of the programs to be installed
         
@@ -262,6 +264,10 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
             to run ./configure with the -w option.
             WARNING: This removes the configuration files, even if altered.
             WARNING: This removed the highscores file.
+        
+        overwrite-cfg
+            Force compatible configuration files to be installed.
+            WARNING: User modified files will be overwritten.
         
         check
             Check that everything seems to work.
