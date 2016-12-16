@@ -543,6 +543,9 @@ def main():
         if flags['v']:
             sys.stdout.write(s + '\n')
     
+    # NOTICE: `getargs` pops items from sys.argv
+    reconfigure_argv = sys.argv[1:]
+    
     Makefile = {
         'srcdir': '',           # REQUIRED
         'builddir': '',         # REQUIRED
@@ -605,17 +608,52 @@ def main():
             sys.stderr.write(
                 'There were errors; no Makefile will be written.\n')
             myexit(1)
-
+    
+    # Write Makefile.
+    
     inname = Makefile['srcdir'] + 'Makefile.static'
-    outname = Makefile['builddir'] + 'Makefile'
-    v('Writing "' + outname + '" from "' + inname + '"...')
+    Makefile_name = Makefile['builddir'] + 'Makefile'
+    Makefile_vars_name = Makefile['builddir'] + 'Makefile.vars'
+    v('Writing "' + Makefile_vars_name + '"...')
+    v('Writing "' + Makefile_name + '" from "' + inname + '"...')
+    
+    Makefile_f = open(Makefile_name, 'w')
+    Makefile_vars_f = open(Makefile_vars_name, 'w')
+    for variable in sorted(Makefile):
+        Makefile_f.write(variable + ' = ' + Makefile[variable] + '\n')
+        Makefile_vars_f.write(variable + ' = ' + Makefile[variable] + '\n')
+    Makefile_vars_f.close()
+    
     inf = open(inname)
-    outf = open(outname, 'w')
-    for variable in Makefile:
-        outf.write(variable + ' = ' + Makefile[variable] + '\n')
-    outf.write(inf.read())
-    outf.close()
+    Makefile_f.write(inf.read())
+    Makefile_f.close()
     inf.close()
+    
+    # Write reconfigure.
+    
+    def shellescape(s):
+        '''
+        """foo""" -> """'foo'"""
+        """foo'bar""" -> """'foo'"'"'bar"""
+        """foo bar""" -> ""'foo bar'"""
+        '''
+        return "'" + s.replace("'", "\'\"\'\"\'") + "'"
+    
+    reconfigure_name = Makefile['builddir'] + 'reconfigure'
+    v('Writing "' + reconfigure_name + '"...')
+    reconfigure_f = open(reconfigure_name, 'w')
+    
+    reconfigure_f.write(
+        '#!/bin/sh\n'
+        'cd ' + shellescape(Makefile['srcdir']) + ' && ./configure'
+    )
+    for arg in reconfigure_argv:
+        reconfigure_f.write(' ' + shellescape(arg))
+    reconfigure_f.write('\n')
+    
+    reconfigure_f.close()
+    os.system('chmod +x ' + shellescape(reconfigure_name))
+    
 
 
 if __name__ == '__main__':

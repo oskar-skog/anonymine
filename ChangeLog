@@ -1,5 +1,14 @@
+2016-12-16
     0.4.5
         * README: Corrected RAM usage.
+        * Makefile.static: "install" depends on "all", Makefile will be
+            automatically regenerated.
+        * configure.py:
+            - Write out two new files to $(builddir):
+                reconfigure: Run ./configure with the same arguments
+                Makefile.vars: Avoid running an unchanged ./configure again
+            - Sort the order of Makefile variables.
+
 2016-12-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.4
         * anonymine.py, anonymine_engine.py, anonymine_fields.py, anonymine_solver.py:
