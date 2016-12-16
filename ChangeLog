@@ -8,6 +8,7 @@
                 reconfigure: Run ./configure with the same arguments
                 Makefile.vars: Avoid running an unchanged ./configure again
             - Sort the order of Makefile variables.
+        * INSTALL: srcdir and builddir should only bet sent to `./configure`.
 
 2016-12-15      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.4

@@ -1,3 +1,13 @@
+0.4.5
+    - `make` makes Makefile, you should only have to run `./configure` once.
+    - Do not send 'srcdir' and 'builddir' to `make`.
+    - `make install` depends on `make all`.
+
+0.3.8
+    - Removed Windows support.
+      You can find an untested Windows version at
+      https://github.com/oskar-skog/anonymine-windows
+
 0.3.6
     - cursescfg: color pair number are calculated automatically.
       The textics tuples are now (char, foreground, background, attributes)

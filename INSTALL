@@ -219,8 +219,8 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         
         Both srcdir and builddir default to the current working directory.
         
-        These three variables can be sent to either ./configure or make,
-        but there are some differences between the two.
+        srcdir and builddir should only be sent to `./configure`. DESTDIR
+        may be sent to either `./configure` or `make`.
         
         ./configure will prepend variables to the Makefile which will be
         saved in builddir.
@@ -229,13 +229,10 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         builddir. You can cd to builddir and run `make && sudo make install`
         without specifiying any arguments to make.
         
-        While if you send builddir=foo to make rather than ./configure, you'll
-        have to run `make builddir=foo && sudo make builddir=foo install`
-        in the current directory.
-        
         NOTICE: There's a known bug with combining having both Python versions
         and using the DESTDIR variable.  The symlinks may not be pointing
         where you expected them to.
+    
     
     Targets in the Makefile
     =======================
