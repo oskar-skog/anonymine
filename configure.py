@@ -419,7 +419,7 @@ def find_MODULES(Makefile, flags):
         return False
     
     libdir = expand('libdir', Makefile)
-    prefix = expand('libdir', Makefile)
+    prefix = expand('prefix', Makefile)
     prefixes = [libdir + '/python']
     try:
         import platform
