@@ -86,6 +86,10 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         The value of a variable MAY be a Makefile variable/macro.
         Ex: `./configure 'bindir=$(prefix)/bin'`
         
+        You can override the variables stored in Makefile, but avoid
+        overriding srcdir and builddir, those two should only be sent
+        to ./configure.
+        
         The value entered on the command line will not be pre-expanded in the
         Makefile, except for "builddir" and "srcdir".  The exception is there
         to prevent issues when make is run from a different directory than
@@ -128,7 +132,7 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         INSTALL                 which install(8) utility to use.
                                 (/usr/ucb/install on Solares)
         
-        DESTDIR                 Pretend the root is here
+        DESTDIR                 Pretend the root is here (staged installs)
         srcdir                  The directory extracted from the tarball.
         builddir                (Current working directory)
         
@@ -136,34 +140,18 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         macosx                  'true' or 'false'; Mac OS X
         
 
-        NOTE 1
+        NOTE 1: gamesdir, bindir
             gamesdir will override bindir if possible, so setting bindir
             might have no effect.
         
         prefix, bindir and libdir, localstatedir, sysconfdir:
             http://www.gnu.org/prep/standards/html_node/Directory-Variables.html
         
-        DESTDIR
-            https://www.gnu.org/prep/standards/html_node/DESTDIR.html
-        
-        
-        srcdir and builddir
-        -------------------
-        
-            $(srcdir) is the directory that was extracted from the tarball.
-            
-            $(builddir) is the directory where make(1) is allowed to create
-            "temporary" files when building (`make [all]`) the program.
-            
-            Both of these default to the current working directory.
-        
-        
         sysconfdir
             Configuration files will be stored in $(sysconfdir)/anonymine/
         
         vargamesdir
             The highscores file is $(vargamesdir)/anonymine
-        
         
         EXECUTABLES
         ===========
@@ -203,33 +191,38 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
             where you expected them to.
     
     
-    srcdir, builddir and DESTDIR
-    ============================
-    
-        srcdir          Directory extracted from the tarball.
+        srcdir, builddir and DESTDIR
+        ============================
         
-        builddir        Temporary storage;
-                        directory for files from the build process.
-        
-        DESTDIR         Prepended to all paths on install and uninstall;
-                        alternative root.  (For staged installations.)
-        
-        
-        Both srcdir and builddir default to the current working directory.
-        
-        ./configure will prepend variables to the Makefile which will be
-        saved in builddir.
-        
-        Sending builddir=foo to ./configure will create the Makefile inside
-        builddir. You can cd to builddir and run `make && sudo make install`
-        without specifiying any arguments to make.
-        
-        DESTDIR only affects make install, make uninstall, etc.  It has zero
-        effect on ./configure.
-        
-        NOTICE: There's a known bug with combining having both Python versions
-        and using the DESTDIR variable.  The symlinks may not be pointing
-        where you expected them to.
+            srcdir          Directory extracted from the tarball.
+            
+            builddir        Temporary storage;
+                            directory for files from the build process.
+            
+            DESTDIR         Prepended to all paths on install and uninstall;
+                            alternative root.  (For staged installations.)
+            
+            
+            $(srcdir) is the directory that was extracted from the tarball.
+            $(builddir) is the directory where make(1) is allowed to create
+            "temporary" files when building (`make [all]`) the program.
+            
+            Both srcdir and builddir default to the current working directory.
+            
+            Sending builddir=foo to ./configure will create the Makefile
+            inside builddir. You can cd to builddir and run
+            `make && sudo make install` without specifiying any arguments
+            to make.
+            
+            You should only send srcdir and builddir to ./configure, not to
+            make.
+            
+            DESTDIR only affects make install, make uninstall, etc.  It has
+            zero effect on ./configure.
+            
+            NOTICE: There's a known bug with combining having both Python versions
+            and using the DESTDIR variable.  The symlinks may not be pointing
+            where you expected them to.
     
     
     Targets in the Makefile
