@@ -1,5 +1,9 @@
 0.4.5 - 0.4.7
-    - Avoid 0.4.5 and 0.4.6, use 0.4.7 instead
+    - Avoid 0.4.5 and 0.4.6, use 0.4.7 instead, the issues #16 and #17 were
+      not fixed correctly.
+        - If you already had one of them, run
+            ./configure -v && make
+          to fix the issues in the previous versions.
     - `make` makes Makefile, you should only have to run `./configure` once.
     - Do not send 'srcdir' and 'builddir' to `make`.
     - `make install` depends on `make all`.

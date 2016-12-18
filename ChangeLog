@@ -11,6 +11,8 @@
               (Avoids unnecessary recursions.)
             - $(MAIN_STAGE) now depends on Makefile.vars too.
             - $(ENGINECFG_STAGE) now depends on Makefile.vars.
+        * RELEASE-NOTES: Inform that 0.4.5 and 0.4.6 didn't fix issues
+            #16 and #17 properly.
 
 2016-12-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.6
