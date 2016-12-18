@@ -4,6 +4,13 @@
             - Use "$(MAKE)" instead of "make".
             - Made print-destinations print to stderr.
         * configure.py: Remade find_MODULES.
+        * INSTALL: Many small corrections.
+        * Makefile.static:
+            - Made recursive make wrapper for install-dirs
+            - `make install` depends on the internal targets.
+              (Avoids unnecessary recursions.)
+            - $(MAIN_STAGE) now depends on Makefile.vars too.
+            - $(ENGINECFG_STAGE) now depends on Makefile.vars.
 
 2016-12-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.6

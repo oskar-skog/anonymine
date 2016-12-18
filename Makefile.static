@@ -106,14 +106,14 @@ $(builddir)Makefile.vars : $(srcdir)configure $(srcdir)configure.py
 	@cd "$(builddir)" && ./reconfigure
 
 
-$(MAIN_STAGE) : $(MAIN_SRC) $(srcdir)Makefile.static
+$(MAIN_STAGE) : $(MAIN_SRC) $(builddir)Makefile.vars $(srcdir)Makefile.static
 	@$(info) 'Creating the appropriate shebang line'
 	@echo "#!`which python`" > "$(MAIN_STAGE)"
 	@sed -e "$(MAIN_STAGE_SED1)" "$(MAIN_SRC)" \
 		| sed -e "$(MAIN_STAGE_SED2)" >> "$(MAIN_STAGE)"
 
 
-$(ENGINECFG_STAGE) : $(srcdir)mkenginecfg
+$(ENGINECFG_STAGE) : $(srcdir)mkenginecfg $(builddir)Makefile.vars
 	@$(info) 'Making enginecfg: mostly counting processors'
 	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
 
@@ -195,7 +195,9 @@ FD_ICON_DEST256 := $(FD_ICON_DESTDIR256)/$(NAME).png
 # See desktop/README
 BUNDLE := $(DESTDIR)/Applications/$(NAME_C).app
 
-check-install-cfg : FORCE
+check-install-cfg : $(builddir)Makefile FORCE
+	@cd "$(builddir)" && $(MAKE) _check-install-cfg >/dev/null
+_check-install-cfg : FORCE
 	@$(PRE_INSTALL)
 	@: # Cause installation to fail if the configuration is incompatible.
 	@$(info) 'Installing or checking configuration'
@@ -237,7 +239,7 @@ _install-dirs : FORCE
 
 install : $(builddir)Makefile FORCE
 	@cd "$(builddir)" && $(MAKE) _install >/dev/null
-_install : all check-install-cfg install-dirs
+_install : _all _check-install-cfg _install-dirs
 	@$(NORMAL_INSTALL)
 	@: # When the configuration has been installed, install the main
 	@: # program, and then the modules for both versions of Python.
