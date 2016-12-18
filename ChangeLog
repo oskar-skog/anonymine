@@ -1,4 +1,11 @@
-2016-12-16
+2016-12-18      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.4.7
+        * Makefile.static:
+            - Use "$(MAKE)" instead of "make".
+            - Made print-destinations print to stderr.
+        * configure.py: Remade find_MODULES.
+
+2016-12-16      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.6
         *: The fix for #17 didn't work, make kept running the old Makefile.
     0.4.5

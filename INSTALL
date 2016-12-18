@@ -219,9 +219,6 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         
         Both srcdir and builddir default to the current working directory.
         
-        srcdir and builddir should only be sent to `./configure`. DESTDIR
-        may be sent to either `./configure` or `make`.
-        
         ./configure will prepend variables to the Makefile which will be
         saved in builddir.
         
@@ -237,7 +234,8 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
     Targets in the Makefile
     =======================
     
-        NOTICE:  DO NOT make any other target than what is listed here.
+        NOTICE:  DO NOT attempt to make any other target than what is
+        listed here.
         
         all (default)
             Fix the shebang line of the programs to be installed

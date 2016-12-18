@@ -15,7 +15,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.4.6
+VERSION := pre-0.4.7
 
 # Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES, and MODULES_OTHERVER which may be set to "non-existent".
@@ -85,14 +85,14 @@ ALL_STAGE := "$(MAIN_STAGE)" "$(OSX_WRAPPER)" "$(OSX_INFO_PLIST)" \
 	"$(ENGINECFG_STAGE)" "$(builddir)mkenginecfg.py"
 
 all : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _all >/dev/null
+	@cd "$(builddir)" && $(MAKE) _all >/dev/null
 _all : $(MAIN_STAGE) $(ENGINECFG_STAGE) $(srcdir)Makefile.static
 	@$(info) 'Maybe building .desktop and app/bundle'
 	@if "$(freedesktop)"; then \
-		cd "$(builddir)" && make build-freedesktop >/dev/null; \
+		cd "$(builddir)" && $(MAKE) build-freedesktop >/dev/null; \
 	fi
 	@if "$(macosx)"; then \
-		cd "$(builddir)" && make build-macosx >/dev/null; \
+		cd "$(builddir)" && $(MAKE) build-macosx >/dev/null; \
 	fi
 
 
@@ -134,7 +134,7 @@ build-macosx : FORCE
 
 
 clean : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _clean >/dev/null
+	@cd "$(builddir)" && $(MAKE) _clean >/dev/null
 _clean : FORCE
 	@rm $(ALL_STAGE) 2> /dev/null || true
 	@: # Remove the bytecode files.
@@ -143,7 +143,7 @@ _clean : FORCE
 
 
 distclean : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _distclean >/dev/null
+	@cd "$(builddir)" && $(MAKE) _distclean >/dev/null
 _distclean : _clean
 	@rm $(builddir)Makefile
 	@rm $(builddir)Makefile.vars
@@ -206,7 +206,7 @@ check-install-cfg : FORCE
 	@$(INSTALL_CFG) "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg" $(verbose)
 
 overwrite-cfg : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _overwrite-cfg >/dev/null
+	@cd "$(builddir)" && $(MAKE) _overwrite-cfg >/dev/null
 _overwrite-cfg: FORCE
 	@$(INSTALL) -m 644 "$(srcdir)cursescfg" "$(CFG_DIR)/cursescfg"
 	@$(INSTALL) -m 644 "$(ENGINECFG_STAGE)" "$(CFG_DIR)/enginecfg"
@@ -215,7 +215,7 @@ _overwrite-cfg: FORCE
 
 
 install-dirs : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _install-dirs >/dev/null
+	@cd "$(builddir)" && $(MAKE) _install-dirs >/dev/null
 _install-dirs : FORCE
 	@$(info) 'Installing directories'
 	@mkdir -p "$(CFG_DIR)" || true
@@ -236,7 +236,7 @@ _install-dirs : FORCE
 	fi
 
 install : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _install >/dev/null
+	@cd "$(builddir)" && $(MAKE) _install >/dev/null
 _install : all check-install-cfg install-dirs
 	@$(NORMAL_INSTALL)
 	@: # When the configuration has been installed, install the main
@@ -282,7 +282,7 @@ _install : all check-install-cfg install-dirs
 	fi
 
 uninstall: $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _uninstall >/dev/null
+	@cd "$(builddir)" && $(MAKE) _uninstall >/dev/null
 _uninstall: FORCE
 	@$(PRE_UNINSTALL)
 	@if "$(freedesktop)"; then \
@@ -306,29 +306,29 @@ _uninstall: FORCE
 	fi
 
 print-destinations : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _print-destinations >/dev/null
+	@cd "$(builddir)" && $(MAKE) _print-destinations >/dev/null
 _print-destinations : FORCE
-	@echo "Main program:          $(MAIN_DEST)"
-	@echo "Engine module:         $(ENGINE_DEST)"
-	@echo "Solver module:         $(SOLVER_DEST)"
-	@echo "Fields module:         $(FIELDS_DEST)"
+	@echo >&2 "Main program:          $(MAIN_DEST)"
+	@echo >&2 "Engine module:         $(ENGINE_DEST)"
+	@echo >&2 "Solver module:         $(SOLVER_DEST)"
+	@echo >&2 "Fields module:         $(FIELDS_DEST)"
 	@$(NO_OTHERVER) || \
-		echo "Engine module symlink: $(ENGINE_DEST_OTHERVER)"
+		echo >&2 "Engine module symlink: $(ENGINE_DEST_OTHERVER)"
 	@$(NO_OTHERVER) || \
-		echo "Solver module symlink: $(SOLVER_DEST_OTHERVER)"
+		echo >&2 "Solver module symlink: $(SOLVER_DEST_OTHERVER)"
 	@$(NO_OTHERVER) || \
-		echo "Fields module symlink: $(FIELDS_DEST_OTHERVER)"
-	@echo "Configuration files:   $(CFG_DIR) (directory)"
-	@echo "Highscores file:       $(HISCORE_FILE)"
+		echo >&2 "Fields module symlink: $(FIELDS_DEST_OTHERVER)"
+	@echo >&2 "Configuration files:   $(CFG_DIR) (directory)"
+	@echo >&2 "Highscores file:       $(HISCORE_FILE)"
 	@if "$(freedesktop)"; then \
-		echo "[freedesktop.org] .desktop: $(FD_DESKTOP_DEST)"; \
-		echo "[freedesktop.org] Icon:     $(FD_ICON_DEST16)"; \
-		echo "[freedesktop.org] Icon:     $(FD_ICON_DEST32)"; \
-		echo "[freedesktop.org] Icon:     $(FD_ICON_DEST64)"; \
-		echo "[freedesktop.org] Icon:     $(FD_ICON_DEST256)"; \
+		echo >&2 "[freedesktop.org] .desktop: $(FD_DESKTOP_DEST)"; \
+		echo >&2 "[freedesktop.org] Icon:     $(FD_ICON_DEST16)"; \
+		echo >&2 "[freedesktop.org] Icon:     $(FD_ICON_DEST32)"; \
+		echo >&2 "[freedesktop.org] Icon:     $(FD_ICON_DEST64)"; \
+		echo >&2 "[freedesktop.org] Icon:     $(FD_ICON_DEST256)"; \
 	fi
 	@if "$(macosx)"; then \
-		echo "[Mac OS X] Bundle (App): $(BUNDLE) (directory)"; \
+		echo >&2 "[Mac OS X] Bundle (App): $(BUNDLE) (directory)"; \
 	fi
 
 
@@ -343,21 +343,21 @@ PKG := $(NAME)-$(VERSION)
 
 
 test : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _check >/dev/null
+	@cd "$(builddir)" && $(MAKE) _check >/dev/null
 check : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _check >/dev/null
+	@cd "$(builddir)" && $(MAKE) _check >/dev/null
 _check : FORCE
 	@$(info) "Checking that it works on both snakes... May take a while!"
 	@$(srcdir)check.sh "$(srcdir)" "$(builddir)"
 
 dist : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _dist >/dev/null
+	@cd "$(builddir)" && $(MAKE) _dist >/dev/null
 _dist : FORCE
 	@$(info) "Building tarballs..."
 	@$(srcdir)mkdist "$(srcdir)" "$(builddir)" "$(PKG)"
 
 release : $(builddir)Makefile FORCE
-	@cd "$(builddir)" && make _release >/dev/null
+	@cd "$(builddir)" && $(MAKE) _release >/dev/null
 _release : dist check
 	@cp -t ~www-data/archive/"$(NAME)/" "$(PKG).tar.gz" \
 		|| echo You are not me.

@@ -413,27 +413,54 @@ def find_MODULES(Makefile, flags):
     Depends (directly) on $(libdir).
     Depends (indirectly) on $(prefix).
     
-    $(MODULES) is where Python modules (for the active version) should
-    be installed.
+    $(MODULES) is where Python modules should be installed.
     '''
-    if 'MODULES' not in Makefile:
-        Makefile['MODULES'] = get_module_dir(
-            expand('libdir', Makefile),
-            sys.path,
-            sys.version_info[0],
-            sys.version_info[1]
-        )
-        if not Makefile['MODULES']:
-            del Makefile['MODULES']
-            sys.stderr.write(
-                'Cannot find installation directory for python'
-                ' (default version) modules.\n'
-            )
-            return True
-        else:
-            return False
-    else:
+    if 'MODULES' in Makefile:
         return False
+    
+    libdir = expand('libdir', Makefile)
+    prefixes = [libdir + '/python']
+    try:
+        import platform
+        prefixes.append(libdir+'/'+platform.python_implementation().lower())
+        prefixes.append(libdir+'/'+platform.python_implementation())
+    except ImportError:
+        pass
+    except AttributeError:
+        pass
+    suffixes = ['/site-packages', '/dist-packages']
+    
+    for suffix in suffixes:
+        for prefix in prefixes:
+            paths = list(filter(
+                lambda path: path.startswith(prefix) and path.endswith(suffix),
+                sys.path
+            ))
+            paths.sort(key=lambda s: len(s))
+            if paths:
+                Makefile['MODULES'] = '$(libdir)' + paths[0][len(libdir):]
+                return False
+    
+    # Mac OS X
+    # http://stackoverflow.com/questions/4271494/what-sets-up-sys-path-with-python-and-when
+    # http://jessenoller.com/blog/2009/03/16/so-you-want-to-use-python-on-the-mac
+    # http://stackoverflow.com/questions/13355370/what-is-the-difference-between-library-frameworks-python-framework-versions-2
+    import re
+    module_dirs_outside = [
+        # pre-installed python:
+        '^/Library/Python/[0-9.]+/site-packages$',
+        # python.org
+        '^/Library/Frameworks/Python.framework/Versions/[0-9.]+/lib/python[0-9.]+/site-packages/?$',
+    ]
+    for module_dir in module_dirs_outside:
+        paths = list(filter(
+            lambda path: re.match(module_dir, path) is not None, sys.path
+        ))
+        paths.sort(key=lambda s: len(s))
+        if paths:
+            Makefile['MODULES'] = paths[0]
+    
+    return True
 
 
 def find_MODULES_OTHERVER(Makefile, flags):
