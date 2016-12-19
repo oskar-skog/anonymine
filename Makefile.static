@@ -82,11 +82,12 @@ OSX_MK_ICON := $(srcdir)desktop/icon.icns.py
 # make clean
 ALL_STAGE := "$(MAIN_STAGE)" "$(OSX_WRAPPER)" "$(OSX_INFO_PLIST)" \
 	"$(OSX_ICON)" "$(builddir)check.py" "$(FD_DESKTOP_STAGE)" \
-	"$(ENGINECFG_STAGE)" "$(builddir)mkenginecfg.py"
+	"$(ENGINECFG_STAGE)" "$(builddir)mkenginecfg.py" \
+	"$(builddir)module-symlinks"
 
 all : $(builddir)Makefile FORCE
 	@cd "$(builddir)" && $(MAKE) _all >/dev/null
-_all : $(MAIN_STAGE) $(ENGINECFG_STAGE) $(srcdir)Makefile
+_all : $(MAIN_STAGE) $(ENGINECFG_STAGE) $(builddir)module-symlinks
 	@if "$(freedesktop)"; then \
 		cd "$(builddir)" && $(MAKE) build-freedesktop >/dev/null; \
 	fi
@@ -115,6 +116,11 @@ $(MAIN_STAGE) : $(MAIN_SRC) $(builddir)Makefile
 $(ENGINECFG_STAGE) : $(srcdir)mkenginecfg $(builddir)Makefile.vars
 	@$(info) 'Making enginecfg: mostly counting processors'
 	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
+
+
+$(builddir)module-symlinks : $(builddir)Makefile.vars $(srcdir)mk-symlinks
+	@python "$(srcdir)mk-symlinks" "$(srcdir)" "$(prefix)" "$(libdir)" \
+		"$(MODULES)" "$(DESTDIR)" "$(builddir)"
 
 
 build-freedesktop : $(FD_DESKTOP_STAGE)
@@ -150,9 +156,9 @@ _clean : FORCE
 distclean : $(builddir)Makefile FORCE
 	@cd "$(builddir)" && $(MAKE) _distclean >/dev/null
 _distclean : _clean
-	@rm $(builddir)Makefile
-	@rm $(builddir)Makefile.vars
-	@rm $(builddir)reconfigure
+	@rm "$(builddir)Makefile"
+	@rm "$(builddir)Makefile.vars"
+	@rm "$(builddir)reconfigure"
 
 
 ##############################################################################

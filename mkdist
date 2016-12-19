@@ -19,7 +19,7 @@ files="${NAME}.py ${NAME}_engine.py ${NAME}_fields.py ${NAME}_solver.py \
     ChangeLog FAQ INSTALL NEWS README LICENSE desktop/FILES \
     desktop/README RELEASE-NOTES INSTALL.Haiku \
     configure check.sh desktop/desktop.sh desktop/${NAME}-*.png \
-    desktop/${NAME}*.xcf mkenginecfg mkdist"
+    desktop/${NAME}*.xcf mkenginecfg mkdist mk-symlinks"
 
 
 

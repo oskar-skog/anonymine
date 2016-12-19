@@ -16,3 +16,5 @@ enginecfg.out
 mkenginecfg.py
 reconfigure
 Makefile.vars
+symlinks
+

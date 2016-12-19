@@ -1,0 +1,92 @@
+#!/usr/bin/python
+import sys
+import os
+
+args={}
+args['srcdir'] = sys.argv[1]
+args['prefix'] = sys.argv[2]
+args['libdir'] = sys.argv[3]
+args['modules_dir'] = sys.argv[4]
+args['destdir'] = sys.argv[5]
+builddir = sys.argv[6]
+
+
+out = r'''#!/usr/bin/python
+import sys
+import os
+
+# Stop funny things from happening.
+def usage():
+    sys.stderr.write(
+        "Usage: <python-implementation> symlinks {install|uninstall}\n"
+        "See INSTALL for further instructions.\n"
+    )
+    sys.exit(0)
+if len(sys.argv) != 2:
+    usage()
+if sys.argv[1] not in ('install', 'uninstall'):
+    usage()
+
+sys.path.insert(0, $srcdir$)
+import configure
+
+Makefile = {
+    'prefix': $prefix$,
+    'libdir': $libdir$,
+}
+if configure.find_MODULES(Makefile, {'f': False, 'v': False, 'w': False,}):
+    sys.stderr.write("Failed to find a good module directory.\n")
+    sys.exit(1)
+
+if configure.expand('MODULES', Makefile) == $modules_dir$:
+    sys.stderr.write("Same as default.\n")
+    sys.exit(0)
+
+files = ("anonymine_engine.py", "anonymine_fields.py", "anonymine_solver.py")
+for file in files:
+    srcfile = '{}/{}'.format($modules_dir$, file)
+    destfile = '{}{}/{}'.format(
+        $destdir$,
+        configure.expand('MODULES', Makefile),
+        file
+    )
+    # Don't remove real files.
+    # Only create links to real files.
+    # Real files are not symlinks.
+    if sys.argv[1] == "install":
+        sys.stderr.write('"{0}" -> "{1}"\n'.format(destfile, srcfile))
+        if not os.path.islink(srcfile):
+            try:
+                os.unlink(destfile)
+            except:
+                pass
+            os.symlink(srcfile, destfile)
+        else:
+            sys.stderr.write("Source file is a symlink.\n")
+            sys.exit(1)
+    else:
+        sys.stderr.write('Delete "{0}"\n'.format(destfile))
+        try:
+            os.stat(destfile)
+        except:
+            sys.stderr.write("Destination file does not exist.\n")
+            continue
+        if os.path.islink(destfile):
+            os.unlink(destfile)
+        else:
+            sys.stderr.write("Destination file is not a symlink.\n")
+            sys.exit(1)
+
+'''
+
+for arg in args:
+    out = out.replace(
+        '${0}$'.format(arg),
+        '"{0}"'.format(args[arg].replace('\\', '\\\\').replace('"', '\\"'))
+    )
+
+outname = builddir + "symlinks"
+outfile = open(outname, "w")
+outfile.write(out)
+outfile.close()
+os.system("chmod +x '{0}'".format(outname.replace("'", "\'\"\'\"\'")))
