@@ -355,56 +355,6 @@ def find_vargamesdir(Makefile, flags):
         return False
 
 
-def get_module_dir(libdir, acceptable, major, minor):
-    '''
-    Used by `find_MODULES` and `find_MODULES_OTHERVER`.
-    
-    Return the proper item from `acceptable`.
-    Returns False on error.
-    
-    `libdir` is $(libdir).
-    `acceptable` is sys.path of the target interpreter.
-    `major` and `minor` is the version number (language version) of the
-    target interpreter.
-    '''
-    major, minor = str(major), str(minor)
-    single = str(major)
-    dual = str(major) + '.' + str(minor)
-    module_dirs = [
-        '/python' + single + '/site-packages',
-        '/python' + dual + '/site-packages',
-        '/python' + single + '/dist-packages', # Debianism
-        '/python' + dual + '/dist-packages', # Debianism
-    ]
-    module_dirs_outside = [
-        # Mac OS X
-        # http://stackoverflow.com/questions/4271494/what-sets-up-sys-path-with-python-and-when
-        # http://jessenoller.com/blog/2009/03/16/so-you-want-to-use-python-on-the-mac
-        # http://stackoverflow.com/questions/13355370/what-is-the-difference-between-library-frameworks-python-framework-versions-2
-        # pre-installed python:
-        '/Library/Python/' + single + '/site-packages',
-        '/Library/Python/' + dual + '/site-packages',
-        # python.org
-        ('/Library/Frameworks/Python.framework/Versions/' + single
-            + '/lib/python' + single + '/site-packages/'),
-        ('/Library/Frameworks/Python.framework/Versions/' + dual
-            + '/lib/python' + dual + '/site-packages/'),
-    ]
-    for module_dir in module_dirs:
-        if libdir + module_dir in acceptable:
-            return '$(libdir)' + module_dir
-    else:
-        for module_dir in module_dirs_outside:
-            if module_dir in acceptable:
-                return module_dir
-        else:
-            sys.stderr.write(
-                'Cannot find installation directory for'
-                ' Python '+major+'.'+minor+' modules.\n'
-            )
-            return False
-
-
 def find_MODULES(Makefile, flags):
     '''
     See the doc-string for find_prefix as well.
@@ -464,46 +414,6 @@ def find_MODULES(Makefile, flags):
             Makefile['MODULES'] = paths[0]
     
     return True
-
-
-def find_MODULES_OTHERVER(Makefile, flags):
-    '''
-    See the doc-string for find_prefix as well.
-    
-    Set Makefile['MODULES_OTHERVER'] if needed to.
-    Depends (directly) on $(libdir).
-    Depends (indirectly) on $(prefix).
-    
-    $(MODULES_OTHERVER) is where modules for the other Python version
-    should be installed.  It's set to "non-existent" if there is only
-    one Python version on the system.
-    '''
-    if 'MODULES_OTHERVER' not in Makefile:
-        try:
-            import subprocess
-            try:
-                other_python = {2: 'python3', 3: 'python2'}[sys.version_info[0]]
-                other_version = eval(subprocess.check_output([
-                    other_python, '-c', "import sys; print(sys.version_info[:2])"
-                ]))
-                other_sys_path = eval(subprocess.check_output([
-                    other_python, '-c', "import sys; print(sys.path)"
-                ]))
-                Makefile['MODULES_OTHERVER'] = get_module_dir(
-                    expand('libdir', Makefile),
-                    other_sys_path,
-                    other_version[0],
-                    other_version[1]
-                )
-                assert Makefile['MODULES_OTHERVER']
-            except:
-                Makefile['MODULES_OTHERVER'] = 'non-existent'
-        except:
-            Makefile['MODULES_OTHERVER'] = 'non-existent'
-            sys.stderr.write(
-                'Cannot find another version of Python without "subprocess".\n'
-            )
-    return False
 
 
 def find_INSTALL(Makefile, flags):
@@ -596,7 +506,6 @@ def main():
     # Find directories
     error |= find_EXECUTABLES(Makefile, flags)
     error |= find_MODULES(Makefile, flags)
-    ignore = find_MODULES_OTHERVER(Makefile, flags)
     error |= find_sysconfdir(Makefile, flags)
     error |= find_vargamesdir(Makefile, flags)
     # and the install tool.
@@ -614,7 +523,7 @@ def main():
         of_interest = (
             'prefix',
             'EXECUTABLES',
-            'MODULES', 'MODULES_OTHERVER',
+            'MODULES',
             'INSTALL',
             'freedesktop',
             'macosx',

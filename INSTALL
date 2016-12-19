@@ -127,7 +127,6 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         
         EXECUTABLES             This program will be installed in $(gamesdir)
         MODULES                 See its own subsection
-        MODULES_OTHERVER        See its own subsection
         
         INSTALL                 which install(8) utility to use.
                                 (/usr/ucb/install on Solares)
@@ -166,29 +165,16 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
             to gamesdir rather than bindir whenever possible.
         
         
-        MODULES and MODULES_OTHERVER
-        ============================
+        MODULES
+        =======
             
             This game works with both versions of Python, and installs three
             modules that could be used by some other program.
             
-            The modules will be copied to $(MODULES). And if there is another
-            Python, symlinks to the installed modules will be created in
-            $(MODULES_OTHERVER).
-            
-            The default value of MODULES and MODULES_OTHERVER is the first
-            of the following that exists in sys.path:
-                $(libdir)/python$(major)/site-packages
-                $(libdir)/python$(major).$(minor)/site-packages
-                $(libdir)/python$(major)/dist-packages
-                $(libdir)/python$(major).$(minor)/dist-packages
+            The modules will be copied to $(MODULES).
             
             $(major) and $(minor) are pre-expanded and do NOT exist in the
             Makefile.
-            
-            There's a known bug with combining having both Python versions
-            and using the DESTDIR variable.  The symlinks may not be pointing
-            where you expected them to.
     
     
         srcdir, builddir and DESTDIR

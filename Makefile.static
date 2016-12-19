@@ -15,10 +15,10 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.4.7
+VERSION := pre-0.4.8
 
-# Five more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
-# MODULES, and MODULES_OTHERVER which may be set to "non-existent".
+# Four more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
+# MODULES
 # They will be prepended to the actual Makefile by the "configure" script.
 
 # srcdir, builddir and DESTDIR may also be prepended by the "configure"
@@ -162,19 +162,13 @@ INSTALL ?= install
 
 INSTALL_CFG := python "$(srcdir)install-cfg" "$(INSTALL)"
 
-# Modules: FOO_SRC, FOO_DEST, FOO_DEST_OTHERVER
+# Modules: FOO_SRC, FOO_DEST
 ENGINE_SRC := $(srcdir)$(NAME)_engine.py
 ENGINE_DEST := $(DESTDIR)$(MODULES)/$(NAME)_engine.py
-ENGINE_DEST_OTHERVER := $(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_engine.py
 SOLVER_SRC := $(srcdir)$(NAME)_solver.py
 SOLVER_DEST := $(DESTDIR)$(MODULES)/$(NAME)_solver.py
-SOLVER_DEST_OTHERVER := $(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_solver.py
 FIELDS_SRC := $(srcdir)$(NAME)_fields.py
 FIELDS_DEST := $(DESTDIR)$(MODULES)/$(NAME)_fields.py
-FIELDS_DEST_OTHERVER := $(DESTDIR)$(MODULES_OTHERVER)/$(NAME)_fields.py
-
-# Installation commands for modules:
-NO_OTHERVER := test "$(MODULES_OTHERVER)" "=" non-existent
 
 # See desktop/README
 # $$size would work in gmake while $$$$size would work in BSD make.
@@ -224,9 +218,6 @@ _install-dirs : FORCE
 	@mkdir -p "$(DESTDIR)$(vargamesdir)" || true
 	@mkdir -p "$(DESTDIR)$(EXECUTABLES)" || true
 	@mkdir -p "$(DESTDIR)$(MODULES)" || true
-	@if [ "$(MODULES_OTHERVER)" != "non-existent" ]; then \
-		mkdir -p "$(DESTDIR)$(MODULES_OTHERVER)" || true; \
-	fi
 	@if "$(freedesktop)"; then \
 		mkdir -p "$(DESTDIR)$(prefix)/share/applications" || true; \
 		mkdir -p "$(DESTDIR)$(prefix)/share/pixmaps" || true; \
@@ -272,10 +263,6 @@ _install : _all _check-install-cfg _install-dirs
 		$(INSTALL) -m 644 "$(OSX_ICON)" \
 			"$(BUNDLE)/Contents/Resources/icon.icns"; \
 	fi
-	@$(info) 'Symlinking the modules to the other Python'
-	@$(NO_OTHERVER) || ln -sf "$(ENGINE_DEST)" "$(ENGINE_DEST_OTHERVER)"
-	@$(NO_OTHERVER) || ln -sf "$(SOLVER_DEST)" "$(SOLVER_DEST_OTHERVER)"
-	@$(NO_OTHERVER) || ln -sf "$(FIELDS_DEST)" "$(FIELDS_DEST_OTHERVER)"
 	@$(POST_INSTALL)
 	@if "$(freedesktop)"; then \
 		$(info) 'Installing icons and .desktop (POST_INSTALL)'; \
@@ -294,8 +281,6 @@ _uninstall: FORCE
 	@$(NORMAL_UNINSTALL)
 	@-rm -r "$(CFG_DIR)"
 	@-rm "$(ENGINE_DEST)" "$(SOLVER_DEST)" "$(FIELDS_DEST)" "$(MAIN_DEST)"
-	@$(NO_OTHERVER) || rm "$(ENGINE_DEST_OTHERVER)" \
-		"$(SOLVER_DEST_OTHERVER)" "$(FIELDS_DEST_OTHERVER)" || true
 	@-rm "$(HISCORE_FILE)"
 	@if "$(freedesktop)"; then \
 		rm "$(FD_DESKTOP_DEST)" || true; \
@@ -314,12 +299,6 @@ _print-destinations : FORCE
 	@echo >&2 "Engine module:         $(ENGINE_DEST)"
 	@echo >&2 "Solver module:         $(SOLVER_DEST)"
 	@echo >&2 "Fields module:         $(FIELDS_DEST)"
-	@$(NO_OTHERVER) || \
-		echo >&2 "Engine module symlink: $(ENGINE_DEST_OTHERVER)"
-	@$(NO_OTHERVER) || \
-		echo >&2 "Solver module symlink: $(SOLVER_DEST_OTHERVER)"
-	@$(NO_OTHERVER) || \
-		echo >&2 "Fields module symlink: $(FIELDS_DEST_OTHERVER)"
 	@echo >&2 "Configuration files:   $(CFG_DIR) (directory)"
 	@echo >&2 "Highscores file:       $(HISCORE_FILE)"
 	@if "$(freedesktop)"; then \
