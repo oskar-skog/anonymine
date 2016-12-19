@@ -128,15 +128,12 @@ build-macosx : $(OSX_WRAPPER) $(OSX_INFO_PLIST) $(OSX_ICON)
 	@: # Refer to desktop/README for information about the following.
 	@$(info) 'Mac OS X stuff created'
 $(OSX_WRAPPER) : $(builddir)Makefile
-	@$(info) 'Debug: OSX_WRAPPER'
 	@echo '#!/bin/sh' > "$(OSX_WRAPPER)"
 	@echo 'open -b com.apple.terminal' "$(MAIN_DEST)" >> "$(OSX_WRAPPER)"
 $(OSX_INFO_PLIST) : $(OSX_MK_INFO_PLIST) $(builddir)Makefile
-	@$(info) 'Debug: OSX_INFO_PLIST'
 	@python "$(OSX_MK_INFO_PLIST)" "$(OSX_INFO_PLIST)" "$(NAME_C)" \
 		"$(NAME_C) - $(DESCRIPTION)" $(VERSION) $(NAME)
 $(OSX_ICON) : $(srcdir)/desktop/$(NAME)*.png $(OSX_MK_ICON) $(builddir)Makefile
-	@$(info) 'Debug: OSX_ICON'
 	@python "$(OSX_MK_ICON)" "$(OSX_ICON)" "$(srcdir)desktop/$(NAME)"
 
 
