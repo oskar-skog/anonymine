@@ -131,6 +131,8 @@ Advanced installation
         sysconfdir              $(prefix)/etc, /etc
         vargamesdir             $(localstatedir)/games, $(localstatedir)
         
+        python                  Path to the Python interpreter.
+        
         EXECUTABLES             This program will be installed in $(gamesdir)
         MODULES                 See its own subsection
         
@@ -157,6 +159,10 @@ Advanced installation
         
         vargamesdir
             The highscores file is $(vargamesdir)/anonymine
+        
+        python
+            Can be set to use a different version/implementation than what
+            ./configure has chosen automatically.
         
         EXECUTABLES
         ===========

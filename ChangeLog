@@ -7,6 +7,9 @@
         * Makefile.static (all etc), mk-symlinks: New file mk-symlinks that
             creates $(builddir)symlinks which creates the symlinks using a
             new method.
+        * configure, configure.py, Makefile.static ($(MAIN_STAGE)), INSTALL:
+            Use PyPy is possible; New Makefile variable: $(python);
+            ./reconfigure will use sys.executable.
 
 2016-12-18      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.7

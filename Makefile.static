@@ -108,7 +108,7 @@ $(builddir)Makefile.vars : $(srcdir)configure $(srcdir)configure.py
 
 $(MAIN_STAGE) : $(MAIN_SRC) $(builddir)Makefile
 	@$(info) 'Creating the appropriate shebang line'
-	@echo "#!`which python`" > "$(MAIN_STAGE)"
+	@echo "#!$(python)" > "$(MAIN_STAGE)"
 	@sed -e "$(MAIN_STAGE_SED1)" "$(MAIN_SRC)" \
 		| sed -e "$(MAIN_STAGE_SED2)" >> "$(MAIN_STAGE)"
 

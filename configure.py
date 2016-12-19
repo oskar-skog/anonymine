@@ -489,6 +489,7 @@ def main():
     Makefile = {
         'srcdir': '',           # REQUIRED
         'builddir': '',         # REQUIRED
+        'python': sys.executable,
         'gamesdir': '$(prefix)/games',
         'bindir': '$(prefix)/bin',
         'libdir': '$(prefix)/lib',
@@ -582,10 +583,10 @@ def main():
     v('Writing "' + reconfigure_name + '"...')
     reconfigure_f = open(reconfigure_name, 'w')
     
-    reconfigure_f.write(
-        '#!/bin/sh\n'
-        'cd ' + shellescape(Makefile['srcdir']) + ' && ./configure'
-    )
+    reconfigure_f.write('#!/bin/sh\ncd {0} && {1} configure.py'.format(
+        shellescape(Makefile['srcdir']),
+        shellescape(sys.executable)
+    ))
     for arg in reconfigure_argv:
         reconfigure_f.write(' ' + shellescape(arg))
     reconfigure_f.write('\n')

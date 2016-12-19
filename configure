@@ -11,11 +11,18 @@ if [ $# -eq 1 ]; then
     done
     for version_option in -V --version; do
         if [ "$1" = $version_option ]; then
-            echo Anonymine `grep 'VERSION := ' Makefile.static | cut -d= -f2`
-            echo Handmade configure and configure.py
-            exit
+            echo "Anonymine $(grep 'VERSION := ' Makefile.static |cut -d= -f2)"
+            echo "Handmade configure and configure.py"
+            exit 0
         fi
     done
 fi
 
-python configure.py "$@"
+for python_version in pypy3 pypy python3 python; do
+    "$python_version" -c '' 2>/dev/null || continue
+    "$python_version" configure.py "$@"
+    exit 0
+done
+
+echo "No Python version found" >&2
+exit 1

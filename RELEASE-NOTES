@@ -1,3 +1,9 @@
+0.4.8
+    - PyPy will be used instead of CPython if possible.
+    - New Makefile/configure variable: "python" the path to the desired
+      Python interpreter.
+    - MODULES_OTHERVER has been removed from configure and Makefile.
+
 0.4.5 - 0.4.7
     - Avoid 0.4.5 and 0.4.6, use 0.4.7 instead, the issues #16 and #17 were
       not fixed correctly.
