@@ -68,6 +68,12 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
           targets.  If you know what you're doing, it's okay.
         * ./configure and Makefile are not made with the GNU Autotools.
           The build system may behave unexpectedly.
+
+
+Advanced installation
+=====================
+
+    NOTICE: This section only applies to unix-like systems.
     
     
     ./configure; make; make install
@@ -205,10 +211,6 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
             
             DESTDIR only affects make install, make uninstall, etc.  It has
             zero effect on ./configure.
-            
-            NOTICE: There's a known bug with combining having both Python versions
-            and using the DESTDIR variable.  The symlinks may not be pointing
-            where you expected them to.
     
     
     Targets in the Makefile
@@ -266,6 +268,31 @@ http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
         make dist
             'check' that I am not making an embarrassing release,
             make 'tarballs' and the 'zip' and 'release' them.
+    
+    
+    Multiple Python versions or implementations
+    ===========================================
+    
+        After having run "make", you can run
+        "<python-implementation> symlinks install" in builddir,
+        python-implementation is the command for the python implementation
+        to which you want to install symlinks for the Anonymine modules.
+        
+        The "symlinks" script is generated during "make all".  If you want
+        to use DESTDIR, you'll have to send DESTDIR to either `./configure`
+        or `make`; you can't send it only to `make install`.
+        
+        "<python-implementation> symlinks unintstall" does what you should
+        expect it to do.
+        
+        If the main version (the Python version to which the real files have
+        been installed) has changed, run:
+            ./configure -v # DESTDIR=foo
+            make
+            sudo make install
+            oldpython symlinks install
+            # (You need to install them before you uninstall them.)
+            #oldpython symlinks uninstall
 
 
 TL;DR

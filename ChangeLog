@@ -1,9 +1,12 @@
 2016-12-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.8
         * configure.py, Makefile.static, INSTALL: Don't install modules
-            for the other Python version.
+            for the other Python version. Removed $(MODULES_OTHERVER).
         * Makefile.static (build-freedesktop, build-macosx): Use Makefile as
             a Makefile.
+        * Makefile.static (all etc), mk-symlinks: New file mk-symlinks that
+            creates $(builddir)symlinks which creates the symlinks using a
+            new method.
 
 2016-12-18      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.7
