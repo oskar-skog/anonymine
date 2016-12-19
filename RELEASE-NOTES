@@ -3,6 +3,12 @@
     - New Makefile/configure variable: "python" the path to the desired
       Python interpreter.
     - MODULES_OTHERVER has been removed from configure and Makefile.
+    - If you have PyPy installed, you should run
+        ./configure -v # DESTDIR=foo
+        make  # Needs to have the same DESTDIR as `make install`.
+        sudo make install
+        sudo python symlinks install    # in $(builddir)
+        sudo python symlinks uninstall  # in $(builddir)
 
 0.4.5 - 0.4.7
     - Avoid 0.4.5 and 0.4.6, use 0.4.7 instead, the issues #16 and #17 were

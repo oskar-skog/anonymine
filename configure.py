@@ -523,6 +523,7 @@ def main():
     if flags['v']:
         of_interest = (
             'prefix',
+            'python',
             'EXECUTABLES',
             'MODULES',
             'INSTALL',

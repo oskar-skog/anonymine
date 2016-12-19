@@ -18,7 +18,7 @@ if [ $# -eq 1 ]; then
     done
 fi
 
-for python_version in pypy3 pypy python3 python; do
+for python_version in pypy python; do
     "$python_version" -c '' 2>/dev/null || continue
     "$python_version" configure.py "$@"
     exit 0
