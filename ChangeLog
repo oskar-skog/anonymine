@@ -2,6 +2,7 @@
     0.4.8
         * configure.py, Makefile.static, INSTALL: Don't install modules
             for the other Python version.
+        * Makefile.static (build-freedesktop, build-macosx): ....
 
 2016-12-18      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.7
