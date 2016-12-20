@@ -15,7 +15,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := pre-0.4.9
+VERSION := 0.4.9
 
 # Four more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES

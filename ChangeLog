@@ -7,8 +7,9 @@
             - Moved print_char below move_visbile area
             - Use new function print_digit to print the digits
               (multiple colors)
-        * cursescfg: Something temporary to test different colors for
-            different digits. (Issue #20).
+        * cursescfg:
+            - Different colors for different digits
+            - Reverse video for mines
 
 2016-12-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.8
