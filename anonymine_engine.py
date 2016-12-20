@@ -891,10 +891,6 @@ class game_engine():
             for cell in self.field.all_cells():
                 self.field.reveal(cell)
         interface.output(self)
-        try:
-            interface.anykey_cont()         # ANY key
-        except NameError:
-            pass
         
         # Won? Time?
         game_won = self.game_status == 'game-won'
@@ -936,6 +932,13 @@ class game_engine():
         else:
             hs = hiscores_dummy()
         # NOTICE: This used to return game_won, delta_time
+        
+        # Do this last, so the player won't unfairly get a terrible time.
+        try:
+            interface.anykey_cont()         # ANY key
+        except NameError:
+            pass
+        
         return game_won, hs
 
 
