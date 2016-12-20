@@ -95,7 +95,7 @@
         # traditional fields:   ':moore',       ':square',      ''
         #
         # Properties:
-        #       '1', '2', '3', '4', '5', '6', '7'
+        #       '1', '2', '3', '4', '5', '6', '7', '8'
         #       'flag'
         #       'free' (unclicked)
         #       'number'
@@ -141,13 +141,14 @@
         'flag':           ('F',  "GREEN",   "BLUE",   curses.A_REVERSE|curses.A_DIM),
         'free':           ('.',  "BLUE",    "BLUE",   curses.A_NORMAL),
         'number':         (None, "WHITE",   "BLUE",   curses.A_BOLD),
-        '1:moore':        ('1',  "YELLOW",  "BLUE",   curses.A_BOLD),
-        '2:moore':        ('2',  "RED",     "BLUE",   curses.A_BOLD),
-        '3:moore':        ('3',  "GREEN",   "BLUE",   curses.A_BOLD),
-        '4:moore':        ('4',  "WHITE",   "BLUE",   curses.A_BOLD),
+        '1:square':       ('1',  "YELLOW",  "BLUE",   curses.A_BOLD),
+        '2:square':       ('2',  "RED",     "BLUE",   curses.A_BOLD),
+        '3:square':       ('3',  "GREEN",   "BLUE",   curses.A_BOLD),
+        '4:square':       ('4',  "WHITE",   "BLUE",   curses.A_BOLD),
         '5:moore':        ('5',  "YELLOW",  "BLUE",   curses.A_BOLD),
         '6:moore':        ('6',  "GREEN",   "BLUE",   curses.A_BOLD),
         '7:moore':        ('7',  "RED",     "BLUE",   curses.A_BOLD),
+        '8:moore':        ('8',  "WHITE",   "BLACK",  curses.A_BLINK),
         'zero':           ('-',  "WHITE",   "BLUE",   curses.A_DIM),
         'mine':           ('X',  "WHITE",   "RED",    curses.A_BOLD),
         'cursor-l':       ('>',  "WHITE",   "BLUE",   curses.A_BOLD),
