@@ -2,6 +2,13 @@
     0.4.9
         * anonymine_engine.py (game_engine.play_game): "time taken to play"
             was calculated after the "Press the any key" screen.
+        * anonymine.py (curses_game):
+            - Added KeyError to curses_output_cfg
+            - Moved print_char below move_visbile area
+            - Use new function print_digit to print the digits
+              (multiple colors)
+        * cursescfg: Something temporary to test different colors for
+            different digits. (Issue #20).
 
 2016-12-19      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.8

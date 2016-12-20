@@ -389,6 +389,8 @@ class curses_game():
         (cursescfg).  This function is responsible to choose the
         key with the correct property and best available mode.
         
+        Raises KeyError if the entry can't be found.
+        
         gametype        Best available mode     2nd best        worst
         'moore':        ':moore'                ':square'       ''
         'hex':          ':hex'                  ''
@@ -581,25 +583,6 @@ class curses_game():
             if y >= 0 and y < field.dimensions[1]:
                 self.cursor = new
     
-    def print_char(self, x, y, cfg, char=None):
-        '''Print a character at a virtual coordinate with the right attributes.
-        
-        Print a character at the virtual coordinate (`x`, `y`)
-        using the textics directive `cfg`.
-        
-        `char` is used to override the default character of the
-        textics directive.
-        '''
-        real_x = x - self.window_start[0]
-        real_y = y - self.window_start[1]
-        # Verify that the coordinate is printable.
-        if 0 <= real_x < self.width:
-            if 0 <= real_y < self.height:
-                cfg_char, attributes = self.curses_output_cfg(cfg)
-                if char is None:
-                    char = cfg_char
-                self.window.addch(real_y, real_x, ord(char), attributes)
-    
     def move_visible_area(self, virtual_x, virtual_y, x_border, y_border):
         '''Move the area that will be printed by `self.print_char`.
         
@@ -624,6 +607,36 @@ class curses_game():
             self.window_start[1] = virtual_y - self.height + y_border + 1
         if real_y - y_border < 0:
             self.window_start[1] = virtual_y - y_border
+    
+    def print_char(self, x, y, cfg, char=None):
+        '''Print a character at a virtual coordinate with the right attributes.
+        
+        Print a character at the virtual coordinate (`x`, `y`)
+        using the textics directive `cfg`.
+        
+        `char` is used to override the default character of the
+        textics directive.
+        '''
+        real_x = x - self.window_start[0]
+        real_y = y - self.window_start[1]
+        # Verify that the coordinate is printable.
+        if 0 <= real_x < self.width:
+            if 0 <= real_y < self.height:
+                cfg_char, attributes = self.curses_output_cfg(cfg)
+                # curses_output_cfg may raise KeyError
+                if char is None:
+                    char = cfg_char
+                self.window.addch(real_y, real_x, ord(char), attributes)
+    
+    def print_digit(self, x, y, digit):
+        '''Print a digit at a virtual coordinate.
+        
+        Introduced in 0.4.9 to allow digits to have different colors.
+        '''
+        try:
+            self.print_char(x, y, str(digit))
+        except KeyError:
+            self.print_char(x, y, 'number', str(digit))
     
     def print_square(self, field):
         '''Helper function for `self.output` for non-hexagonal gametypes.
@@ -660,7 +673,7 @@ class curses_game():
             # Print the actual cell.
             value = field.get(cell)
             if value not in self.specials:
-                self.print_char(2*x+1, y, 'number', str(value))
+                self.print_digit(2*x+1, y, value)
             else:
                 self.print_char(2*x+1, y, self.specials[value])
         # Print the "cursor".
@@ -731,7 +744,7 @@ class curses_game():
             # Print the actual cell.
             value = field.get(cell)
             if value not in self.specials:
-                self.print_char(x, y, 'number', str(value))
+                self.print_digit(x, y, value)
             else:
                 self.print_char(x, y, self.specials[value])
         
