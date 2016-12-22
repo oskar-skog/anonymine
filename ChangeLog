@@ -1,6 +1,8 @@
 2016-12-22      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.10
         * cursescfg: Changed to improve contrast.
+        * cursescfg, anonymine.py (curses_game): Added an attention mode to
+            make it easier to find free cells near the end.
 
 2016-12-20      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.9

@@ -19,8 +19,9 @@
 
 {
     'curses-input': {   # Key bindings.
-        'flag':     ['f',       ],
-        'reveal':   [' ', '\n', ],
+        'flag':                 ['f',       ],
+        'reveal':               [' ', '\n', ],
+        'toggle-attention':     ['!', '?',  ],
         # Hexagonal direction numbers:
         #  5 0
         # 4   1
@@ -53,6 +54,8 @@
     'pre-doc': '''
     Press f to flag or unflag a cell.  Press space or enter to
     reveal (click on) a cell.
+    Type ! or ? to find difficult to find cells. Press again to
+    deactivate attention mode.
     ''',
     'doc-square': '''
     In the traditional and von Neumann modes, you can steer with the arrow
@@ -97,15 +100,16 @@
         # Properties:
         #       '1', '2', '3', '4', '5', '6', '7', '8'
         #       'flag'
-        #       'free' (unclicked)
-        #       'number'    if not overridden by one of the digits
-        #       'zero' (no mines around this cell)
-        #       'mine' (game over; don't click on these)
-        #   **  'grid' (The space between the characters of each cell)
-        #   **  'cursor-l' and 'cursor-r' (Mark the position of the
-        #               selected cell)
-        #   **  'text' (All messages that appear in curses mode and the
-        #               flags left text)
+        #       'free'          (unclicked)
+        #       'attention'     free cell when in attention mode
+        #       'number'        if not overridden by one of the digits
+        #       'zero'          (no mines around this cell)
+        #       'mine'          (game over; don't click on these)
+        #   **  'grid'          (The space between the characters of each cell)
+        #   **  'cursor-l'      (Mark the position of the selected cell)
+        #       'cursor-r'      (Mark the position of the selected cell)
+        #   **  'text'          (All messages that appear in curses mode
+        #                       and the flags left text)
         #   **  'background'    (To differ from the grid.)
         #
         
@@ -140,6 +144,7 @@
         'text':           (None, "BLACK",   "WHITE",  curses.A_NORMAL),
         'flag':           ('F',  "GREEN",   "BLACK",  curses.A_REVERSE|curses.A_DIM),
         'free':           ('.',  "BLACK",   "BLACK",  curses.A_NORMAL),
+        'attention':      ('.',  "WHITE",   "BLACK",  curses.A_REVERSE|curses.A_BOLD|curses.A_BLINK),
         '1:square':       ('1',  "YELLOW",  "BLACK",  curses.A_BOLD),
         '2:square':       ('2',  "RED",     "BLACK",  curses.A_BOLD),
         '3:square':       ('3',  "CYAN",    "BLACK",  curses.A_BOLD),

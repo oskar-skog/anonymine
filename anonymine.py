@@ -310,6 +310,7 @@ class curses_game():
         self.gametype = gametype
         self.window_start = [0, 0]      # Item assignment
         self.cursor = (0, 0)
+        self.attention_mode = False
         # Initialize curses.
         self.window = curses.initscr()
         curses.cbreak()
@@ -521,7 +522,7 @@ class curses_game():
             direction_keys = self.direction_keys['hex']
         else:
             direction_keys = self.direction_keys['square']
-        look_for = ['reveal', 'flag'] + direction_keys
+        look_for = ['reveal', 'flag', 'toggle-attention'] + direction_keys
         # Receive input from player.
         ch = self.window.getch()
         # Interpret.
@@ -544,6 +545,8 @@ class curses_game():
                 self.window.redrawwin()
         elif command in direction_keys:
             self.travel(engine.field, command)
+        elif command == 'toggle-attention':
+            self.attention_mode = not self.attention_mode
         else:
             self.window.redrawwin()
     
@@ -675,7 +678,10 @@ class curses_game():
             if value not in self.specials:
                 self.print_digit(2*x+1, y, value)
             else:
-                self.print_char(2*x+1, y, self.specials[value])
+                if value is None and self.attention_mode:
+                    self.print_char(2*x+1, y, 'attention')
+                else:
+                    self.print_char(2*x+1, y, self.specials[value])
         # Print the "cursor".
         x, y = self.cursor
         self.print_char(2*x, y, 'cursor-l')
@@ -746,7 +752,10 @@ class curses_game():
             if value not in self.specials:
                 self.print_digit(x, y, value)
             else:
-                self.print_char(x, y, self.specials[value])
+                if value is None and self.attention_mode:
+                    self.print_char(x, y, 'attention')
+                else:
+                    self.print_char(x, y, self.specials[value])
         
         # Print the "cursor".
         x, y = self.cursor
