@@ -1,3 +1,7 @@
+2016-12-22      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.4.10
+        * cursescfg: Changed to improve contrast.
+
 2016-12-20      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.9
         * anonymine_engine.py (game_engine.play_game): "time taken to play"
