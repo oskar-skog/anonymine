@@ -396,6 +396,8 @@ def find_MODULES(Makefile, flags):
                 if paths[0].startswith(libdir):
                     Makefile['MODULES'] = '$(libdir)' + paths[0][len(libdir):]
                 else:
+                    # prefix has been redefined, reredefine it
+                    prefix = expand('prefix', Makefile)
                     Makefile['MODULES'] = '$(prefix)' + paths[0][len(prefix):]
                 return False
     
