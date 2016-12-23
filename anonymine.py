@@ -363,6 +363,10 @@ class curses_game():
                     )
         else:
             self.use_color = False
+        # Initialize mouse
+        mask = curses.REPORT_MOUSE_POSITION|curses.ALL_MOUSE_EVENTS
+        self.old_mousemask = curses.mousemask(mask)
+        curses.mouseinterval(self.cfg['curses-mouse-input']['interval'])
     
     def leave(self):
         '''Leave curses mode.'''
@@ -527,9 +531,26 @@ class curses_game():
         ch = self.window.getch()
         # Interpret.
         command = None
-        for key in look_for:
-            if ch in self.cfg['curses-input'][key]:
-                command = key
+        if ch == curses.KEY_MOUSE:
+            _, x, y, _, buttons = curses.getmouse()
+            valid = True
+            if self.gametype == 'hex':
+                valid = self.mouse_travel_hex(x, y, engine.field)
+            else:
+                valid = self.mouse_travel_square(x, y, engine.field)
+            if valid:
+                for tmp_command in ('flag', 'reveal'):
+                    for mask in self.cfg['curses-mouse-input'][tmp_command]:
+                        if buttons & mask:
+                            command = tmp_command
+                    else:
+                        continue
+                    break
+        else:
+            # Keyboard input:
+            for key in look_for:
+                if ch in self.cfg['curses-input'][key]:
+                    command = key
         # Act.
         if command == 'flag':
             engine.flag(self.cursor)
@@ -686,6 +707,22 @@ class curses_game():
         x, y = self.cursor
         self.print_char(2*x, y, 'cursor-l')
         self.print_char(2*x+2, y, 'cursor-r')
+    
+    def mouse_travel_square(self, x, y, field):
+        '''
+        '''
+        x += self.window_start[0]
+        y += self.window_start[1]
+        # Inverse transformation of x and y.
+        if not x % 2:
+            return False
+        x = (x-1) // 2
+        # Travel
+        if 0 <= x < field.dimensions[0] and 0 <= y < field.dimensions[1]:
+            self.cursor = (x, y)
+            return True
+        else:
+            return False
 
     def print_hex(self, field):
         r'''Helper function for `self.output` for the hexagonal gametype.
@@ -761,6 +798,31 @@ class curses_game():
         x, y = self.cursor
         self.print_char(fx(x, y) - 1, fy(x, y), 'cursor-l')
         self.print_char(fx(x, y) + 1, fy(x, y), 'cursor-r')
+    
+    def mouse_travel_hex(self, x, y, field):
+        '''
+        '''
+        x += self.window_start[0]
+        y += self.window_start[1]
+        # Inverse transformation of x and y.
+        if x % 4 == 2 and y % 4 == 0 or x % 4 == 0 and y % 4 == 2:
+            y += 1              # Right above the target
+        if x % 4 == 2 and y % 4 == 2 or x % 4 == 0 and y % 4 == 0:
+            y -= 1              # Right below the target
+        if not y % 2:
+            return False        # Misc place on horizontal border
+        if y % 4 == 3:          # Unpush the pushed rows.
+            x -= 2
+        if not x % 4:           # Vertical border
+            return False
+        y = y // 2
+        x = x // 4
+        # Travel
+        if 0 <= x < field.dimensions[0] and 0 <= y < field.dimensions[1]:
+            self.cursor = (x, y)
+            return True
+        else:
+            return False
 
 
 def output(stream, content):

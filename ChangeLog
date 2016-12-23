@@ -1,3 +1,7 @@
+2016-12-23      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.4.11
+        * anonymine.py (curses_game), cursescfg: Mouse support.
+
 2016-12-22      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.10
         * cursescfg: Changed to improve contrast.

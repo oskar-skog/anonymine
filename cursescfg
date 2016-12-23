@@ -18,7 +18,17 @@
 
 
 {
-    'curses-input': {   # Key bindings.
+    'curses-mouse-input': {
+        'interval':     0,  # Maximum time between PRESSED and RELEASED in
+                            # order to count the two as a CLICK.
+                            # A high value requires waiting between presses
+                            # and releases, so set it to zero if you don't
+                            # intend to use BUTTONn_CLICKED.  Default: 200
+        'flag':         [curses.BUTTON3_PRESSED,   ],
+        'reveal':       [curses.BUTTON1_RELEASED,  ],
+    },
+    'curses-input': {
+        # Key bindings:
         'flag':                 ['f',       ],
         'reveal':               [' ', '\n', ],
         'toggle-attention':     ['!', '?',  ],
