@@ -1,9 +1,9 @@
+2016-12-23      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.12
+        * RELEASE-NOTES: Added some old notes.
         * check.sh: enginecfg.default -> enginecfg.fallback
         * configure.py (find_MODULES): Bugfix:
             "/usr/local/liby-5.4/site-packages"
-
-2016-12-23      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.11
         * anonymine.py (curses_game), cursescfg: Mouse support.
 

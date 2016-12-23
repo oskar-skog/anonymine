@@ -1,3 +1,15 @@
+0.4.11
+    - cursescfg has changed: Added a section cfg['curses-mouse-input']
+    (Old versions are incompatible)
+
+0.4.10
+    - cursescfg has changed: Added a key cfg['curses-input']['attention']
+      (Old versions are incompatible)
+
+0.4.9
+    - cursescfg has changed, old versions are compatible even if make install
+      thinks otherwise.
+
 0.4.8
     - PyPy will be used instead of CPython if possible.
     - New Makefile/configure variable: "python" the path to the desired
