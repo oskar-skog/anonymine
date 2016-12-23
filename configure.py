@@ -393,7 +393,7 @@ def find_MODULES(Makefile, flags):
             if paths:
                 # NOTICE:  Just notice this rather ugly construction.
                 # You can't just change the data.
-                if paths[0].beginswith(libdir)
+                if paths[0].beginswith(libdir):
                     Makefile['MODULES'] = '$(libdir)' + paths[0][len(libdir):]
                 else:
                     Makefile['MODULES'] = '$(prefix)' + paths[0][len(prefix):]
