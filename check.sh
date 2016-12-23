@@ -25,7 +25,7 @@ cd $1
 
 file1="${builddir}enginecfg.out"
 file2="${builddir}enginecfg.user"
-file3="${srcdir}enginecfg.default"
+file3="${srcdir}enginecfg.fallback"
 for enginecfg in $file1 $file2 $file3; do
     if [ -f $enginecfg ]; then
         break

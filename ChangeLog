@@ -1,3 +1,6 @@
+    0.4.12
+        * check.sh: enginecfg.default -> enginecfg.fallback
+
 2016-12-23      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.11
         * anonymine.py (curses_game), cursescfg: Mouse support.
