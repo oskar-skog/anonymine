@@ -72,6 +72,9 @@
     keys, WASD, the numpad or hjklyubn.  Do not hold down shift.
     ''',
     'doc-hex': '''
+    You can also use the mouse, but be careful when clicking near the edge
+    of the terminal.
+    
     This mode lacks an obvious up or down.
      w e        y u        7 9
     a   d      h   l      4   6
