@@ -887,14 +887,17 @@ class game_engine():
         while self.game_status in ('pre-game', 'play-game'):
             interface.output(self)
             interface.input(self)
+        # Won? Time?
+        game_won = self.game_status == 'game-won'
+        delta_time = time.time() - self.start
+        # Show everything.
         if self.game_status == 'game-lost':
+            # This takes a long time in some really weird configurations.
+            # anonymine -m 1 -s 100x100
             for cell in self.field.all_cells():
                 self.field.reveal(cell)
         interface.output(self)
         
-        # Won? Time?
-        game_won = self.game_status == 'game-won'
-        delta_time = time.time() - self.start
         # Create a proper paramstring for the hiscores object.
         paramstring = '{0}{1}@{2}x{3}-{4}'.format(
             {True: "", False: "lost/"}[game_won],

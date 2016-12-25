@@ -1,3 +1,8 @@
+2016-12-25      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.4.13
+        * anonymine_fields.py (generic_field.reveal): Use a loop instead of
+          recursion. Allows really low mine densities.
+
 2016-12-23      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.12
         * RELEASE-NOTES: Added some old notes.

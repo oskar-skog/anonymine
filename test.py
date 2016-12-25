@@ -23,7 +23,6 @@ import anonymine_engine
 import random
 import signal
 import pprint
-import profile
 import os
 
 def output(field, argument):
@@ -85,6 +84,22 @@ def runmoore(x=78, y=18, m=225):
     solver.field = field
     
     print(solver.solve())
+
+def profile_solver(x, y, m):
+    field = anonymine_fields.generic_field([x, y])
+    mines = field.all_cells()
+    random.shuffle(mines)
+    field.fill(mines[:m])
+    for mine in mines[m:]:
+        for neighbour in field.get_neighbours(mine):
+            if neighbour in mines[:m]:
+                break
+        else:
+            field.reveal(mine)
+            break
+    solver = anonymine_solver.solver()
+    solver.field = field
+    solver.solve()
 
 def run623():
     field = anonymine_fields.generic_field([6, 6, 6])
