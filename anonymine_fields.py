@@ -420,7 +420,7 @@ class generic_field():
             return out
         return list(map(tuple, list_cells(self.dimensions)))
     
-    def reveal(self, coordinate, recursion=False):
+    def reveal(self, coordinate):
         '''"Click" on the free cell at `coordinate`.
         
         It will automatically reveal an area when a zero has been
@@ -428,29 +428,30 @@ class generic_field():
         
         It will call the "lose" callback if a mine is revealed.
         '''
-        cell = self._get_raw(coordinate)
-        
-        if cell[self.K_FLAG]:
-            return      # Not returning now would be a terrible idea.
-        
-        if not cell[self.K_VISIBLE]:
-            self._set_raw(coordinate, self.K_VISIBLE, True)
-            self.free_cells -= 1
-            
-            if cell[self.K_MINE]:
-                # D'oh!
-                self._call('lose')
-            
-            # Field of zeroes.
-            if cell[self.K_NUMBER] == 0:
-                for neighbour in self.get_neighbours(coordinate):
-                    if self.get(neighbour) is None:
-                        self.reveal(neighbour, True)
-            
-            if not recursion:
-                self._call('input')
-                if not self.free_cells:
-                    self._call('win')
+        coordinate_list = [coordinate]
+        lose = False
+        while coordinate_list:
+            coordinate = coordinate_list.pop()
+            cell = self._get_raw(coordinate)
+            if cell[self.K_FLAG]:
+                continue        # Not continuing now would be a terrible idea.
+            if not cell[self.K_VISIBLE]:
+                self._set_raw(coordinate, self.K_VISIBLE, True)
+                self.free_cells -= 1
+                if cell[self.K_MINE]:
+                    lose = True
+                    # break not needed, because only the first revealed
+                    # cell can possibly be a mjne.  There are not other
+                    # coordinates on the list.
+                # Field of zeroes.
+                if cell[self.K_NUMBER] == 0:
+                    coordinate_list.extend(self.get_neighbours(coordinate))
+        # Final callbacks
+        self._call('input')
+        if lose:
+            self._call('lose')
+        elif not self.free_cells:
+            self._call('win')
     
     def fill(self, mines):
         '''Fill the field with mines and generate the numbers.
