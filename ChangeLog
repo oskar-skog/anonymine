@@ -10,6 +10,7 @@
             - Advice users to scroll at the edges when using the mouse.
             - BUTTON1 and BUTTON3 comment
             - Unicode support comments.
+            - Extra wide characters are not supported
 
 2016-12-25      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.13

@@ -137,10 +137,10 @@
         # [0]:  character (Required by all keys except 'number', 'grid',
         #       'text' and 'background'. For these three, the character
         #       will be ignored. ('background' is ignored due to a bug.))
-        #       Non-ASCII characters are supported in Python 3, but not in
+        #       * Non-ASCII characters are supported in Python 3, but not in
         #       Python 2.  See http://bugs.python.org/issue18118
-        #       If you have Python 3 and a supporting font, you could use
-        #       '\u26f3' for the flags and '\u26ed' for the mines.
+        #       * Only one column wide characters are supported.  Characters
+        #       that take up multiple columns are not supported.
         # [1]:  foreground color; valid colors are: "BLACK", "BLUE",
         #       "GREEN", "CYAN", "RED", "MAGENTA", "YELLOW" and
         #       "WHITE".
