@@ -315,6 +315,7 @@ class curses_game():
         self.window = curses.initscr()
         curses.cbreak()
         curses.noecho()
+        curses.meta(1)
         self.window.keypad(True)
         try:
             self.old_cursor = curses.curs_set(0)
@@ -568,7 +569,8 @@ class curses_game():
             self.travel(engine.field, command)
         elif command == 'toggle-attention':
             self.attention_mode = not self.attention_mode
-        else:
+        elif ch != curses.KEY_MOUSE:
+            # Don't do this all the time, that'd be a little wasteful.
             self.window.redrawwin()
     
     def travel(self, field, direction):
@@ -650,7 +652,7 @@ class curses_game():
                 # curses_output_cfg may raise KeyError
                 if char is None:
                     char = cfg_char
-                self.window.addch(real_y, real_x, ord(char), attributes)
+                self.window.addstr(real_y, real_x, char, attributes)
     
     def print_digit(self, x, y, digit):
         '''Print a digit at a virtual coordinate.

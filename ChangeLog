@@ -1,3 +1,16 @@
+2016-12-28      Oskar Skog      <oskar.skog.finland@gmail.com>
+    0.4.14
+        * anonymine.py (curses_game (print_char)), cursescfg:  Allow non ASCII
+            textics on Python3.
+        * anonymine.py (input): Don't redraw the window every time there has
+            been a non flagging and non revealing mouse events.
+        * README: New account play@anonymine-demo.oskog97.com:2222
+        * cursescfg:
+            - The `pair` index of the tuples has since long been removed.
+            - Advice users to scroll at the edges when using the mouse.
+            - BUTTON1 and BUTTON3 comment
+            - Unicode support comments.
+
 2016-12-25      Oskar Skog      <oskar.skog.finland@gmail.com>
     0.4.13
         * anonymine_fields.py (generic_field.reveal): Use a loop instead of

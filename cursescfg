@@ -19,6 +19,8 @@
 
 {
     'curses-mouse-input': {
+        # BUTTON1 = Left
+        # BUTTON3 = Right (right is not 2)
         'interval':     0,  # Maximum time between PRESSED and RELEASED in
                             # order to count the two as a CLICK.
                             # A high value requires waiting between presses
@@ -29,6 +31,7 @@
     },
     'curses-input': {
         # Key bindings:
+        # Only ASCII characters are supported in the key bindings.
         'flag':                 ['f',       ],
         'reveal':               [' ', '\n', ],
         'toggle-attention':     ['!', '?',  ],
@@ -73,7 +76,8 @@
     ''',
     'doc-hex': '''
     You can also use the mouse, but be careful when clicking near the edge
-    of the terminal.
+    of the terminal.  You can scroll the wheel while hovering over a cell
+    to move the "cell pointer" there, I'd suggest you do this at the edges.
     
     This mode lacks an obvious up or down.
      w e        y u        7 9
@@ -85,7 +89,7 @@
         # Textics
         # =======
         #
-        # 'key': (pair, 'C', 'foreground', 'background', attributes),
+        # 'key': ('C', 'foreground', 'background', attributes),
         
         # Keys
         # ----
@@ -133,6 +137,10 @@
         # [0]:  character (Required by all keys except 'number', 'grid',
         #       'text' and 'background'. For these three, the character
         #       will be ignored. ('background' is ignored due to a bug.))
+        #       Non-ASCII characters are supported in Python 3, but not in
+        #       Python 2.  See http://bugs.python.org/issue18118
+        #       If you have Python 3 and a supporting font, you could use
+        #       '\u26f3' for the flags and '\u26ed' for the mines.
         # [1]:  foreground color; valid colors are: "BLACK", "BLUE",
         #       "GREEN", "CYAN", "RED", "MAGENTA", "YELLOW" and
         #       "WHITE".
