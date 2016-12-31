@@ -118,7 +118,9 @@
         #       '1', '2', '3', '4', '5', '6', '7', '8'
         #       'flag'
         #       'free'          (unclicked)
-        #       'attention'     free cell when in attention mode
+        #       'attention'     free cell when in attention mode or a number
+        #                       with too many surrounding flags (the number
+        #                       will override the character.)
         #       'number'        if not overridden by one of the digits
         #       'zero'          (no mines around this cell)
         #       'mine'          (game over; don't click on these)

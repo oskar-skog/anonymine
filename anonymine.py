@@ -676,7 +676,8 @@ class curses_game():
         '''
         value = field.get(cell)
         if value not in self.specials:
-            if self.attention_mode and field.flags_left == 0:
+            # None < 2, won't work.
+            if self.attention_mode and field.flags_left in (0, 1):
                 flags = 0
                 for neighour in field.get_neighbours(cell):
                     if field.get(neighour) == 'F':
