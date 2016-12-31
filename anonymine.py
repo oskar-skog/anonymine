@@ -664,6 +664,33 @@ class curses_game():
         except KeyError:
             self.print_char(x, y, 'number', str(digit))
     
+    def print_cell(self, x, y, field, cell):
+        '''
+        `x` and `y` is the virtual coordinate for the single character
+        to be printed.
+        
+        `cell` is the cell from the field.
+        
+        Introduced in 0.4.15 to reduce code duplication and apply the
+        attention mode to numbers with too many mines around them.
+        '''
+        value = field.get(cell)
+        if value not in self.specials:
+            if self.attention_mode and field.flags_left == 0:
+                flags = 0
+                for neighour in field.get_neighbours(cell):
+                    if field.get(neighour) == 'F':
+                        flags += 1
+                if flags > value:
+                    self.print_char(x, y, 'attention', str(value))
+                    return
+            self.print_digit(x, y, value)
+        else:
+            if value is None and self.attention_mode:
+                self.print_char(x, y, 'attention')
+            else:
+                self.print_char(x, y, self.specials[value])
+    
     def print_square(self, field):
         '''Helper function for `self.output` for non-hexagonal gametypes.
         
@@ -697,14 +724,7 @@ class curses_game():
             self.print_char(2*x, y, 'grid', ' ')
             self.print_char(2*x+2, y, 'grid', ' ')
             # Print the actual cell.
-            value = field.get(cell)
-            if value not in self.specials:
-                self.print_digit(2*x+1, y, value)
-            else:
-                if value is None and self.attention_mode:
-                    self.print_char(2*x+1, y, 'attention')
-                else:
-                    self.print_char(2*x+1, y, self.specials[value])
+            self.print_cell(2*x+1, y, field, cell)
         # Print the "cursor".
         x, y = self.cursor
         self.print_char(2*x, y, 'cursor-l')
@@ -785,16 +805,8 @@ class curses_game():
             self.print_char(x - 1, y + 1, 'grid', '\\')
             self.print_char(x, y + 1, 'grid', ' ')
             self.print_char(x + 1, y + 1, 'grid', '/')
-            
             # Print the actual cell.
-            value = field.get(cell)
-            if value not in self.specials:
-                self.print_digit(x, y, value)
-            else:
-                if value is None and self.attention_mode:
-                    self.print_char(x, y, 'attention')
-                else:
-                    self.print_char(x, y, self.specials[value])
+            self.print_cell(x, y, field, cell)
         
         # Print the "cursor".
         x, y = self.cursor

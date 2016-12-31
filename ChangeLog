@@ -1,7 +1,9 @@
 2016-12-31      Oskar Skog      <https://oskog97.com/#contact>
     0.4.15
         * ChangeLog: Hide mail address.
-        
+        * anonymine.py (curses_game): Created new method `print_cell` to
+            reduce code duplication and introduce the attention mode to
+            numbers with too many flags around them.
 
 2016-12-28      Oskar Skog      <https://oskog97.com/#contact>
     0.4.14
