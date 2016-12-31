@@ -1,4 +1,9 @@
-2016-12-28      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-31      Oskar Skog      <https://oskog97.com/#contact>
+    0.4.15
+        * ChangeLog: Hide mail address.
+        
+
+2016-12-28      Oskar Skog      <https://oskog97.com/#contact>
     0.4.14
         * anonymine.py (curses_game (print_char)), cursescfg:  Allow non ASCII
             textics on Python3.
@@ -12,12 +17,12 @@
             - Unicode support comments.
             - Extra wide characters are not supported
 
-2016-12-25      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-25      Oskar Skog      <https://oskog97.com/#contact>
     0.4.13
         * anonymine_fields.py (generic_field.reveal): Use a loop instead of
           recursion. Allows really low mine densities.
 
-2016-12-23      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-23      Oskar Skog      <https://oskog97.com/#contact>
     0.4.12
         * RELEASE-NOTES: Added some old notes.
         * check.sh: enginecfg.default -> enginecfg.fallback
@@ -26,13 +31,13 @@
     0.4.11
         * anonymine.py (curses_game), cursescfg: Mouse support.
 
-2016-12-22      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-22      Oskar Skog      <https://oskog97.com/#contact>
     0.4.10
         * cursescfg: Changed to improve contrast.
         * cursescfg, anonymine.py (curses_game): Added an attention mode to
             make it easier to find free cells near the end.
 
-2016-12-20      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-20      Oskar Skog      <https://oskog97.com/#contact>
     0.4.9
         * anonymine_engine.py (game_engine.play_game): "time taken to play"
             was calculated after the "Press the any key" screen.
@@ -45,7 +50,7 @@
             - Different colors for different digits
             - Reverse video for mines
 
-2016-12-19      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-19      Oskar Skog      <https://oskog97.com/#contact>
     0.4.8
         * configure.py, Makefile.static, INSTALL: Don't install modules
             for the other Python version. Removed $(MODULES_OTHERVER).
@@ -58,7 +63,7 @@
             Use PyPy is possible; New Makefile variable: $(python);
             ./reconfigure will use sys.executable.
 
-2016-12-18      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-18      Oskar Skog      <https://oskog97.com/#contact>
     0.4.7
         * Makefile.static:
             - Use "$(MAKE)" instead of "make".
@@ -74,7 +79,7 @@
         * RELEASE-NOTES: Inform that 0.4.5 and 0.4.6 didn't fix issues
             #16 and #17 properly.
 
-2016-12-16      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-16      Oskar Skog      <https://oskog97.com/#contact>
     0.4.6
         *: The fix for #17 didn't work, make kept running the old Makefile.
     0.4.5
@@ -88,13 +93,13 @@
             - Sort the order of Makefile variables.
         * INSTALL: srcdir and builddir should only bet sent to `./configure`.
 
-2016-12-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-15      Oskar Skog      <https://oskog97.com/#contact>
     0.4.4
         * anonymine.py, anonymine_engine.py, anonymine_fields.py, anonymine_solver.py:
             Not all operating systems have os.geteuid.
         * anonymine.py (main): OpenIndiana had fixed the issue long ago.
 
-2016-12-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-10      Oskar Skog      <https://oskog97.com/#contact>
     0.4.3
         * anonymine_solver.py: The PyPy bug has been tracked down to the
             `possibilities` function.   Bug fixed: used `is` instead of `==`
@@ -107,7 +112,7 @@
         * anonymine.py: Warn of the opendiana bug:
             https://github.com/oskar-skog/anonymine/issues/4
 
-2016-12-06      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-06      Oskar Skog      <https://oskog97.com/#contact>
     0.4.1
         * anonymine_solver.py (solver_loop): Found a potential bug:
             `fail` was not set to False if a solvable cell was found.
@@ -116,14 +121,14 @@
             number_neighbours function.  Uncomment the print and
             run pypybug() in test.py. (<<WRONG)
 
-2016-12-05      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-05      Oskar Skog      <https://oskog97.com/#contact>
     0.4.0
         * NEWS: gitgub.com does not resolve; converted a reference to BUGS
         * INSTALL: MUST run `make` before `make install`; mentioned bug with
             symlinks when DESTDIR is set.
         * Makefile.static (uninstall), INSTALL: Delete the highscores file.
 
-2016-12-04      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-04      Oskar Skog      <https://oskog97.com/#contact>
     0.3.19
         * HACKING: Mention that only versions 0.1.15 and above are in Github.
         * INSTALL: Many small changes.
@@ -142,7 +147,7 @@
         * HACKING: Fixed the TODO for mkdist. Updated about enginecfg stuff.
         * ChangeLog [0.2.26]: Fixed typo.
 
-2016-12-03      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-12-03      Oskar Skog      <https://oskog97.com/#contact>
     0.3.16
         * README:
             - Split "Tested platforms" up into "Tested platforms" and
@@ -156,19 +161,19 @@
             - Rearranged
             - Removed Windows specific details.
 
-2016-11-26      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-11-26      Oskar Skog      <https://oskog97.com/#contact>
     0.3.15
         * configure.py: Exiting properly on both Cygwin and NetBSD.
             See https://github.com/oskar-skog/anonymine/issues/7
 
-2016-11-20      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-11-20      Oskar Skog      <https://oskog97.com/#contact>
     0.3.14
         * INSTALL.Haiku: Terminal bug has been fixed.
         * README:
             - Added Haiku as a tested platform.
             - Added note about $TERM on NetBSD.
 
-2016-11-06      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-11-06      Oskar Skog      <https://oskog97.com/#contact>
     0.3.13
         * BUGS: Removed problematic platform #2 (openindiana)
         * README:
@@ -182,12 +187,12 @@
             - Added note about make uninstall
             - Documented enginecfg.default
 
-2016-10-26      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-10-26      Oskar Skog      <https://oskog97.com/#contact>
     0.3.12
         * configure.py: Use `sys.exit` instead of `os._exit` as the latter
             caused weird issues with stream redirection.
 
-2016-10-23      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-10-23      Oskar Skog      <https://oskog97.com/#contact>
     0.3.11
         * README: http://anonymine-demo.oskog97.com:8080/ link removed.
         * anonymine.py (curses_game.input): The redrawing of the screen after
@@ -196,7 +201,7 @@
         * INSTALL.Haiku: Use env(1) instead of setting and resetting $TERM.
         * desktop/*: Brief descriptions.
 
-2016-10-21      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-10-21      Oskar Skog      <https://oskog97.com/#contact>
     0.3.10
         * desktop/anonymine.v0.xcf: Gone.
         * Makefile.static:
@@ -205,14 +210,14 @@
         * mkdist, Makefile.static: Simplify code now when Windows support is
             gone.
 
-2016-10-20      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-10-20      Oskar Skog      <https://oskog97.com/#contact>
     0.3.9
         * Forgotten Windows stuff, minor style fixes.
     0.3.8
         *: Removed Windows support.  (Going to create that in a different
             repo.)
 
-2016-10-02      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-10-02      Oskar Skog      <https://oskog97.com/#contact>
     0.3.7
         * cursescfg: flag:hex green on black to black on green
         * cygwin-sshd, BUGS: No uninstaller for cygwin-sshd.
@@ -220,13 +225,13 @@
         * cursescfg: New textics
         * anonymine.py, cursescfg: Calculate pair numbers automatically.
 
-2016-09-17      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-09-17      Oskar Skog      <https://oskog97.com/#contact>
     0.3.5
         * anonymine_engine.py (hiscores): Python 2.6 incompatibilities fixed:
             - str.format can't handle empty field names ('{}')
             - str.decode takes no keyword arguments
 
-2016-09-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-09-10      Oskar Skog      <https://oskog97.com/#contact>
     0.3.4
         * cursescfg: Use reverse video for the flags to make them more
             distinguishable on monochrome terminals.
@@ -234,18 +239,18 @@
             display_caption when the player didn't make it to highscores.
         * Makefile.static: Added distclean.
 
-2016-09-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-09-07      Oskar Skog      <https://oskog97.com/#contact>
     0.3.3
         * anonymine_engine.py (hiscores (add_entry)): list.index does not
             return None, but raises ValueError. Plus various changes for
             the fix.
 
-2016-08-27      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-27      Oskar Skog      <https://oskog97.com/#contact>
     0.3.2
         * anonymine.py (ask): Do no more than 10 000 000 attempts on EINTR
             handling.
 
-2016-08-22      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-22      Oskar Skog      <https://oskog97.com/#contact>
     0.3.1
         * anonymine_engine.py (hiscores, game_engine (play_game)):
             Added highscores for lost games.
@@ -254,7 +259,7 @@
             'win' into 'lose'.
         * anonymine.py (output): Do no more than 10 000 000 attempts.
 
-2016-08-16      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-16      Oskar Skog      <https://oskog97.com/#contact>
     0.3.0
         * NEWS: Introduced 0.3
         * INSTALL: Warn of the removal of configuration files.
@@ -264,11 +269,11 @@
             faster.
             NOTICE: `highscores_display` now takes four arguments.
 
-2016-08-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-15      Oskar Skog      <https://oskog97.com/#contact>
     0.2.31
         * anonymine.py: Set LESSSECURE=1
 
-2016-08-13      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-13      Oskar Skog      <https://oskog97.com/#contact>
     0.2.30
         * README: It works again on Minix 3.3 and openindiana.
         * configure.py [openindiana]: INSTALL_CMD was changed to INSTALL in
@@ -289,7 +294,7 @@
             sending to less(1).
         * anonymine_engine.py (hiscores): Documented the Unicode thingies.
 
-2016-08-12      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-12      Oskar Skog      <https://oskog97.com/#contact>
     0.2.28
         * anonymine_engine.py (hiscores (_load)): Bugfix:
             The IO error table didn't work as hiscores was None rather than []
@@ -297,7 +302,7 @@
         *: New file INSTALL.Haiku.
         *: Moved Windows.txt to INSTALL.Windows to match the new pattern.
 
-2016-08-11      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-11      Oskar Skog      <https://oskog97.com/#contact>
     0.2.27
         * Makefile.static (print-destinations): Fixed syntax error.
         * Makefile.static (release): Added verbose messages, added new
@@ -313,7 +318,7 @@
             - Added quotes around $nproc to let the Python script succeed
               even if no method of counting processors worked.
 
-2016-08-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-10      Oskar Skog      <https://oskog97.com/#contact>
     0.2.25
         * anonymine.py (highscores_display): Use less(1).
     0.2.24
@@ -322,7 +327,7 @@
         * test.py: Removed functions that depend on the deprecated statistics
             functions.
 
-2016-08-08      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-08-08      Oskar Skog      <https://oskog97.com/#contact>
     0.2.23
         *: New file: HACKING, RELEASE-NOTES
         * README: Moved file listing to HACKING.
@@ -338,7 +343,7 @@
             values for freedesktop, macosx and windows to the unambiguous true
             or false.
 
-2016-07-19      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-19      Oskar Skog      <https://oskog97.com/#contact>
     0.2.22
         * anonymine_engine.py (hiscores (display)): Www HH:MM goes back to
             six days; Added "(Future)"
@@ -346,7 +351,7 @@
             $(sysconfdir) to be anything.
         * INSTALL: Modified.
 
-2016-07-18      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-18      Oskar Skog      <https://oskog97.com/#contact>
     0.2.21
         * Makefile.static, anonymine.py, configure: Moved version numbering
             into Makefile.static only to simplify version bumping.
@@ -368,7 +373,7 @@
             variable to ./install-cfg to make it shut up if it has nothing
             exceptional to say.
 
-2016-07-17      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-17      Oskar Skog      <https://oskog97.com/#contact>
     0.2.19
         * cursescfg: Hexagonal grid was still too bright -> set to A_DIM,
             text does not need to be bright.
@@ -393,7 +398,7 @@
         * BUGS: Added note about #3
         * mkenginecfg, enginecfg.default: sec-maxtime: 90 -> 900
 
-2016-07-16      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-16      Oskar Skog      <https://oskog97.com/#contact>
     0.2.16
         * anonymine_engine.py (hiscores), etc: Force UTF-8 on the file.
             - Functions may return unicode objects as strings on Python 2, but
@@ -410,7 +415,7 @@
             on Python 3.2, **try** 'wx' and then 'x', and if both fail, 'w'.
         * mkenginecfg, enginecfg.default: entries set to 16, previously: 10
 
-2016-07-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-15      Oskar Skog      <https://oskog97.com/#contact>
     0.2.15
         * Makefile.static (print-destinations): \t doesn't work on FreeBSD;
             indented manually with normal whitespace instead.
@@ -447,7 +452,7 @@
             - Add 64 bits of entropy to the tempfiles, just in case
               open(file, 'wx') fails to do its trick.
 
-2016-07-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-14      Oskar Skog      <https://oskog97.com/#contact>
     0.2.9
         * INSTALL: Updated
         * enginecfg.default: Added the hiscores key.
@@ -488,7 +493,7 @@
             now take two arguments: title, prompt
         * anonymine.py: Input callback updated.
 
-2016-07-13      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-13      Oskar Skog      <https://oskog97.com/#contact>
     0.2.3
         * anonymine.py: Primitive highscores interface for debugging purposes.
         * anonymine_engine.py: New classes: hiscores, hiscores_dummy
@@ -501,7 +506,7 @@
             paramstring for hiscores.__init__.
 
 
-2016-07-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-07-07      Oskar Skog      <https://oskog97.com/#contact>
     0.2.2
         * mkenginecfg: Bugfix:
             `nonexisting-cpulister | wc -l` returns 0 processors
@@ -521,13 +526,13 @@
         * NEWS: Changes from 0.1.0 to 0.2.0
         * Makefile.static: FILES gone; LICENSE back
 
-2016-06-15      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-06-15      Oskar Skog      <https://oskog97.com/#contact>
     0.2.0
         *: Well, it's fast enough.
         * README: Minor changes
         * test.py, testcfg: Something I did a long time ago.
 
-2016-03-20      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-03-20      Oskar Skog      <https://oskog97.com/#contact>
     0.1.21
         *:
             - DoS prevention by field area and initialization time.
@@ -545,7 +550,7 @@
             - Added keys: 'init-field'.'sec-maxarea' and
                 'init-field'.'sec-maxtime'
 
-2016-02-29      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-29      Oskar Skog      <https://oskog97.com/#contact>
     0.1.20
         * cygwin-sshd: Tested, fixed and improved.
         * Windows-admin.bat:
@@ -560,7 +565,7 @@
                 `$(builddir)enginecfg.py`.
             - Removed commented old rule for `all`.
 
-2016-02-26      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-26      Oskar Skog      <https://oskog97.com/#contact>
     0.1.19
         *: Removed vm-README.md, update-anonymine, vmsetup and addplayer.
         * calibrate-anonymine: Repurposed and renamed to mkenginecfg.
@@ -574,13 +579,13 @@
         * check.sh: Fixed to choose the appropriate enginecfg.
         * INSTALL: updated
 
-2016-02-21      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-21      Oskar Skog      <https://oskog97.com/#contact>
     0.1.18
         * anonymine.py: Code clean up.
         * VM-README.md: Added four scripts for a dedicated Anonymine virtual
             machine. (Playing over SSH).
 
-2016-02-17      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-17      Oskar Skog      <https://oskog97.com/#contact>
     0.1.17
         * README: Various changes.
         * ., Makefile.static: Removed perkele/.
@@ -590,7 +595,7 @@
             $(OSX_INFO_PLIST) to $(INFO_PLIST).
         * desktop/FILES: No such file: anonymine.desktop (auto-generated)
 
-2016-02-14      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-14      Oskar Skog      <https://oskog97.com/#contact>
     0.1.15
         * configure.py (check_variables):
             - Prohibit quotes in variables and $() in their names.
@@ -627,7 +632,7 @@
         * Windows-admin.bat, Windows-user.bat: No need to tell ./configure
             what to use as prefix.
 
-2016-02-13      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-13      Oskar Skog      <https://oskog97.com/#contact>
     0.1.14
         * Windows.txt: Important notes.
         * desktop/README, desktop/FILES: Written.
@@ -639,12 +644,12 @@
 https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         *: Added perkele subdirectory.
 
-2016-02-12      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-12      Oskar Skog      <https://oskog97.com/#contact>
     0.1.13
         * desktop/anonymine.lnk.py: The old .lnk didn't work.
             Added location information.  Perkele.
 
-2016-02-11      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-11      Oskar Skog      <https://oskog97.com/#contact>
     0.1.12
         * Makefile.static (all, install) [Windows]:$(ICON_DEST) had been
             changed to support multiple icons on freedesktop.org.
@@ -652,7 +657,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * Makefile.static (all) [Windows], desktop/anonymine.lnk.py: Take
             description string and command (unix side) as arguments.
 
-2016-02-10      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-10      Oskar Skog      <https://oskog97.com/#contact>
     0.1.11
         * Makefile.static (uninstall) [freedesktop.org]: Remove the icons
             of various sizes.
@@ -665,7 +670,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * Makefile.static (all, install), desktop/icon.icns.py: Make icns icons
             for Mac OS X.
 
-2016-02-09      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-09      Oskar Skog      <https://oskog97.com/#contact>
     0.1.8
         * configure.py (get_module_dir) [Mac OS X]: Changes to the directory
             list.
@@ -679,7 +684,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             when color is unavailable.
             - Found a new bug and added a workaround
 
-2016-02-08      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-08      Oskar Skog      <https://oskog97.com/#contact>
     0.1.6
         * configure.py (find_prefix): Ignore the sys.path test on macs.
         * configure.py (get_module_dir): Added module_dirs_outside with
@@ -703,7 +708,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
                 and have check.sh write out the check.py script.
         * FILES: updated.
 
-2016-02-05      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-05      Oskar Skog      <https://oskog97.com/#contact>
     0.1.2
         * configure.py, Makefile.static: Install menu shortcuts.
             New variables:
@@ -712,7 +717,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * anonymine.lnk.py: Takes arguments, more sources.
         * Makefile.static: New target: install-dirs
 
-2016-02-03      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-03      Oskar Skog      <https://oskog97.com/#contact>
     0.1.1
         * Makefile.static (dist): Bash doesn't understand CRLF line endings.
             -> Rename $(PKG_WINDOWS_FILES) to $(PKG_NOCONV_FILES) and append
@@ -727,7 +732,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         *: New files: 'anonymine.lnk.py' and 'anonymine.lnk'.
         * FAQ: New question.
 
-2016-02-02      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-02      Oskar Skog      <https://oskog97.com/#contact>
     0.1.0
         *: New file: NEWS
         * test.py (runmoore): anonymine_fields.generic_field2 does not exist
@@ -761,7 +766,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         ----------------------------------------------------------------------
         * anonymine_solver.py: Various doc-strings.
 
-2016-02-01      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-02-01      Oskar Skog      <https://oskog97.com/#contact>
     0.0.43
         *: New files: FAQ, FILES
         * Windows-user.bat: LF->CRLF
@@ -777,14 +782,14 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             separate bitch file for non-admin installation.
         * Windows.txt: Updated the documentation.
 
-2016-01-31      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-31      Oskar Skog      <https://oskog97.com/#contact>
     0.0.41
         * Windows.bat, Windows.txt: Wrote an installer for Windoze.
         * BUGS: P(BUG#2) < 1/717708
         * INSTALL: Refer to Windows.txt for windoze users.
         * Makefile.static: Make zip archives (buggy).
 
-2016-01-30      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-30      Oskar Skog      <https://oskog97.com/#contact>
     0.0.40
         * Makefile.static (check), check.sh, check.py:
             Added a 'check' target and made it a dependency of 'dist'.
@@ -795,7 +800,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             The tempfile need to be opened in 'wx' mode on Python 2
             and 'x' mode on Python 3.
 
-2016-01-29      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-29      Oskar Skog      <https://oskog97.com/#contact>
     0.0.38
         * anonymine_engine.py, anonymine_fields.py, anonymine_solver.py:
             root shouldn't be playing games.
@@ -803,7 +808,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             Open files with 'x', and assert that they are not symlinks.
             (To avoid mktemp(3)ish race-conditions.)
 
-2016-01-24      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-24      Oskar Skog      <https://oskog97.com/#contact>
     0.0.37
         * anonymine_fields.py (hexagonal_field): Made the doc-string
             a raw string.
@@ -842,7 +847,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * Makefile.static (dist): Added -f to gzip.
         * portability: Removed the "Terminals" section.
 
-2016-01-18      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-18      Oskar Skog      <https://oskog97.com/#contact>
     0.0.34
         * anonymine_fields.py, anonymine_engine.py: Python 3 bugfixes:
             Forgot to wrap map() in list() causing the game to crash
@@ -870,7 +875,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * INSTALL: Added some important notes about python symlinks.
         *: New file: GOALS.
 
-2016-01-13      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-13      Oskar Skog      <https://oskog97.com/#contact>
     0.0.32
         * Makefile.static: Commented out the $(PRE_INSTALL), $(NORMAL_INSTALL)
             and $(POST_INSTALL) lines as they caused trouble on NetBSD and
@@ -894,7 +899,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * INSTALL, configure.py: Implement a -w option to use the old/wrong
             prefix.
 
-2016-01-12      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-12      Oskar Skog      <https://oskog97.com/#contact>
     0.0.30
         * portability:
             Added openindiana as problematic.
@@ -927,7 +932,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * INSTALL:
             Bugfix "-i initcfg" to "-e enginecfg".
 
-2016-01-09      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-09      Oskar Skog      <https://oskog97.com/#contact>
     0.0.27
         * BUGS, portability:
         * anonymine.py (curses_game.__init__):
@@ -935,7 +940,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * anonymine.py (curses_game.output):
             Fixed a platform specific bug. (#3).
 
-2016-01-08      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-08      Oskar Skog      <https://oskog97.com/#contact>
     0.0.26
         * anonymine_solver.py (solver.number_neighbours):
             Only add cells to the list that are not already in it.
@@ -952,7 +957,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             I will run a bugcatcher to verify that the bug that may or may
             not exist, is very improbable to occur.
 
-2016-01-07      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-07      Oskar Skog      <https://oskog97.com/#contact>
     0.0.24
         * anonymine_fields.py (generic_field):
             Cache the lists returned by `generic_field.get_neighbours`.
@@ -960,7 +965,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * BUGS:
             While profiling, a bug was found: the solver made a mistake
 
-2016-01-06      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-06      Oskar Skog      <https://oskog97.com/#contact>
     0.0.23
         * configure.py (getargs): Now works on Python 2.5.5 (which is too
             old for this game).
@@ -981,13 +986,13 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * Makefile.static (dist): cd into $(builddir) and use relative paths
             when making the tar.
 
-2016-01-06      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-06      Oskar Skog      <https://oskog97.com/#contact>
     0.0.21
         * Makefile.static: Silence is golden. Use more variables.
             New target: uninstall
             New target: to-where
             Made the dist target work on FreeBSD.
-2016-01-05      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-05      Oskar Skog      <https://oskog97.com/#contact>
     0.0.20
         * anonymine_engine.py (game_engine.__init__): Code clean up.
         * anonymine_engine.py: Wrote some doc-strings.
@@ -1015,7 +1020,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * anonymine.py (arg_input): Improved help text for the -e and -c
             options.
 
-2016-01-04      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-04      Oskar Skog      <https://oskog97.com/#contact>
     0.0.18
         * ChangeLog (0.0.17): Oops: It was modified, but I forgot to save.
     0.0.17
@@ -1040,7 +1045,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * Makefile.static: Print out MODULES_OTHERVER on make install.
         * Makefile.static: Changed $(DEST) to $(DESTDIR) in many places.
 
-2016-01-03      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-03      Oskar Skog      <https://oskog97.com/#contact>
     0.0.15
         * anonymine.py, anonymine_engine.py, anonymine_fields.py, configure.py:
         * install-cfg, initcfg:
@@ -1086,7 +1091,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             Previous behaviour: complain about curses.endwin() before
             initialization.
 
-2016-01-03      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-03      Oskar Skog      <https://oskog97.com/#contact>
     0.0.10
         * anonymine.py (arg_input): Changed "epilog" to "description" in the
             call to `argparse.ArgumentParser` as it would be more appropriate.
@@ -1104,7 +1109,7 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
             to the function `convert_params` to fix bug in `user_input`.
             The default number of mines is now the actual default (at the time
             20%) rather than the hard coded 16%.
-2016-01-02      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-02      Oskar Skog      <https://oskog97.com/#contact>
     0.0.8
         * configure.py, Makefile.static: The modules will now be installed
             for both versions of Python.
@@ -1152,6 +1157,6 @@ https://cygwin.com/git/gitweb.cgi?p=cygwin-cygutils.git;a=tree;f=src/mkshortcut
         * Makefile: Avoiding the use of `install -t` as it doesn't work on
             at least FreeBSD.
 
-2016-01-02      Oskar Skog      <oskar.skog.finland@gmail.com>
+2016-01-02      Oskar Skog      <https://oskog97.com/#contact>
     0.0.0
         * Initial release.
