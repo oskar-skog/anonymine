@@ -1,3 +1,8 @@
+2017-01-01      Oskar Skog      <https://oskog97.com/#contact>
+    0.4.16
+        * LICENSE, anonymine.py: It's 2017 now.
+        * NEWS: Practically at 0.5 already, only regression fixes may be added.
+
 2016-12-31      Oskar Skog      <https://oskog97.com/#contact>
     0.4.15
         * ChangeLog: Hide mail address.

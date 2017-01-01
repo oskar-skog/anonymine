@@ -1,3 +1,54 @@
+What's new in 0.5.0 since 0.4.0?
+================================
+
+    Bugfixes.
+    
+    0.4.15
+        * Addition to the attention mode.
+    0.4.14
+        * Addition to the mouse support.
+    0.4.13
+        * Really low mine densities without crashing.
+    0.4.12
+        * BUGFIX: FreeBSD & PyPy
+    0.4.11
+        * Mouse support.
+    0.4.10
+        * Added an attention mode to make it easier to find free cells
+          near the end.
+    0.4.9
+        * Different colors for different digits
+    0.4.8
+        * Utilize PyPy, Python modules will no longer be automatically
+          installed for other available Python versions.
+    0.4.5 - 0.4.7
+        * Makefile.static:
+            - Use "$(MAKE)" instead of "make".
+            - Made print-destinations print to stderr.
+        * configure.py: Remade find_MODULES.
+        * INSTALL: Many small corrections.
+        * Makefile.static:
+            - Made recursive make wrapper for install-dirs
+            - `make install` depends on the internal targets.
+              (Avoids unnecessary recursions.)
+            - $(MAIN_STAGE) now depends on Makefile.vars too.
+            - $(ENGINECFG_STAGE) now depends on Makefile.vars.
+        * RELEASE-NOTES: Inform that 0.4.5 and 0.4.6 didn't fix issues
+            #16 and #17 properly.
+        * README: Corrected RAM usage.
+        * Makefile.static: "install" depends on "all", Makefile will be
+            automatically regenerated.
+        * configure.py:
+            - Write out two new files to $(builddir):
+                reconfigure: Run ./configure with the same arguments
+                Makefile.vars: Avoid running an unchanged ./configure again
+            - Sort the order of Makefile variables.
+        * INSTALL: srcdir and builddir should only bet sent to `./configure`.
+    0.4.3
+        * PyPy bug solved.
+
+
+
 What's new in 0.4.0 since 0.3.0?
 ================================
 

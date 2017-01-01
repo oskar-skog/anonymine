@@ -72,7 +72,7 @@ GAME_NAME = 'Anonymine'
 GAME_FILENAME = GAME_NAME.lower().replace(' ', '-')
 
 GAME_CRAPTEXT = """Anonymine version MAKEFILE_GAME_VERSION
-Copyright (c) Oskar Skog, 2016
+Copyright (c) Oskar Skog, 2016-2017
 Released under the Simplified BSD license (2 clause).
 \n"""
 
