@@ -12,6 +12,7 @@ As usual, there has been several bugfixes which are not mentioned here.
     * Added an attention mode to make it easier to find free cells
       near the end.
         + 0.4.15: Also applied to numbers surround by too many flags
+        + 0.4.17: Removed a restriction from the above addition
 0.4.9
     * Different colors for different digits
 0.4.8

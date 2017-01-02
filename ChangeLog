@@ -1,3 +1,12 @@
+2017-01-02      Oskar Skog      <https://oskog97.com/#contact>
+    0.4.17
+        * anonymine.py (curses_game (print_cell)): Don't restrict the
+            attention mode on numbers surrounded by too many flags. If
+            at most one flag must be left before finding misplaced flags,
+            2000 mines would be nearly impossible to sweep.
+        * NEWS: (See above change in anonymine.py)
+        * anonymine.py (line 3): s/2016/2016-2017/
+
 2017-01-01      Oskar Skog      <https://oskog97.com/#contact>
     0.4.16
         * LICENSE, anonymine.py: It's 2017 now.

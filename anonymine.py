@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Copyright (c) Oskar Skog, 2016
+# Copyright (c) Oskar Skog, 2016-2017
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -676,8 +676,7 @@ class curses_game():
         '''
         value = field.get(cell)
         if value not in self.specials:
-            # None < 2, won't work.
-            if self.attention_mode and field.flags_left in (0, 1):
+            if self.attention_mode:
                 flags = 0
                 for neighour in field.get_neighbours(cell):
                     if field.get(neighour) == 'F':
