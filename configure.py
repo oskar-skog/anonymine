@@ -252,9 +252,6 @@ def find_prefix(Makefile, flags):
     '''
     # http://stackoverflow.com/questions/4271494/what-sets-up-sys-path-with-python-and-when
     if 'prefix' not in Makefile:
-        if flags['w']:
-            Makefile['prefix'] = sys.prefix
-            return False
         trywith = [
             '/usr/local',
             '/usr/pkg',         # For Minix, MUST be above /usr
@@ -274,11 +271,6 @@ def find_prefix(Makefile, flags):
             return False
         else:
             sys.stderr.write('Cannot find $(prefix).\n')
-            return True
-    else:
-        if flags['w']:
-            sys.stderr.write(
-                'You cannot specify prefix manually and have the -w option.\n')
             return True
     return False
 
@@ -501,7 +493,7 @@ def main():
         'bindir': '$(prefix)/bin',
         'libdir': '$(prefix)/lib',
     }
-    forced_vars, flags = getargs('fvw')
+    forced_vars, flags = getargs('fv')
     Makefile.update(forced_vars)
     
     error = chk_deps()

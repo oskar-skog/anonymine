@@ -106,8 +106,6 @@ Advanced installation
         configure will also accept these short options:
             -f      Force; write the Makefile even if there were errors.
             -v      verbose; this also affects the Makefile
-            -w      Use sys.prefix as prefix. (For quickly removing versions
-                    older than 0.0.31.)
         
         The real "configure" script will handle these iff they are the ONLY
         argument to ./configure:
@@ -250,8 +248,6 @@ Advanced installation
         
         uninstall
             This will remove the system-wide configuration files as well.
-            To remove an installed version older than 0.0.31 you'll need
-            to run ./configure with the -w option.
             WARNING: This removes the configuration files, even if altered.
             WARNING: This removed the highscores file.
         

@@ -1,6 +1,8 @@
 2017-02-20      Oskar Skog      <https://oskog97.com/#contact>
     0.5.0
         *: Updated the year on a few copyright statements.
+        * INSTALL, configure.py: No need for the -w option anymore.
+            (Something must have broken its use by now. ;)
 
 2017-01-02      Oskar Skog      <https://oskog97.com/#contact>
     0.4.17
