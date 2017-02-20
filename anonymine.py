@@ -26,7 +26,7 @@
 
 '''A minesweeper that can be solved without guessing
 
-Copyright (c) Oskar Skog, 2016
+Copyright (c) Oskar Skog, 2016-2017
 Released under the FreeBSD license.
 
 A minesweeper that can be solved without guessing

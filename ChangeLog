@@ -1,3 +1,7 @@
+2017-02-20      Oskar Skog      <https://oskog97.com/#contact>
+    0.5.0
+        *: Updated the year on a few copyright statements.
+
 2017-01-02      Oskar Skog      <https://oskog97.com/#contact>
     0.4.17
         * anonymine.py (curses_game (print_cell)): Don't restrict the
