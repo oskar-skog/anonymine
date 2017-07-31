@@ -215,6 +215,17 @@ def init_time(width, height, n_mines, runs=10):
     sys.stderr.write('\n')
     return times
 
+
+def init_time_curve():
+    data = []
+    for i in range(121):
+        x = init_time(20, 20, i, 100)
+        data.append(x)
+        f = open('init-time.curve', 'w')
+        f.write(pprint.pformat(data))
+        f.close()
+
+
 def run2(path):
     f = open(path, 'w')
     data = {

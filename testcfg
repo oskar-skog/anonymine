@@ -1,9 +1,9 @@
 #!/usr/bin/python
 {
     'init-field': {
-        'procs':        1,      # Default is to not overload.
+        'procs':        2,      # Default is to not overload.
         'filename':     '/tmp/mines.{0}',
-        'sec-maxtime':  7200,    # Crash if initialization takes more
+        'sec-maxtime':  3600,    # Crash if initialization takes more
                                 # than one and a half minute.
         'sec-maxarea':  1000000,  # Crash if a huge field is requested.
     },
