@@ -217,8 +217,11 @@ def init_time(width, height, n_mines, runs=10):
 
 
 def init_time_curve():
-    data = eval(open('init-time.curve').read())[:90]
-    for i in range(90, 121):
+    try:
+        data = eval(open('init-time.curve').read())
+    except:
+        data = []
+    for i in range(len(data), 121):
         x = init_time(20, 20, i, 100)
         data.append(x)
         f = open('init-time.curve', 'w')
