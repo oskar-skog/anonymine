@@ -956,13 +956,14 @@ def convert_param(paramtype, s):
             # But zero, two, six and twelve aren't included.
             # So check for X and startswith('TW').
             #
-            # Only ~10.2% of the words in my word list could be mistaken
-            # for numbers.
+            # Some special words may appear too, so let's remove them.
+            for word in ['and', 'percent', 'point', 'comma', 'decimal']:
+                s = s.replace(word, '')
             S = s.upper()
             if (
-                ('A' not in S) and ('C' not in S) and
-                ('N' in S or 'F' in S or 'H' in S or 'X' in S) or
-                S.startswith('TW')
+                'A' not in S and 'C' not in S and 'M' not in S and
+                'P' not in S and ('N' in S or 'F' in S or 'H' in S
+                or 'X' in S or S.startswith('TW'))
             ):
                 output(sys.stderr, "Use digits.\n")
             else:
@@ -1175,8 +1176,9 @@ without guessing and supports three different game types:
     parser.add_argument(
         '-m', '--mines', dest='mines',
         help=(
-            "The number of mines. OR the percentage.\n"
-            "Default is {0}.".format(
+            "The number of mines. OR the percentage. Default is {0}.\n"
+            "Creating solvable fields becomes exponentially slower\n"
+            "somewhere around 20 to 25 percent.".format(
                 convert_param(
                     'reverse-minecount',
                     default['mines']
@@ -1371,9 +1373,8 @@ def user_input(default, cursescfg_path):
         default['height']
     )
     # MUST ask for dimensions before for the # of mines.
-    # Default is 16% here
     parameters['mines'] = ask(
-        'Mines (# or %)',
+        'Mines: number or percent% (It gets very slow after 25-ish-%)',
         'minecount',
         convert_param('reverse-minecount', default['mines'])
     )
@@ -1402,19 +1403,11 @@ def user_input(default, cursescfg_path):
     # Ask if the user wants to know the key bindings.
     if ask('Show key bindings?', 'yesno', 'No'):
         cursescfg = eval(open(cursescfg_path).read())
-        try:
-            output(sys.stdout,cursescfg['pre-doc'])
-            if parameters['gametype'] == 'hex':
-                output(sys.stdout, cursescfg['doc-hex'])
-            else:
-                output(sys.stdout, cursescfg['doc-square'])
-        except KeyError:
-            output(sys.stdout,
-                "The configuration file format for cursescfg"
-                " has been updated since version 0.0.5.\n"
-                "You'll have to guess what keys to press or"
-                " update the configuration files.\n"
-            )
+        output(sys.stdout,cursescfg['pre-doc'])
+        if parameters['gametype'] == 'hex':
+            output(sys.stdout, cursescfg['doc-hex'])
+        else:
+            output(sys.stdout, cursescfg['doc-square'])
         output(sys.stdout,
             "\nPressing an unrecognised key will refresh the screen.\n"
             "^C (Ctrl-c) to quit a game or the game.\n\n"

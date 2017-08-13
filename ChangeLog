@@ -1,3 +1,14 @@
+2017-08-13      Oskar Skog      <https://oskog97.com/#contact>
+    0.5.1
+        * anonymine.py (user_input):
+            - Removed outdated comment
+            - Don't bother checking if doc-hex or doc-square exists in
+              cursescfg.
+        * anonymine.py (convert_param):
+            - Corrected the easter egg code.
+        * anonymine.py (arg_input, user_input):
+            - Mentioned the issue with high densities
+
 2017-02-20      Oskar Skog      <https://oskog97.com/#contact>
     0.5.0
         *: Updated the year on a few copyright statements.
