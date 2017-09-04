@@ -957,6 +957,7 @@ def convert_param(paramtype, s):
             # So check for X and startswith('TW').
             #
             # Some special words may appear too, so let's remove them.
+            s = s.lower()
             for word in ['and', 'percent', 'point', 'comma', 'decimal']:
                 s = s.replace(word, '')
             S = s.upper()
