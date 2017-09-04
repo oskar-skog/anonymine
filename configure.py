@@ -1,4 +1,4 @@
-#!/usr/bin/ptyhon
+#!/usr/bin/python
 
 # Copyright (c) Oskar Skog, 2016-2017
 # 
