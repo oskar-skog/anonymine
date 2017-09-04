@@ -15,9 +15,12 @@ DEPENDENCIES
     NOTICE: Normal installation will only work on unix-like operating
     systems.
     
-    On unix-unlike systems you must specify the location of both
+    On non unix-like systems you must specify the location of both
     configuration files, which is why the argparse module would
     be required on a non-nix platform.
+    
+    Mac OS X is a unix like operating system, but you will need to add
+    a user to the sudoers file before you can run `sudo`.
 
 
 INSTALLATION
