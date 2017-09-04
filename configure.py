@@ -411,7 +411,9 @@ def find_MODULES(Makefile, flags):
         paths.sort(key=lambda s: len(s))
         if paths:
             Makefile['MODULES'] = paths[0]
+            return False
     
+    sys.stderr.write("Can't find directory for Python modules\n")
     return True
 
 
