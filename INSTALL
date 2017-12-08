@@ -19,9 +19,28 @@ DEPENDENCIES
     configuration files, which is why the argparse module would
     be required on a non-nix platform.
     
-    Mac OS X is a unix like operating system, but you will need to add
-    a user to the sudoers file before you can run `sudo`.
 
+MAC OS X
+========
+
+    NOTICE:  This has not been tested.  Please report any issues to
+    oskar.skog.finland@gmail.com
+    
+    You need to install as admin.
+    
+    Download and extract the archive and open a terminal window and
+    navigate to the extracted directory with the `cd` command.
+    
+        cd Downloads/anonymine-*
+    
+    See this site for more information:
+https://www.macworld.co.uk/feature/mac-software/how-use-terminal-on-mac-3608274/
+    
+    Then run the commands:
+        ./configure -v
+        make
+        sudo make install
+    
 
 INSTALLATION
 ============
