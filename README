@@ -43,7 +43,7 @@ Software & hardware requirements
         - unix-like operating system or compatibility layer. fork(2) is
           required for utilizing multiple CPU cores.
         - The less(1) pager, for displaying the highscores table.
-        - PyPy (You'll need to set MODULES_DIR manually at ./configure)
+        - PyPy (It's faster than CPython, the more common Python interpreter.)
     
     Hardware requirements
         - Fast CPU and fast RAM (Multiple cores can be used by Anonymine.)
@@ -52,8 +52,8 @@ Software & hardware requirements
             - 2 MiB for tarball downloads
             - 8 MiB for git clones
         - RAM usage:
-            - Lesser than 16 MiB plus 24 MiB per logical CPU (core) for CPython
-            - Lesser than 96 MiB plus 128 MiB per logical CPU (core) for PyPy
+            - Less than 16 MiB plus 24 MiB per logical CPU (core) for CPython
+            - Less than 96 MiB plus 128 MiB per logical CPU (core) for PyPy
             - 96 MiB (total) should be enough for CPython and FreeBSD
         - Network not required, except for downloading.
 
