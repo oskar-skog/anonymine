@@ -1,5 +1,9 @@
-2017-09-04      Oskar Skog      <https://oskog97.com/#contact>
+2017-12-08      Oskar Skog      <https://oskog97.com/#contact>
     0.5.2
+        * INSTALL: Mac OS X section
+        * README: Some corrections
+2017-09-04      Oskar Skog      <https://oskog97.com/#contact>
+    pre-0.5.2
         * anonymine.py (convert_param): Small correction to the easter egg.
         * configure.py (find_MODUKLES): Fixed Mac specific bug.
         * configure.py: Corrected spelling in the shebang.
