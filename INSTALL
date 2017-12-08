@@ -27,6 +27,8 @@ MAC OS X
     oskar.skog.finland@gmail.com
     
     You need to install as admin.
+    You also need to have parts of Xcode installed, I believe they will
+    automatically install on recent enough versions of OS X.
     
     Download and extract the archive and open a terminal window and
     navigate to the extracted directory with the `cd` command.
