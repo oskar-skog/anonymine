@@ -1,13 +1,19 @@
 #!/bin/sh
 
-# ./mkenginecfg srcdir builddir hiscorefile
 
+if [ $# -ne 4 ]; then
+cat >&2 <<__EOF__
+# ./mkenginecfg python_interpreter srcdir builddir hiscorefile
 # This shell script is a wrapper around a Python script that will be spit
 # out.
+__EOF__
+exit 1
+fi
 
-srcdir=$1
-builddir=$2
-hiscorefile=$3
+python=$1
+srcdir=$2
+builddir=$3
+hiscorefile=$4
 
 userfile="${builddir}enginecfg.user"
 fallbackfile="${srcdir}enginecfg.fallback"
@@ -66,14 +72,17 @@ __EOF__
 # Count the number of logical processors.
 # WARNING: If the first command in a pipeline fails, the pipeline itself may
 # succeed!  (wc -l says there are zero processors.)
+# BUG *1: sysctl(1) on OpenBSD does not fail, the first sysctl command
+# must work.
 # NOTICE                v: Don't forget the semicolon!
 _n0 () { nproc --all;                               } # Debian
 _n1 () { lscpu && lscpu -p | grep -v '#' | wc -l;   } # (Linux)/Debian
-_n2 () { sysctl -n kern.smp.cpus;                   } # BSD (Should I use this?)
-_n3 () { sysctl -n hw.logicalcpu;                   } # BSD
-_n4 () { sysctl -n hw.ncpu;                         } # BSD (fallback)
-_n5 () { psrinfo && psrinfo | wc -l;                } # (OpenSolaris)/openidiana
-n=0; last=5
+_n2 () { sysctl -n hw.ncpufound;                    } # OpenBSD, BUG *1
+_n3 () { sysctl -n kern.smp.cpus;                   } # BSD (Should I use this?)
+_n4 () { sysctl -n hw.logicalcpu;                   } # BSD
+_n5 () { sysctl -n hw.ncpu;                         } # BSD (fallback)
+_n6 () { psrinfo && psrinfo | wc -l;                } # (OpenSolaris)/openidiana
+n=0; last=6
 while [ $n -le $last ]; do
     ncpus=`_n$n` 2> /dev/null && break
     n=$(($n + 1))
@@ -81,6 +90,6 @@ done
 
 oldpwd=`pwd`
 cd "$srcdir"
-python "$pyfile" "$ncpus" "$hiscorefile" > "$outfile" \
+$python "$pyfile" "$ncpus" "$hiscorefile" > "$outfile" \
     || cp "$fallbackfile" "$outfile"
 cd "$oldpwd"

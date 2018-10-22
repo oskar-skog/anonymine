@@ -1,16 +1,21 @@
 DEPENDENCIES
 ============
 
-    * Python 2.6, 2.7 or 3.x
-    * The curses module. (Python bindings for curses.)
-    * A screen size of at least 10 columns by 8 rows.
-        (7 by 4 for non-hexagonal gametypes.)
-    * A unix-like operating system or the argparse module.
+    Required
+    ========
     
-    * less(1) for the passwords is recommended.
-    * A unix-like OS is recommended for systems with multiple CPUs or
-      multicore CPUs
-    * PyPy or another faster Python implementation can be used.
+        * Python 2.6, 2.7 or 3.x
+        * The curses module. (Python bindings for curses.)
+        * A screen size of at least 10 columns by 8 rows.
+          (7 by 4 for non-hexagonal gametypes.)
+        * A unix-like operating system or the argparse module.
+    
+    Recommended
+    ===========
+    
+        * less(1) for the passwords is recommended.
+        * A unix-like OS is recommended for systems with a multicore CPU
+        * PyPy or another faster Python implementation can be used.
     
     NOTICE: Normal installation will only work on unix-like operating
     systems.
@@ -20,7 +25,7 @@ DEPENDENCIES
     be required on a non-nix platform.
     
 
-MAC OS X
+Mac OS X
 ========
 
     NOTICE:  This has not been tested.  Please report any issues to
@@ -57,10 +62,13 @@ INSTALLATION
     If you don't understand the above, go read
 http://www.makeuseof.com/tag/compile-install-tar-gz-tar-bz2-files-ubuntu-linux/
     If you still don't understand, ask the nearest Linux user to help you
-    and create a wiki page about the topic on my Github repo.
+    and create a wiki page about the topic on my Gitlab repo.
     
     Use "./configure -v" to make the whole installation process verbose.
-
+    
+    The Makefile works with both GNU's make and BSD's make, but it does not
+    work on Sun's make.  If `make` doesn't work, try using `gmake` instead.
+    
     NOTICE:
         The system-wide configuration files for the game will only be created
         if they do not exist or if they have not been modified by the user.

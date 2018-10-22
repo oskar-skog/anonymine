@@ -41,7 +41,7 @@ def myexit(code):
     Using `os._exit` won't work either because output is buffered and
     not flushed on exit.
     
-    https://github.com/oskar-skog/anonymine/issues/7
+    https://gitlab.com/oskog97/anonymine/issues/7
     http://bugs.python.org/issue28807
     http://gnats.netbsd.org/cgi-bin/query-pr-single.pl?number=51657
     '''
@@ -423,12 +423,13 @@ def find_INSTALL(Makefile, flags):
     
     Sets Makefile['INSTALL'] if needed.
     
-    $(INSTALL) is normally "install", but on Solares it needs to be
-    "/usr/ucb/install".
+    $(INSTALL) is normally "install", but on the Solares it needs to be
+    "/usr/ucb/install" or "/usr/gnu/bin/install".
     '''
     if 'INSTALL' not in Makefile:
         trywith = [
-            '/usr/ucb/install'
+            '/usr/ucb/install',
+            '/usr/gnu/bin/install',
         ]
         for install in trywith:
             try:

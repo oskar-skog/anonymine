@@ -33,11 +33,11 @@ Introduced the losers' highscores in version 0.3.1 (bugfix in 0.3.3)
 New textics since version 0.3.6 (small fix in 0.3.7)
 
 Dropped Windows support in version 0.3.8. Windows support can be found at
-https://github.com/oskar-skog/anonymine-windows
+https://gitlab.com/oskog97/anonymine-windows
 
 Tidied up some package files:
     - Several changes to INSTALL, README and HACKING
-    - Removed BUGS.  Issues have been created on Github and the workarounds
+    - Removed BUGS.  Issues have been created on Gitlab and the workarounds
         have been documented.
     - Added a new question to and reordered FAQ.
 
@@ -54,7 +54,7 @@ Bugfixes:
         Gibberish from impatient players will be removed.
     - 0.3.12, 0.3.15: Fixed a problem with ./configure that affected
         Cygwin and NetBSD in two different ways.
-        See https://github.com/oskar-skog/anonymine/issues/7
+        See https://gitlab.com/oskog97/anonymine/issues/7
 
 
 What's new in 0.3.0 since 0.2.0?
@@ -98,7 +98,7 @@ Fixes to the initializer in 0.2.10:
 Misc bugfixes:
     0.2.2:  mkenginecfg could count to zero processors due to a bug.
     0.2.13: ./configure: Expand directory variables before checking them.
-    0.2.17: New fix for <https://github.com/oskar-skog/anonymine/issues/13>,
+    0.2.17: New fix for <https://gitlab.com/oskog97/anonymine/issues/13>,
             don't raise "Exception"
     0.2.18: A performance issue was fixed.
     0.2.24: Dropped the idea of a statistics module
@@ -160,7 +160,7 @@ What's new in 0.1.0 since 0.0.0?
     0.0.1:   FreeBSD (`make dist` works since 0.0.21)
     0.0.8:   Python 3
     0.0.15:  Python 2.6
-    0.0.27:  Fixed https://github.com/oskar-skog/anonymine/issues/14
+    0.0.27:  Fixed https://gitlab.com/oskog97/anonymine/issues/14
     0.0.31:  Minix 3 and openindiana (illumos (OpenSolaris))
     0.0.36:  NetBSD works properly
     0.0.41+: Windows (auto-fetch Cygwin) (lack of testing)

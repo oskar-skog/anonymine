@@ -7,12 +7,12 @@ TERM=vt100 on Haiku versions older than 50662.
 (Tested on Haiku nightly build hrev50483 and hrev50700.)
 
 To "install" it
-$ git clone https://github.com/oskar-skog/anonymine.git
-$ cd anonymine
-$ touch highscores
-$ ./mkenginecfg ./ ./ highscores
+> git clone https://gitlab.com/oskog97/anonymine
+> cd anonymine
+> touch highscores
+> ./mkenginecfg python ./ ./ highscores
 
 To play it
-$ cd anonymine
-$ python anonymine.py -c cursescfg -e enginecfg.out
+> cd anonymine
+> python anonymine.py -c cursescfg -e enginecfg.out
 

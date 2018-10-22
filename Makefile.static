@@ -15,7 +15,7 @@
 NAME := anonymine
 NAME_C := Anonymine
 DESCRIPTION = Minesweeper without guessing
-VERSION := 0.5.2
+VERSION := 0.5.4
 
 # Four more variables are required: sysconfdir, vargamesdir, EXECUTABLES and
 # MODULES
@@ -115,11 +115,11 @@ $(MAIN_STAGE) : $(MAIN_SRC) $(builddir)Makefile
 
 $(ENGINECFG_STAGE) : $(srcdir)mkenginecfg $(builddir)Makefile.vars
 	@$(info) 'Making enginecfg: mostly counting processors'
-	@"$(srcdir)mkenginecfg" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
+	@"$(srcdir)mkenginecfg" "$(python)" "$(srcdir)" "$(builddir)" "$(HISCORE_FILE)"
 
 
 $(builddir)module-symlinks : $(builddir)Makefile.vars $(srcdir)mk-symlinks
-	@python "$(srcdir)mk-symlinks" "$(srcdir)" "$(prefix)" "$(libdir)" \
+	@$(python) "$(srcdir)mk-symlinks" "$(srcdir)" "$(prefix)" "$(libdir)" \
 		"$(MODULES)" "$(DESTDIR)" "$(builddir)"
 
 
@@ -137,10 +137,10 @@ $(OSX_WRAPPER) : $(builddir)Makefile
 	@echo '#!/bin/sh' > "$(OSX_WRAPPER)"
 	@echo 'open -b com.apple.terminal' "$(MAIN_DEST)" >> "$(OSX_WRAPPER)"
 $(OSX_INFO_PLIST) : $(OSX_MK_INFO_PLIST) $(builddir)Makefile
-	@python "$(OSX_MK_INFO_PLIST)" "$(OSX_INFO_PLIST)" "$(NAME_C)" \
+	@$(python) "$(OSX_MK_INFO_PLIST)" "$(OSX_INFO_PLIST)" "$(NAME_C)" \
 		"$(NAME_C) - $(DESCRIPTION)" $(VERSION) $(NAME)
 $(OSX_ICON) : $(srcdir)/desktop/$(NAME)*.png $(OSX_MK_ICON) $(builddir)Makefile
-	@python "$(OSX_MK_ICON)" "$(OSX_ICON)" "$(srcdir)desktop/$(NAME)"
+	@$(python) "$(OSX_MK_ICON)" "$(OSX_ICON)" "$(srcdir)desktop/$(NAME)"
 
 
 
@@ -171,7 +171,7 @@ _distclean : _clean
 # configure.py will choose /usr/ucb/install on Solares.
 INSTALL ?= install
 
-INSTALL_CFG := python "$(srcdir)install-cfg" "$(INSTALL)"
+INSTALL_CFG := $(python) "$(srcdir)install-cfg" "$(INSTALL)"
 
 # Modules: FOO_SRC, FOO_DEST
 ENGINE_SRC := $(srcdir)$(NAME)_engine.py

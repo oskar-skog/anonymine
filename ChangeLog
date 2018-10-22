@@ -1,3 +1,15 @@
+2018-10-10      Oskar Skog      <https://oskog97.com/#contact>
+    0.5.4
+        *: Some systems do not have a symlink for `python`. Fix to allow
+            python3 and python2 as alternatives.
+        * INSTALL, INSTALL.Haiku: Minor modifications
+
+2018-10-07      Oskar Skog      <https://oskog97.com/#contact>
+    0.5.3
+        *: Moved from Github to Gitlab
+        * configure.py: Issues with install(1) again.
+        * mkenginecfg: Workaround for OpenBSD's sysctl.
+
 2017-12-08      Oskar Skog      <https://oskog97.com/#contact>
     0.5.2
         * INSTALL: Mac OS X section
@@ -151,10 +163,10 @@
         * test.py: Use `profile` instead of `cProfile`.
     0.4.2
         * anonymine.py: Updated status of
-            https://github.com/oskar-skog/anonymine/issues/14
+            https://gitlab.com/oskog97/anonymine/issues/14
         * Makefile.static: Re-enabled overwrite-cfg.
         * anonymine.py: Warn of the opendiana bug:
-            https://github.com/oskar-skog/anonymine/issues/4
+            https://gitlab.com/oskog97/anonymine/issues/4
 
 2016-12-06      Oskar Skog      <https://oskog97.com/#contact>
     0.4.1
@@ -174,7 +186,8 @@
 
 2016-12-04      Oskar Skog      <https://oskog97.com/#contact>
     0.3.19
-        * HACKING: Mention that only versions 0.1.15 and above are in Github.
+        * HACKING: Mention that only versions 0.1.15 and above are in Github
+            (and Gitlab).
         * INSTALL: Many small changes.
         * NEWS: Added NEWS for 0.4.  Will bump the version to 0.4.0 if there's
             nothing else to do on 0.3.z.
@@ -208,7 +221,7 @@
 2016-11-26      Oskar Skog      <https://oskog97.com/#contact>
     0.3.15
         * configure.py: Exiting properly on both Cygwin and NetBSD.
-            See https://github.com/oskar-skog/anonymine/issues/7
+            See https://gitlab.com/oskog97/anonymine/issues/7
 
 2016-11-20      Oskar Skog      <https://oskog97.com/#contact>
     0.3.14

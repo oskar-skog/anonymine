@@ -1,3 +1,7 @@
+0.5.3
+    - Links in documentation may be broken as I have recently moved from
+      Github to Gitlab.
+
 0.4.11
     - cursescfg has changed: Added a section cfg['curses-mouse-input']
     (Old versions are incompatible)
@@ -35,7 +39,7 @@
 0.3.8
     - Removed Windows support.
       You can find an untested Windows version at
-      https://github.com/oskar-skog/anonymine-windows
+      https://gitlab.com/oskog97/anonymine-windows
 
 0.3.6
     - cursescfg: color pair number are calculated automatically.
