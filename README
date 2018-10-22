@@ -1,3 +1,8 @@
+This project has been moved to Gitlab:
+https://gitlab.com/oskog97/anonymine
+
+================================================================================
+
 Anonymine is a curses mode (text based) minesweeper that checks if the fields
 actually are solvable without guessing and has a few other features.
 
@@ -14,81 +19,3 @@ You can also try it over SSH as play@anonymine-demo.oskog97.com port 2222.
 (No password)
 
 You can find screenshots and more at https://oskog97.com/projects/anonymine/
-
-
-See also
-========
-
-    - INSTALL for installation instructions. (./configure; make; make install)
-      (There may exist platform specific versions of INSTALL.)
-    - https://github.com/oskar-skog/anonymine-windows for Windows support
-
-
-Software & hardware requirements
-================================
-
-    Required software
-        - Python 2.6, 2.7 or 3.x
-        - The "curses" module (Python)
-        - The "argparse" module (Python) or a unix-like operating system [*1,2]
-    
-    *1 The argparse module is needed for Anonymine to take commandline options.
-    The configuration files can be specified with the -e and -c command line
-    options to override the default locations which happen to be unix paths.
-    
-    *2 Note that Python 2.6, 3.0 and 3.1 are not expected to have the
-    module "argparse".
-    
-    Software recommendations
-        - unix-like operating system or compatibility layer. fork(2) is
-          required for utilizing multiple CPU cores.
-        - The less(1) pager, for displaying the highscores table.
-        - PyPy (It's faster than CPython, the more common Python interpreter.)
-    
-    Hardware requirements
-        - Fast CPU and fast RAM (Multiple cores can be used by Anonymine.)
-        - Fan for cooling the CPU
-        - Disk:
-            - 2 MiB for tarball downloads
-            - 8 MiB for git clones
-        - RAM usage:
-            - Less than 16 MiB plus 24 MiB per logical CPU (core) for CPython
-            - Less than 96 MiB plus 128 MiB per logical CPU (core) for PyPy
-            - 96 MiB (total) should be enough for CPython and FreeBSD
-        - Network not required, except for downloading.
-
-
-Tested platforms
-================
-
-    CPython 2.6.4 is lowest version of Python that has been tested.
-    
-    Platform                  Notes
-    --------                  -----
-    Cygwin on NT 6.1 [Py 2]   Unstudied resizing bug.
-    Debian 7                  
-    Debian 8 [Py 2, 3]        Host system, well tested
-    FreeBSD 9.2 [Py 2]        
-    FreeBSD 10 [Py 2]         ssh anonymine-demo.oskog97.com:2222
-    Haiku nightly             Terminal bug fixed in hrev50662
-    Mac OS X [Py 2]           ICNS icon is untested
-    Minix 3.3 [Py 2]          Issues with the highscores: rounding, no pager
-    NetBSD 6.1 [Py 2]         TERM=xterm almost works, vt100 is default by sys
-    OpenBSD 5.8 [Py 2, 3]     Failed to pipe to less on Python 3
-    OpenSUSE 12.2 [Py 2, 3]   
-    Trisquel 6.0 [Py 2, 3]    Old host system, old versions well tested
-    OpenIndiana dev [Py 2.6]  Anonymine 0.1.17 to 0.2.29 won't work
-    OpenIndiana Hipster       Works great [Py 2.7]
-
-
-Goals
-=====
-
-    Version Change
-    ------- ------
-    0.2     Performance improvements, no nasty calibration of enginecfg
-    0.3     High-scores
-    0.4     Meta file clean ups (eg. README)
-    0.5     Mouse support
-    0.6     Illustrative documentation for the solver algorithm
-
